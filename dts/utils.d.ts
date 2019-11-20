@@ -1,0 +1,24 @@
+export function encodeParams(params: any): string;
+export function encodeUri(pathTemplate: string, variables: any): string;
+export function map(array: any[], fn: Function): any[];
+export function filter(array: any[], fn: Function): any[];
+export function keys(obj: any): string[];
+export function values(obj: any): any[];
+export function forEach(array: any[], fn: Function): void;
+export function findElement(array: any[], fn: Function, reverse: boolean): any;
+export function removeElement(array: any[], fn: Function, reverse: boolean): boolean;
+export function isFunction(value: any): boolean;
+export function isArray(value: any): boolean;
+export function checkObjectHasKeys(obj: any, keys: string[]): void;
+export function checkObjectHasNoAdditionalKeys(obj: any, allowedKeys: string[]): void;
+export function deepCopy(obj: any): any;
+export function deepCompare(x: any, y: any): boolean;
+export function extend(...args: any[]): any;
+export function runPolyfills(): void;
+export function inherits(ctor: Function, superCtor: Function): void;
+export function isNumber(value: any): boolean;
+export function removeHiddenChars(str: string): string;
+export function escapeRegExp(string: any): any;
+export function globToRegexp(glob: any, extended: any): any;
+export function ensureNoTrailingSlash(url: any): any;
+//# sourceMappingURL=utils.d.ts.map

@@ -1,0 +1,8 @@
+{
+    "name": "matrix-js-sdk-type",
+    "version": "1.0.0",
+    "author": "Jack Works <jackworks@protonmail.com>",
+    "license": "MIT",
+    "private": true,
+    "typings": "./dts/matrix.d"
+}
