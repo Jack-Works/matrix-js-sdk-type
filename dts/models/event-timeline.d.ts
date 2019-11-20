@@ -51,8 +51,8 @@ declare class EventTimeline {
     _prevTimeline: EventTimeline;
     _nextTimeline: EventTimeline;
     _paginationRequests: {
-        'b': any;
-        'f': any;
+        b: any;
+        f: any;
     };
     _name: string;
     initialiseState(stateEvents: any[]): void;
