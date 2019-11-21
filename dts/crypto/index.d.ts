@@ -85,7 +85,7 @@ export class Crypto {
     _checkedForBackup: boolean;
     _sendingBackups: boolean;
     _olmDevice: any;
-    _deviceList: import("./DeviceList").default;
+    _deviceList: $_generated_9.default;
     _lastOneTimeKeyCheck: any;
     _oneTimeKeyCheckInProgress: boolean;
     _roomEncryptors: {};
@@ -101,7 +101,7 @@ export class Crypto {
     _roomDeviceTrackingState: {};
     _lastNewSessionForced: {};
     _verificationTransactions: Map<any, any>;
-    _crossSigningInfo: import("./CrossSigning").CrossSigningInfo;
+    _crossSigningInfo: $_generated_11.CrossSigningInfo;
     _secretStorage: any;
     /**
      * Initialise the crypto module so that it is ready for use
@@ -171,7 +171,7 @@ export class Crypto {
      *
      * @returns {CrossSigningInfo} the cross signing informmation for the user.
      */
-    getStoredCrossSigningForUser(userId: string): typeof import("./CrossSigning").CrossSigningInfo;
+    getStoredCrossSigningForUser(userId: string): typeof $_generated_11.CrossSigningInfo;
     /**
      * Check whether a given user is trusted.
      *
@@ -179,7 +179,7 @@ export class Crypto {
      *
      * @returns {UserTrustLevel}
      */
-    checkUserTrust(userId: string): typeof import("./CrossSigning").UserTrustLevel;
+    checkUserTrust(userId: string): typeof $_generated_11.UserTrustLevel;
     /**
      * Check whether a given device is trusted.
      *
@@ -188,7 +188,7 @@ export class Crypto {
      *
      * @returns {DeviceTrustLevel}
      */
-    checkDeviceTrust(userId: string, deviceId: string): typeof import("./CrossSigning").DeviceTrustLevel;
+    checkDeviceTrust(userId: string, deviceId: string): typeof $_generated_11.DeviceTrustLevel;
     checkOwnCrossSigningTrust(): Promise<void>;
     /**
      * Check if the master key is signed by a verified device, and if so, prompt
@@ -348,7 +348,7 @@ export class Crypto {
     }>;
     requestVerificationDM(userId: any, roomId: any, methods: any): Promise<any>;
     acceptVerificationDM(event: any, Method: any): any;
-    requestVerification(userId: any, methods: any, devices: any): import("bluebird")<any>;
+    requestVerification(userId: any, methods: any, devices: any): Promise<any>;
     beginKeyVerification(method: any, userId: any, deviceId: any, transactionId: any): any;
     /**
      * Get information on the active olm sessions with a user
@@ -698,6 +698,8 @@ export type EventDecryptionResult = {
      */
     forwardingCurve25519KeyChain: string[];
 };
+import * as $_generated_9 from "./DeviceList";
+import * as $_generated_11 from "./CrossSigning";
 /**
  * The parameters of a room key request. The details of the request may
  * vary with the crypto algorithm, but the management and storage layers for

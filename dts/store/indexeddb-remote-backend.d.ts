@@ -19,7 +19,7 @@ declare class RemoteIndexedDBStoreBackend {
     _worker: any;
     _nextSeq: number;
     _inFlight: {};
-    _startPromise: import("bluebird")<void>;
+    _startPromise: Promise<void>;
     /**
      * Attempt to connect to the database. This can fail if the user does not
      * grant permission.
@@ -40,9 +40,9 @@ declare class RemoteIndexedDBStoreBackend {
      * is no saved sync data.
      */
     getSavedSync(): Promise<any>;
-    getNextBatchToken(): import("bluebird")<any>;
-    setSyncData(syncData: any): import("bluebird")<any>;
-    syncToDatabase(users: any): import("bluebird")<any>;
+    getNextBatchToken(): Promise<any>;
+    setSyncData(syncData: any): Promise<any>;
+    syncToDatabase(users: any): Promise<any>;
     /**
      * Returns the out-of-band membership events for this room that
      * were previously loaded.
@@ -60,16 +60,16 @@ declare class RemoteIndexedDBStoreBackend {
      * @returns {Promise} when all members have been stored
      */
     setOutOfBandMembers(roomId: string, membershipEvents: Event[]): Promise<any>;
-    clearOutOfBandMembers(roomId: any): import("bluebird")<any>;
-    getClientOptions(): import("bluebird")<any>;
-    storeClientOptions(options: any): import("bluebird")<any>;
+    clearOutOfBandMembers(roomId: any): Promise<any>;
+    getClientOptions(): Promise<any>;
+    storeClientOptions(options: any): Promise<any>;
     /**
      * Load all user presence events from the database. This is not cached.
      * @return {Promise<Object[]>} A list of presence events in their raw form.
      */
     getUserPresenceEvents(): Promise<any[]>;
-    _ensureStarted(): import("bluebird")<void>;
-    _doCmd(cmd: any, args: any): import("bluebird")<any>;
+    _ensureStarted(): Promise<void>;
+    _doCmd(cmd: any, args: any): Promise<any>;
     _onWorkerMessage(ev: any): void;
 }
 //# sourceMappingURL=indexeddb-remote-backend.d.ts.map

@@ -59,7 +59,7 @@ export class Backend {
      *    requests in those states, an arbitrary one is chosen.
      */
     getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
-    getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): import("bluebird")<any[]>;
+    getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): Promise<any[]>;
     /**
      * Look for an existing room key request by id and state, and update it if
      * found
@@ -100,10 +100,10 @@ export class Backend {
     storeEndToEndDeviceData(deviceData: any, txn: any): void;
     storeEndToEndRoom(roomId: any, roomInfo: any, txn: any): void;
     getEndToEndRooms(txn: any, func: any): void;
-    getSessionsNeedingBackup(limit: any): import("bluebird")<any>;
-    countSessionsNeedingBackup(txn: any): import("bluebird")<any>;
-    unmarkSessionsNeedingBackup(sessions: any, txn: any): import("bluebird")<[any, any, any, any, any]>;
-    markSessionsNeedingBackup(sessions: any, txn: any): import("bluebird")<[any, any, any, any, any]>;
-    doTxn(mode: any, stores: any, func: any): import("bluebird")<any>;
+    getSessionsNeedingBackup(limit: any): Promise<any>;
+    countSessionsNeedingBackup(txn: any): Promise<any>;
+    unmarkSessionsNeedingBackup(sessions: any, txn: any): Promise<[any, any, any, any, any, any, any, any, any, any]>;
+    markSessionsNeedingBackup(sessions: any, txn: any): Promise<[any, any, any, any, any, any, any, any, any, any]>;
+    doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
 //# sourceMappingURL=indexeddb-crypto-store-backend.d.ts.map

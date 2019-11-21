@@ -1,11 +1,12 @@
-export function newVerificationError(code: any, reason: any, extradata: any): import("../../models/event").MatrixEvent;
-export function errorFactory(code: any, reason: any): (extradata: any) => import("../../models/event").MatrixEvent;
-export function newUserCancelledError(extradata: any): import("../../models/event").MatrixEvent;
-export function newTimeoutError(extradata: any): import("../../models/event").MatrixEvent;
-export function newUnknownTransactionError(extradata: any): import("../../models/event").MatrixEvent;
-export function newUnknownMethodError(extradata: any): import("../../models/event").MatrixEvent;
-export function newUnexpectedMessageError(extradata: any): import("../../models/event").MatrixEvent;
-export function newKeyMismatchError(extradata: any): import("../../models/event").MatrixEvent;
-export function newUserMismatchError(extradata: any): import("../../models/event").MatrixEvent;
-export function newInvalidMessageError(extradata: any): import("../../models/event").MatrixEvent;
+export function newVerificationError(code: any, reason: any, extradata: any): $_generated_0.MatrixEvent;
+export function errorFactory(code: any, reason: any): (extradata: any) => $_generated_0.MatrixEvent;
+export function newUserCancelledError(extradata: any): $_generated_0.MatrixEvent;
+export function newTimeoutError(extradata: any): $_generated_0.MatrixEvent;
+export function newUnknownTransactionError(extradata: any): $_generated_0.MatrixEvent;
+export function newUnknownMethodError(extradata: any): $_generated_0.MatrixEvent;
+export function newUnexpectedMessageError(extradata: any): $_generated_0.MatrixEvent;
+export function newKeyMismatchError(extradata: any): $_generated_0.MatrixEvent;
+export function newUserMismatchError(extradata: any): $_generated_0.MatrixEvent;
+export function newInvalidMessageError(extradata: any): $_generated_0.MatrixEvent;
+import * as $_generated_0 from "../../models/event";
 //# sourceMappingURL=Error.d.ts.map

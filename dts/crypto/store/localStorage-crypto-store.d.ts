@@ -19,10 +19,10 @@ export default class LocalStorageCryptoStore {
     storeEndToEndDeviceData(deviceData: any, txn: any): void;
     storeEndToEndRoom(roomId: any, roomInfo: any, txn: any): void;
     getEndToEndRooms(txn: any, func: any): void;
-    getSessionsNeedingBackup(limit: any): import("bluebird")<any[]>;
-    countSessionsNeedingBackup(): import("bluebird")<number>;
-    unmarkSessionsNeedingBackup(sessions: any): import("bluebird")<void>;
-    markSessionsNeedingBackup(sessions: any): import("bluebird")<void>;
+    getSessionsNeedingBackup(limit: any): Promise<any[]>;
+    countSessionsNeedingBackup(): Promise<number>;
+    unmarkSessionsNeedingBackup(sessions: any): Promise<void>;
+    markSessionsNeedingBackup(sessions: any): Promise<void>;
     /**
      * Delete all data from this store.
      *
@@ -33,6 +33,6 @@ export default class LocalStorageCryptoStore {
     storeAccount(txn: any, newData: any): void;
     getCrossSigningKeys(txn: any, func: any): void;
     storeCrossSigningKeys(txn: any, keys: any): void;
-    doTxn(mode: any, stores: any, func: any): import("bluebird")<any>;
+    doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
 //# sourceMappingURL=localStorage-crypto-store.d.ts.map

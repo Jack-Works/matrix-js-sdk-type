@@ -19,7 +19,7 @@ declare class IndexedDBCryptoStore {
     constructor(indexedDB: IDBFactory, dbName: string);
     _indexedDB: IDBFactory;
     _dbName: string;
-    _backendPromise: import("bluebird")<any>;
+    _backendPromise: Promise<any>;
     /**
      * Ensure the database exists and is up-to-date, or fall back to
      * a local storage or in-memory store.

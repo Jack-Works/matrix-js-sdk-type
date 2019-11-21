@@ -25,7 +25,7 @@ declare class SyncApi {
     _catchingUp: boolean;
     _running: boolean;
     _keepAliveTimer: any;
-    _connectionReturnedDefer: import("bluebird").Resolver<any>;
+    _connectionReturnedDefer: any;
     _notifEvents: any[];
     _failedSyncCount: number;
     _storeIsInvalid: boolean;

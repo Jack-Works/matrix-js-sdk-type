@@ -1,4 +1,4 @@
-export = StubStore;
+export default StubStore;
 /**
  * This is an internal module.
  * @module store/stub
@@ -167,10 +167,10 @@ declare class StubStore {
      * @return {Promise} An immediately resolved promise.
      */
     deleteAllData(): Promise<any>;
-    getOutOfBandMembers(): import("bluebird")<any>;
-    setOutOfBandMembers(): import("bluebird")<void>;
-    clearOutOfBandMembers(): import("bluebird")<void>;
-    getClientOptions(): import("bluebird")<void>;
-    storeClientOptions(): import("bluebird")<void>;
+    getOutOfBandMembers(): Promise<any>;
+    setOutOfBandMembers(): Promise<void>;
+    clearOutOfBandMembers(): Promise<void>;
+    getClientOptions(): Promise<void>;
+    storeClientOptions(): Promise<void>;
 }
 //# sourceMappingURL=stub.d.ts.map

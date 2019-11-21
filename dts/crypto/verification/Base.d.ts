@@ -1,6 +1,4 @@
-/// <reference types="node" />
-declare const VerificationBase_base: typeof import("events").EventEmitter;
-export default class VerificationBase extends VerificationBase_base {
+export default class VerificationBase extends $_generated_1.EventEmitter {
     /**
      * Base class for verification methods.
      *
@@ -74,5 +72,5 @@ export default class VerificationBase extends VerificationBase_base {
     removeAllListeners(event?: string | symbol): VerificationBase;
     setMaxListeners(n: number): VerificationBase;
 }
-export {};
+import * as $_generated_1 from "../../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
 //# sourceMappingURL=Base.d.ts.map

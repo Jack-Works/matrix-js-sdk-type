@@ -65,7 +65,7 @@ export default class MemoryCryptoStore {
      *    there are no pending requests in those states
      */
     getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
-    getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): import("bluebird")<any[]>;
+    getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): Promise<any[]>;
     /**
      * Look for an existing room key request by id and state, and update it if
      * found
@@ -106,14 +106,14 @@ export default class MemoryCryptoStore {
     storeEndToEndDeviceData(deviceData: any, txn: any): void;
     storeEndToEndRoom(roomId: any, roomInfo: any, txn: any): void;
     getEndToEndRooms(txn: any, func: any): void;
-    getSessionsNeedingBackup(limit: any): import("bluebird")<{
+    getSessionsNeedingBackup(limit: any): Promise<{
         senderKey: string;
         sessionId: string;
         sessionData: any;
     }[]>;
-    countSessionsNeedingBackup(): import("bluebird")<number>;
-    unmarkSessionsNeedingBackup(sessions: any): import("bluebird")<void>;
-    markSessionsNeedingBackup(sessions: any): import("bluebird")<void>;
-    doTxn(mode: any, stores: any, func: any): import("bluebird")<any>;
+    countSessionsNeedingBackup(): Promise<number>;
+    unmarkSessionsNeedingBackup(sessions: any): Promise<void>;
+    markSessionsNeedingBackup(sessions: any): Promise<void>;
+    doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
 //# sourceMappingURL=memory-crypto-store.d.ts.map

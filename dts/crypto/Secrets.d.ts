@@ -1,10 +1,8 @@
-/// <reference types="node" />
-declare const SecretStorage_base: typeof import("events").EventEmitter;
 /**
  * Implements Secure Secret Storage and Sharing (MSC1946)
  * @module crypto/Secrets
  */
-export default class SecretStorage extends SecretStorage_base {
+export default class SecretStorage extends $_generated_0.EventEmitter {
     constructor(baseApis: any, cryptoCallbacks: any, crossSigningInfo: any);
     _baseApis: any;
     _cryptoCallbacks: any;
@@ -74,5 +72,5 @@ export default class SecretStorage extends SecretStorage_base {
     removeAllListeners(event?: string | symbol): SecretStorage;
     setMaxListeners(n: number): SecretStorage;
 }
-export {};
+import * as $_generated_0 from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
 //# sourceMappingURL=Secrets.d.ts.map

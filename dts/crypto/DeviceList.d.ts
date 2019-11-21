@@ -1,9 +1,7 @@
-/// <reference types="node" />
-declare const DeviceList_base: typeof import("events").EventEmitter;
 /**
  * @alias module:crypto/DeviceList
  */
-export default class DeviceList extends DeviceList_base {
+export default class DeviceList extends $_generated_0.EventEmitter {
     constructor(baseApis: any, cryptoStore: any, olmDevice: any);
     _cryptoStore: any;
     _devices: {};
@@ -15,7 +13,7 @@ export default class DeviceList extends DeviceList_base {
     _keyDownloadsInProgressByUser: {};
     _dirty: boolean;
     _savePromise: any;
-    _resolveSavePromise: (thenableOrResult?: any) => void;
+    _resolveSavePromise: (value?: any) => void;
     _savePromiseTime: any;
     _saveTimer: NodeJS.Timeout;
     /**
@@ -201,6 +199,7 @@ export default class DeviceList extends DeviceList_base {
     removeAllListeners(event?: string | symbol): DeviceList;
     setMaxListeners(n: number): DeviceList;
 }
+import * as $_generated_0 from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
 /**
  * Serialises updates to device lists
  *
@@ -217,7 +216,7 @@ declare class DeviceListUpdateSerialiser {
     _deviceList: any;
     _downloadInProgress: boolean;
     _keyDownloadsQueuedByUser: {};
-    _queuedQueryDeferred: import("bluebird").Resolver<any>;
+    _queuedQueryDeferred: any;
     _syncToken: string;
     /**
      * Make a key query request for the given users
@@ -232,7 +231,7 @@ declare class DeviceListUpdateSerialiser {
      *     users.
      */
     updateDevicesForUsers(users: string[], syncToken: string): any;
-    _doQueuedQueries(): import("bluebird")<any>;
+    _doQueuedQueries(): any;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }
 export {};

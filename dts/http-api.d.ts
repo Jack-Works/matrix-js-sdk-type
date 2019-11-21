@@ -98,7 +98,7 @@ declare class MatrixHttpApi {
     }): any;
     cancelUpload(promise: any): boolean;
     getCurrentUploads(): any[];
-    idServerRequest(callback: any, method: any, path: any, params: any, prefix: any, accessToken: any): import("bluebird")<any>;
+    idServerRequest(callback: any, method: any, path: any, params: any, prefix: any, accessToken: any): any;
     /**
      * Perform an authorised request to the homeserver.
      * @param {Function} callback Optional. The callback to invoke on

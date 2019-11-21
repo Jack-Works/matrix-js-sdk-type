@@ -36,16 +36,24 @@ export function encryptMessageForDevice(resultsObject: {
  */
 export function ensureOlmSessionsForDevices(olmDevice: any, baseApis: any, devicesByUser: any, force: any): any;
 /**
- * Sign a JSON object using public key cryptography
- * @param {Object} obj Object to sign.  The object will be modified to include
- *     the new signature
- * @param {Olm.PkSigning|Uint8Array} key the signing object or the private key
- * seed
- * @param {string} userId The user ID who owns the signing key
- * @param {string} pubkey The public key (ignored if key is a seed)
- * @returns {string} the signature for the object
+ * Verify the signature on an object
+ *
+ * @param {module:crypto/OlmDevice} olmDevice olm wrapper to use for verify op
+ *
+ * @param {Object} obj object to check signature on. Note that this will be
+ * stripped of its 'signatures' and 'unsigned' properties.
+ *
+ * @param {string} signingUserId  ID of the user whose signature should be checked
+ *
+ * @param {string} signingDeviceId  ID of the device whose signature should be checked
+ *
+ * @param {string} signingKey   base64-ed ed25519 public key
+ *
+ * Returns a promise which resolves (to undefined) if the the signature is good,
+ * or rejects with an Error if it is bad.
  */
-export function pkSign(obj: any, key: any, userId: string, pubkey: string): string;
+export function verifySignature(olmDevice: any, obj: any, signingUserId: string, signingDeviceId: string, signingKey: string): Promise<void>;
+export function pkSign(obj: any, key: any, userId: any, pubkey: any): any;
 /**
  * Verify a signed JSON object
  * @param {Object} obj Object to verify

@@ -107,6 +107,15 @@ export function checkObjectHasNoAdditionalKeys(obj: any, allowedKeys: string[]):
  */
 export function deepCopy(obj: any): any;
 /**
+ * Compare two objects for equality. The objects MUST NOT have circular references.
+ *
+ * @param {Object} x The first object to compare.
+ * @param {Object} y The second object to compare.
+ *
+ * @return {boolean} true if the two objects are equal
+ */
+export function deepCompare(x: any, y: any): boolean;
+/**
  * Copy properties from one object to another.
  *
  * All enumerable properties, included inherited ones, are copied.

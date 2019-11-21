@@ -66,9 +66,9 @@ declare class LocalIndexedDBStoreBackend {
      * is no saved sync data.
      */
     getSavedSync(copy?: boolean): Promise<any>;
-    getNextBatchToken(): import("bluebird")<any>;
-    setSyncData(syncData: any): import("bluebird")<void>;
-    syncToDatabase(userTuples: any): import("bluebird")<[any, any, any]>;
+    getNextBatchToken(): Promise<any>;
+    setSyncData(syncData: any): Promise<void>;
+    syncToDatabase(userTuples: any): Promise<[any, any, any]>;
     /**
      * Persist rooms /sync data along with the next batch token.
      * @param {string} nextBatch The next_batch /sync value.
@@ -110,7 +110,7 @@ declare class LocalIndexedDBStoreBackend {
      * @return {Promise<Object>} An object with "roomsData" and "nextBatch" keys.
      */
     _loadSyncData(): Promise<any>;
-    getClientOptions(): import("bluebird")<any>;
+    getClientOptions(): Promise<any>;
     storeClientOptions(options: any): Promise<void>;
 }
 //# sourceMappingURL=indexeddb-local-backend.d.ts.map
