@@ -470,7 +470,14 @@ declare class Room {
      *    newStatus == EventStatus.SENT.
      * @fires module:client~MatrixClient#event:"Room.localEchoUpdated"
      */
-    updatePendingEvent(event: MatrixEvent, newStatus: string, newEventId: string): void;
+    updatePendingEvent(event: MatrixEvent, newStatus: {
+        NOT_SENT: string;
+        ENCRYPTING: string;
+        SENDING: string;
+        QUEUED: string;
+        SENT: string;
+        CANCELLED: string;
+    }, newEventId: string): void;
     _revertRedactionLocalEcho(redactionEvent: any): void;
     /**
      * Add some events to this room. This can include state events, message

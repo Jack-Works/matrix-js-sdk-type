@@ -3,34 +3,7 @@ export const PREFIX_UNSTABLE: "/_matrix/client/unstable";
 export const PREFIX_IDENTITY_V1: "/_matrix/identity/api/v1";
 export const PREFIX_IDENTITY_V2: "/_matrix/identity/v2";
 export const PREFIX_MEDIA_R0: "/_matrix/media/r0";
-export { _MatrixHttpApi as MatrixHttpApi };
-declare const _MatrixHttpApi: typeof MatrixHttpApi;
-/**
- * Construct a MatrixHttpApi.
- * @constructor
- * @param {EventEmitter} event_emitter The event emitter to use for emitting events
- * @param {Object} opts The options to use for this HTTP API.
- * @param {string} opts.baseUrl Required. The base client-server URL e.g.
- * 'http://localhost:8008'.
- * @param {Function} opts.request Required. The function to call for HTTP
- * requests. This function must look like function(opts, callback){ ... }.
- * @param {string} opts.prefix Required. The matrix client prefix to use, e.g.
- * '/_matrix/client/r0'. See PREFIX_R0 and PREFIX_UNSTABLE for constants.
- *
- * @param {boolean} opts.onlyData True to return only the 'data' component of the
- * response (e.g. the parsed HTTP body). If false, requests will return an
- * object with the properties <tt>code</tt>, <tt>headers</tt> and <tt>data</tt>.
- *
- * @param {string} opts.accessToken The access_token to send with requests. Can be
- * null to not send an access token.
- * @param {Object=} opts.extraParams Optional. Extra query parameters to send on
- * requests.
- * @param {Number=} opts.localTimeoutMs The default maximum amount of time to wait
- * before timing out the request. If not specified, there is no timeout.
- * @param {boolean} [opts.useAuthorizationHeader = false] Set to true to use
- * Authorization header instead of query param to send the access token to the server.
- */
-declare class MatrixHttpApi {
+export class MatrixHttpApi {
     constructor(event_emitter: any, opts: any);
     event_emitter: any;
     opts: any;

@@ -1,1 +1,1 @@
-{"version":3,"file":"key_passphrase.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/key_passphrase.js"],"names":[],"mappings":"AAsBA,mFAgBC;AAED;;;;GAUC"}
+{"version":3,"file":"key_passphrase.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/key_passphrase.js"],"names":[],"mappings":"AAMA,mFAgBC;AAED;;;;GAUC"}

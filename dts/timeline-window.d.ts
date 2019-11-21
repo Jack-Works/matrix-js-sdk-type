@@ -1,41 +1,4 @@
-/**
- * The TimelineWindow class.
- */
-declare const _TimelineWindow: typeof TimelineWindow;
-/**
- * The TimelineIndex class. exported here for unit testing.
- */
-declare const _TimelineIndex: typeof TimelineIndex;
-/**
- * Construct a TimelineWindow.
- *
- * <p>This abstracts the separate timelines in a Matrix {@link
- * module:models/room|Room} into a single iterable thing. It keeps track of
- * the start and endpoints of the window, which can be advanced with the help
- * of pagination requests.
- *
- * <p>Before the window is useful, it must be initialised by calling {@link
- * module:timeline-window~TimelineWindow#load|load}.
- *
- * <p>Note that the window will not automatically extend itself when new events
- * are received from /sync; you should arrange to call {@link
- * module:timeline-window~TimelineWindow#paginate|paginate} on {@link
- * module:client~MatrixClient.event:"Room.timeline"|Room.timeline} events.
- *
- * @param {MatrixClient} client   MatrixClient to be used for context/pagination
- *   requests.
- *
- * @param {EventTimelineSet} timelineSet  The timelineSet to track
- *
- * @param {Object} [opts] Configuration options for this window
- *
- * @param {number} [opts.windowLimit = 1000] maximum number of events to keep
- *    in the window. If more events are retrieved via pagination requests,
- *    excess events will be dropped from the other end of the window.
- *
- * @constructor
- */
-declare class TimelineWindow {
+export class TimelineWindow {
     constructor(client: any, timelineSet: any, opts: any);
     _client: any;
     _timelineSet: any;
@@ -105,15 +68,7 @@ declare class TimelineWindow {
      */
     getEvents(): any[];
 }
-/**
- * a thing which contains a timeline reference, and an index into it.
- *
- * @constructor
- * @param {EventTimeline} timeline
- * @param {number} index
- * @private
- */
-declare class TimelineIndex {
+export class TimelineIndex {
     constructor(timeline: any, index: any);
     timeline: any;
     index: any;
@@ -143,5 +98,4 @@ declare class TimelineIndex {
      */
     retreat(delta: number): number;
 }
-export { _TimelineWindow as TimelineWindow, _TimelineIndex as TimelineIndex };
 //# sourceMappingURL=timeline-window.d.ts.map

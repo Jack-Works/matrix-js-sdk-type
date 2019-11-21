@@ -11,3 +11,8 @@ const matrix: typeof import('matrix-js-sdk-type/dts/matrix.d') = _matrix
 ```
 
 now the matrix is typed.
+
+Problems:
+
+src/client.js
+Symbol `Promise` is reported as SymbolAccessibility: NotAccessible so the `.d.ts` can not be generated

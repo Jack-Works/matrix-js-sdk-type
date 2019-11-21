@@ -64,12 +64,7 @@ export class MatrixEvent {
     _decryptionPromise: any;
     _retryDecryption: boolean;
 }
-/**
- * Enum for event statuses.
- */
-export type EventStatus = string;
-export { _EventStatus as EventStatus };
-declare namespace _EventStatus {
+export namespace EventStatus {
     export const NOT_SENT: string;
     export const ENCRYPTING: string;
     export const SENDING: string;

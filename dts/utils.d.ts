@@ -156,8 +156,7 @@ export function isNumber(value: any): boolean;
  * @return {string} a string with the hidden characters removed
  */
 export function removeHiddenChars(str: string): string;
+export function escapeRegExp(string: any): any;
 export function globToRegexp(glob: any, extended: any): any;
 export function ensureNoTrailingSlash(url: any): any;
-export { _escapeRegExp as escapeRegExp };
-declare function _escapeRegExp(string: any): any;
 //# sourceMappingURL=utils.d.ts.map
