@@ -171,7 +171,7 @@ export class Crypto {
      *
      * @returns {CrossSigningInfo} the cross signing informmation for the user.
      */
-    getStoredCrossSigningForUser(userId: string): import("./CrossSigning").CrossSigningInfo;
+    getStoredCrossSigningForUser(userId: string): typeof import("./CrossSigning").CrossSigningInfo;
     /**
      * Check whether a given user is trusted.
      *
@@ -179,7 +179,7 @@ export class Crypto {
      *
      * @returns {UserTrustLevel}
      */
-    checkUserTrust(userId: string): import("./CrossSigning").UserTrustLevel;
+    checkUserTrust(userId: string): typeof import("./CrossSigning").UserTrustLevel;
     /**
      * Check whether a given device is trusted.
      *
@@ -188,7 +188,7 @@ export class Crypto {
      *
      * @returns {DeviceTrustLevel}
      */
-    checkDeviceTrust(userId: string, deviceId: string): import("./CrossSigning").DeviceTrustLevel;
+    checkDeviceTrust(userId: string, deviceId: string): typeof import("./CrossSigning").DeviceTrustLevel;
     checkOwnCrossSigningTrust(): Promise<void>;
     /**
      * Check if the master key is signed by a verified device, and if so, prompt

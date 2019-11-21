@@ -1,1 +1,1 @@
-{"version":3,"file":"indexeddb-worker.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["indexeddb-worker.js"],"names":[],"mappings":"AAAA,sFAAiF"}
+{"version":3,"file":"indexeddb-worker.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["indexeddb-worker.js"],"names":[],"mappings":"AAAA,sFAAwF"}

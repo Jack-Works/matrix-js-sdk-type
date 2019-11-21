@@ -113,22 +113,34 @@ declare class TimelineWindow {
  * @param {number} index
  * @private
  */
-declare function TimelineIndex(timeline: any, index: number): void;
 declare class TimelineIndex {
-    /**
-     * a thing which contains a timeline reference, and an index into it.
-     *
-     * @constructor
-     * @param {EventTimeline} timeline
-     * @param {number} index
-     * @private
-     */
-    constructor(timeline: any, index: number);
+    constructor(timeline: any, index: any);
     timeline: any;
-    index: number;
+    index: any;
+    /**
+     * @return {number} the minimum possible value for the index in the current
+     *    timeline
+     */
     minIndex(): number;
+    /**
+     * @return {number} the maximum possible value for the index in the current
+     *    timeline (exclusive - ie, it actually returns one more than the index
+     *    of the last element).
+     */
     maxIndex(): number;
+    /**
+     * Try move the index forward, or into the neighbouring timeline
+     *
+     * @param {number} delta  number of events to advance by
+     * @return {number} number of events successfully advanced by
+     */
     advance(delta: number): number;
+    /**
+     * Try move the index backwards, or into the neighbouring timeline
+     *
+     * @param {number} delta  number of events to retreat by
+     * @return {number} number of events successfully retreated by
+     */
     retreat(delta: number): number;
 }
 export { _TimelineWindow as TimelineWindow, _TimelineIndex as TimelineIndex };

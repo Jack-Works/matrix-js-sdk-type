@@ -1,4 +1,4 @@
-export default StubStore;
+export = StubStore;
 /**
  * This is an internal module.
  * @module store/stub

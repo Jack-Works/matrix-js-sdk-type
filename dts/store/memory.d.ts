@@ -1,5 +1,4 @@
-export { _MemoryStore as MemoryStore };
-declare const _MemoryStore: typeof MemoryStore;
+export var MemoryStore: typeof MemoryStore;
 /**
  * Construct a new in-memory data store for the Matrix Client.
  * @constructor
@@ -84,18 +83,18 @@ declare class MemoryStore {
      * Store a User.
      * @param {User} user The user to store.
      */
-    storeUser(user: User): void;
+    storeUser(user: typeof import("../models/user")): void;
     /**
      * Retrieve a User by its' user ID.
      * @param {string} userId The user ID.
      * @return {User} The user or null.
      */
-    getUser(userId: string): User;
+    getUser(userId: string): typeof import("../models/user");
     /**
      * Retrieve all known users.
      * @return {User[]} A list of users, which may be empty.
      */
-    getUsers(): User[];
+    getUsers(): typeof import("../models/user")[];
     /**
      * Retrieve scrollback for this room.
      * @param {Room} room The matrix room
@@ -210,5 +209,5 @@ declare class MemoryStore {
     getClientOptions(): import("bluebird")<{}>;
     storeClientOptions(options: any): import("bluebird")<void>;
 }
-import User from "../models/user";
+export {};
 //# sourceMappingURL=memory.d.ts.map
