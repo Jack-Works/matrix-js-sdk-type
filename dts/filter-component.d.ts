@@ -1,4 +1,4 @@
-export = FilterComponent;
+export default FilterComponent;
 /**
  * FilterComponent is a section of a Filter definition which defines the
  * types, rooms, senders filters etc to be applied to a particular type of resource.

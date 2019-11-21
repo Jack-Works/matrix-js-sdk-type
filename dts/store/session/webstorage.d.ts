@@ -1,4 +1,4 @@
-export = WebStorageSessionStore;
+export default WebStorageSessionStore;
 /**
  * Construct a web storage session store, capable of storing account keys,
  * session keys and access tokens.

@@ -1,4 +1,4 @@
-export = Filter;
+export default Filter;
 /**
  * Construct a new Filter.
  * @constructor
@@ -28,13 +28,13 @@ declare class Filter {
      */
     setDefinition(definition: any): void;
     _include_leave: any;
-    _room_filter: import("./filter-component");
-    _room_timeline_filter: import("./filter-component");
+    _room_filter: FilterComponent;
+    _room_timeline_filter: FilterComponent;
     /**
      * Get the room.timeline filter component of the filter
      * @return {FilterComponent} room timeline filter component
      */
-    getRoomTimelineFilterComponent(): import("./filter-component");
+    getRoomTimelineFilterComponent(): FilterComponent;
     /**
      * Filter the list of events based on whether they are allowed in a timeline
      * based on this filter
@@ -65,4 +65,5 @@ declare namespace Filter {
         }
     }
 }
+import FilterComponent from "./filter-component";
 //# sourceMappingURL=filter.d.ts.map

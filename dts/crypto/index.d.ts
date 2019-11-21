@@ -84,7 +84,7 @@ export class Crypto {
     backupKey: any;
     _checkedForBackup: boolean;
     _sendingBackups: boolean;
-    _olmDevice: import("./OlmDevice");
+    _olmDevice: any;
     _deviceList: import("./DeviceList").default;
     _lastOneTimeKeyCheck: any;
     _oneTimeKeyCheckInProgress: boolean;

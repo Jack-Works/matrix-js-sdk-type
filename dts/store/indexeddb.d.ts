@@ -1,4 +1,5 @@
-export var IndexedDBStore: typeof IndexedDBStore;
+export { _IndexedDBStore as IndexedDBStore };
+declare const _IndexedDBStore: typeof IndexedDBStore;
 /**
  * Construct a new Indexed Database store, which extends MemoryStore.
  *
@@ -44,7 +45,7 @@ export var IndexedDBStore: typeof IndexedDBStore;
 declare class IndexedDBStore {
     static exists(indexedDB: any, dbName: any): any;
     constructor(opts: any);
-    backend: any;
+    backend: LocalIndexedDBStoreBackend | RemoteIndexedDBStoreBackend;
     startedUp: boolean;
     _syncTs: number;
     _userModifiedMap: {};
@@ -111,5 +112,6 @@ declare class IndexedDBStore {
     getClientOptions: Function;
     storeClientOptions: Function;
 }
-export {};
+import LocalIndexedDBStoreBackend from "./indexeddb-local-backend";
+import RemoteIndexedDBStoreBackend from "./indexeddb-remote-backend";
 //# sourceMappingURL=indexeddb.d.ts.map

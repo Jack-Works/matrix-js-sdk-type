@@ -1,4 +1,4 @@
-export = IndexedDBStoreWorker;
+export default IndexedDBStoreWorker;
 /**
  * This class lives in the webworker and drives a LocalIndexedDBStoreBackend
  * controlled by messages from the main process.
@@ -20,7 +20,7 @@ declare class IndexedDBStoreWorker {
      * should be used to communicate back to the main script.
      */
     constructor(postMessage: Function);
-    backend: any;
+    backend: LocalIndexedDBStoreBackend;
     postMessage: Function;
     /**
      * Passes a message event from the main script into the class. This method
@@ -30,4 +30,5 @@ declare class IndexedDBStoreWorker {
      */
     onMessage(ev: any): void;
 }
+import LocalIndexedDBStoreBackend from "./indexeddb-local-backend.js";
 //# sourceMappingURL=indexeddb-store-worker.d.ts.map

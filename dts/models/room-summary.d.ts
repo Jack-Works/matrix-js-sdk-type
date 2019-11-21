@@ -1,4 +1,4 @@
-export = RoomSummary;
+export default RoomSummary;
 /**
  * @module models/room-summary
  */

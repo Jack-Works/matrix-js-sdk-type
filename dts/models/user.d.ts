@@ -1,4 +1,4 @@
-export = User;
+export default User;
 /**
  * Construct a new User. A User must have an ID and can optionally have extra
  * information associated with it.

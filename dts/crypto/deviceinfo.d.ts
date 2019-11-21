@@ -1,4 +1,4 @@
-export = DeviceInfo;
+export default DeviceInfo;
 /**
  * @module crypto/deviceinfo
  */

@@ -1,4 +1,4 @@
-export = EventTimelineSet;
+export default EventTimelineSet;
 /**
  * Construct a set of EventTimeline objects, typically on behalf of a given
  * room.  A room may have multiple EventTimelineSets for different levels
@@ -109,18 +109,14 @@ declare class EventTimelineSet {
      * @return {?module:models/event-timeline~EventTimeline} timeline containing
      * the given event, or null if unknown
      */
-    getTimelineForEvent(eventId: string): {
-        "\"C:/Users/Jack/Workspace/matrix-js-sdk/src/models/event-timeline-set\"": typeof EventTimelineSet;
-    };
+    getTimelineForEvent(eventId: string): NodeModule;
     /**
      * Get an event which is stored in our timelines
      *
      * @param {string} eventId  event ID to look for
      * @return {?module:models/event~MatrixEvent} the given event, or undefined if unknown
      */
-    findEventById(eventId: string): {
-        "\"C:/Users/Jack/Workspace/matrix-js-sdk/src/models/event-timeline-set\"": typeof EventTimelineSet;
-    };
+    findEventById(eventId: string): NodeModule;
     /**
      * Add a new timeline to this timeline list
      *
@@ -166,7 +162,7 @@ declare class EventTimelineSet {
      *
      * @fires module:client~MatrixClient#event:"Room.timeline"
      */
-    addEventToTimeline(event: any, timeline: import("./event-timeline"), toStartOfTimeline: boolean): void;
+    addEventToTimeline(event: any, timeline: EventTimeline, toStartOfTimeline: boolean): void;
     /**
      * Replaces event with ID oldEventId with one with newEventId, if oldEventId is
      * recognised.  Otherwise, add to the live timeline.  Used to handle remote echos.
@@ -217,7 +213,7 @@ declare class EventTimelineSet {
      * A container for relation events or undefined if there are no relation events for
      * the relationType.
      */
-    getRelationsForEvent(eventId: string, relationType: string, eventType: string): typeof import("./relations");
+    getRelationsForEvent(eventId: string, relationType: string, eventType: string): Relations;
     /**
      * Set an event as the target event if any Relations exist for it already
      *
@@ -233,4 +229,6 @@ declare class EventTimelineSet {
      */
     aggregateRelations(event: any): void;
 }
+import EventTimeline from "./event-timeline";
+import Relations from "./relations";
 //# sourceMappingURL=event-timeline-set.d.ts.map

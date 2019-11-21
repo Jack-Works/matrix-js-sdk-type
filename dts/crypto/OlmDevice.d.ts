@@ -1,4 +1,36 @@
-export = OlmDevice;
+export default OlmDevice;
+/**
+ * :crypto/OlmDevice.MegolmSessionData
+ */
+export type module = {
+    /**
+     * Sender's Curve25519 device key
+     */
+    sender_key: string;
+    /**
+     * Devices which forwarded
+     * this session to us (normally empty).
+     */
+    forwarding_curve25519_key_chain: string[];
+    /**
+     * Other keys the sender claims.
+     */
+    sender_claimed_keys: {
+        [x: string]: string;
+    };
+    /**
+     * Room this session is used in
+     */
+    room_id: string;
+    /**
+     * Unique id for the session
+     */
+    session_id: string;
+    /**
+     * Base64'ed key data
+     */
+    session_key: string;
+};
 /**
  * The type of object we use for importing and exporting megolm session data.
  *
@@ -26,6 +58,10 @@ export = OlmDevice;
  * @property {string} deviceEd25519Key      Ed25519 key for the account
  */
 declare class OlmDevice {
+    /**
+     * @return {array} The version of Olm.
+     */
+    static getOlmVersion(): any[];
     constructor(cryptoStore: any);
     _cryptoStore: any;
     _pickleKey: string;
@@ -413,39 +449,4 @@ declare class OlmDevice {
      */
     verifySignature(key: string, message: string, signature: string): void;
 }
-declare namespace OlmDevice {
-    export { getOlmVersion, module };
-}
-/**
- * :crypto/OlmDevice.MegolmSessionData
- */
-type module = {
-    /**
-     * Sender's Curve25519 device key
-     */
-    sender_key: string;
-    /**
-     * Devices which forwarded
-     * this session to us (normally empty).
-     */
-    forwarding_curve25519_key_chain: string[];
-    /**
-     * Other keys the sender claims.
-     */
-    sender_claimed_keys: {
-        [x: string]: string;
-    };
-    /**
-     * Room this session is used in
-     */
-    room_id: string;
-    /**
-     * Unique id for the session
-     */
-    session_id: string;
-    /**
-     * Base64'ed key data
-     */
-    session_key: string;
-};
 //# sourceMappingURL=OlmDevice.d.ts.map

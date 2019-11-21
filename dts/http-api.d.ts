@@ -1,9 +1,10 @@
-export var PREFIX_R0: string;
-export var PREFIX_UNSTABLE: string;
-export var PREFIX_IDENTITY_V1: string;
-export var PREFIX_IDENTITY_V2: string;
-export var PREFIX_MEDIA_R0: string;
-export var MatrixHttpApi: typeof MatrixHttpApi;
+export const PREFIX_R0: "/_matrix/client/r0";
+export const PREFIX_UNSTABLE: "/_matrix/client/unstable";
+export const PREFIX_IDENTITY_V1: "/_matrix/identity/api/v1";
+export const PREFIX_IDENTITY_V2: "/_matrix/identity/v2";
+export const PREFIX_MEDIA_R0: "/_matrix/media/r0";
+export { _MatrixHttpApi as MatrixHttpApi };
+declare const _MatrixHttpApi: typeof MatrixHttpApi;
 /**
  * Construct a MatrixHttpApi.
  * @constructor
@@ -231,5 +232,4 @@ declare class MatrixHttpApi {
      */
     _request(callback: Function, method: string, uri: string, queryParams: any, data: any, opts?: any): any;
 }
-export {};
 //# sourceMappingURL=http-api.d.ts.map

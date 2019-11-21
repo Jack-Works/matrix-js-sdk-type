@@ -1,4 +1,4 @@
-export = EventTimeline;
+export default EventTimeline;
 /**
  * Construct a new EventTimeline
  *
@@ -25,8 +25,8 @@ declare class EventTimeline {
     _roomId: any;
     _events: any[];
     _baseIndex: number;
-    _startState: import("./room-state");
-    _endState: import("./room-state");
+    _startState: RoomState;
+    _endState: RoomState;
     _prevTimeline: EventTimeline;
     _nextTimeline: EventTimeline;
     _paginationRequests: {
@@ -109,7 +109,7 @@ declare class EventTimeline {
      *
      * @return {RoomState} state at the start/end of the timeline
      */
-    getState(direction: string): import("./room-state");
+    getState(direction: string): RoomState;
     /**
      * Get a pagination token
      *
@@ -177,4 +177,5 @@ declare namespace EventTimeline {
     export const BACKWARDS: string;
     export const FORWARDS: string;
 }
+import RoomState from "./room-state";
 //# sourceMappingURL=event-timeline.d.ts.map

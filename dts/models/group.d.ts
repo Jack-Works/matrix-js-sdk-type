@@ -1,4 +1,4 @@
-export = Group;
+export default Group;
 /**
  * Construct a new Group.
  *

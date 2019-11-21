@@ -1,4 +1,4 @@
-export = RoomMember;
+export default RoomMember;
 /**
  * Construct a new room member.
  *

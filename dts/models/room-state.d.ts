@@ -1,4 +1,4 @@
-export = RoomState;
+export default RoomState;
 /**
  * Construct room state.
  *
@@ -73,19 +73,19 @@ declare class RoomState {
      * Get all RoomMembers in this room.
      * @return {Array<RoomMember>} A list of RoomMembers.
      */
-    getMembers(): import("./room-member")[];
+    getMembers(): RoomMember[];
     /**
      * Get all RoomMembers in this room, excluding the user IDs provided.
      * @param {Array<string>} excludedIds The user IDs to exclude.
      * @return {Array<RoomMember>} A list of RoomMembers.
      */
-    getMembersExcept(excludedIds: string[]): import("./room-member")[];
+    getMembersExcept(excludedIds: string[]): RoomMember[];
     /**
      * Get a room member by their user ID.
      * @param {string} userId The room member's user ID.
      * @return {RoomMember} The member or null if they do not exist.
      */
-    getMember(userId: string): import("./room-member");
+    getMember(userId: string): RoomMember;
     /**
      * Get a room member whose properties will not change with this room state. You
      * typically want this if you want to attach a RoomMember to a MatrixEvent which
@@ -95,7 +95,7 @@ declare class RoomState {
      * @param {string} userId The room member's user ID.
      * @return {RoomMember} The member or null if they do not exist.
      */
-    getSentinelMember(userId: string): import("./room-member");
+    getSentinelMember(userId: string): RoomMember;
     /**
      * Get state events from the state of the room.
      * @param {string} eventType The event type of the state event.
@@ -140,7 +140,7 @@ declare class RoomState {
      * @fires module:client~MatrixClient#event:"RoomState.newMember"
      * @returns {RoomMember} the member, existing or newly created.
      */
-    _getOrCreateMember(userId: string, event: any): import("./room-member");
+    _getOrCreateMember(userId: string, event: any): RoomMember;
     _setStateEvent(event: any): void;
     _updateMember(member: any): void;
     /**
@@ -277,4 +277,5 @@ declare class RoomState {
      */
     mayTriggerNotifOfType(notifLevelKey: string, userId: string): boolean;
 }
+import RoomMember from "./room-member";
 //# sourceMappingURL=room-state.d.ts.map

@@ -1,4 +1,4 @@
-export = InteractiveAuth;
+export default InteractiveAuth;
 /**
  * Abstracts the logic used to drive the interactive auth process.
  *

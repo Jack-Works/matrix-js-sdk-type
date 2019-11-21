@@ -1,4 +1,4 @@
-export = SearchResult;
+export default SearchResult;
 /**
  * Construct a new SearchResult
  *

@@ -1,4 +1,4 @@
-export = EventContext;
+export default EventContext;
 /**
  * @module models/event-context
  */

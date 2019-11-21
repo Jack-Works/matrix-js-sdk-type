@@ -1,5 +1,11 @@
-export var TimelineWindow: typeof TimelineWindow;
-export var TimelineIndex: typeof TimelineIndex;
+/**
+ * The TimelineWindow class.
+ */
+declare const _TimelineWindow: typeof TimelineWindow;
+/**
+ * The TimelineIndex class. exported here for unit testing.
+ */
+declare const _TimelineIndex: typeof TimelineIndex;
 /**
  * Construct a TimelineWindow.
  *
@@ -107,7 +113,7 @@ declare class TimelineWindow {
  * @param {number} index
  * @private
  */
-declare function TimelineIndex(timeline: import("./models/event-timeline"), index: number): void;
+declare function TimelineIndex(timeline: any, index: number): void;
 declare class TimelineIndex {
     /**
      * a thing which contains a timeline reference, and an index into it.
@@ -117,7 +123,7 @@ declare class TimelineIndex {
      * @param {number} index
      * @private
      */
-    constructor(timeline: import("./models/event-timeline"), index: number);
+    constructor(timeline: any, index: number);
     timeline: any;
     index: number;
     minIndex(): number;
@@ -125,5 +131,5 @@ declare class TimelineIndex {
     advance(delta: number): number;
     retreat(delta: number): number;
 }
-export {};
+export { _TimelineWindow as TimelineWindow, _TimelineIndex as TimelineIndex };
 //# sourceMappingURL=timeline-window.d.ts.map

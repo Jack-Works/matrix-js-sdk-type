@@ -1,4 +1,4 @@
-export = SyncAccumulator;
+export default SyncAccumulator;
 /**
  * The purpose of this class is to accumulate /sync responses such that a
  * complete "initial" JSON response can be returned which accurately represents

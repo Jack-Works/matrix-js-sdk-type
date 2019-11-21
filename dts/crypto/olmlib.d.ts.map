@@ -1,1 +1,1 @@
-{"version":3,"file":"olmlib.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/olmlib.js"],"names":[],"mappings":";;;AAuDyC;;6IAqDxC;AAmB4C,gHAoI5C;AAoDyD,6IAqBzD;AAYuB,mFAwBvB;AAQyB,yEAkBzB"}
+{"version":3,"file":"olmlib.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/olmlib.js"],"names":[],"mappings":"AA8BA;;;;;;;;;;;;;;;GAeG;AACH;;6IAqDC;AAED;;;;;;;;;;;;;;;;GAgBG;AACH,gHAoIC;AA2ED;;;;;;;;;GASG;AACH,mFAwBC;AAED;;;;;GAKG;AACH,yEAkBC;AA1WD,2DAA4D;AAE5D,sDAAuD;AAEvD,+EAAgF"}

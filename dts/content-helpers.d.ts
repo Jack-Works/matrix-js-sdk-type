@@ -1,31 +1,32 @@
-export declare function makeHtmlMessage(body: string, htmlBody: string): {
+/** @module ContentHelpers */
+export function makeHtmlMessage(body: any, htmlBody: any): {
     msgtype: string;
     format: string;
-    body: string;
-    formatted_body: string;
+    body: any;
+    formatted_body: any;
 };
-export declare function makeHtmlNotice(body: string, htmlBody: string): {
+export function makeHtmlNotice(body: any, htmlBody: any): {
     msgtype: string;
     format: string;
-    body: string;
-    formatted_body: string;
+    body: any;
+    formatted_body: any;
 };
-export declare function makeHtmlEmote(body: string, htmlBody: string): {
+export function makeHtmlEmote(body: any, htmlBody: any): {
     msgtype: string;
     format: string;
-    body: string;
-    formatted_body: string;
+    body: any;
+    formatted_body: any;
 };
-export declare function makeTextMessage(body: string): {
+export function makeTextMessage(body: any): {
     msgtype: string;
-    body: string;
+    body: any;
 };
-export declare function makeNotice(body: string): {
+export function makeNotice(body: any): {
     msgtype: string;
-    body: string;
+    body: any;
 };
-export declare function makeEmoteMessage(body: string): {
+export function makeEmoteMessage(body: any): {
     msgtype: string;
-    body: string;
+    body: any;
 };
 //# sourceMappingURL=content-helpers.d.ts.map

@@ -1,1 +1,1 @@
-{"version":3,"file":"content-helpers.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["content-helpers.js"],"names":[],"mappings":"AAyBqB;;;;;EAOhB;AAQe;;;;;EAOf;AAQc;;;;;EAOd;AAOgB;;;EAKhB;AAOW;;;EAKX;AAOiB;;;EAKjB"}
+{"version":3,"file":"content-helpers.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["content-helpers.js"],"names":[],"mappings":"AAiBA,6BAA6B;AAC7B;;;;;EAOC;AACD;;;;;EAOC;AACD;;;;;EAOC;AACD;;;EAKC;AACD;;;EAKC;AACD;;;EAKC"}

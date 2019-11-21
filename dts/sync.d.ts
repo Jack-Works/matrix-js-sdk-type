@@ -1,4 +1,4 @@
-export = SyncApi;
+export default SyncApi;
 /**
  * <b>Internal class - unstable.</b>
  * Construct an entity which is able to sync with a homeserver.
@@ -33,22 +33,22 @@ declare class SyncApi {
      * @param {string} roomId
      * @return {Room}
      */
-    createRoom(roomId: string): import("./models/room");
+    createRoom(roomId: string): Room;
     /**
      * @param {string} groupId
      * @return {Group}
      */
-    createGroup(groupId: string): import("./models/group");
+    createGroup(groupId: string): Group;
     /**
      * @param {Room} room
      * @private
      */
-    _registerStateListeners(room: import("./models/room")): void;
+    _registerStateListeners(room: Room): void;
     /**
      * @param {Room} room
      * @private
      */
-    _deregisterStateListeners(room: import("./models/room")): void;
+    _deregisterStateListeners(room: Room): void;
     /**
      * Sync rooms the user has left.
      * @return {Promise} Resolved when they've been added to the store.
@@ -72,7 +72,7 @@ declare class SyncApi {
      * @param {Room} peekRoom
      * @param {string} token from= token
      */
-    _peekPoll(peekRoom: import("./models/room"), token: string): void;
+    _peekPoll(peekRoom: Room, token: string): void;
     /**
      * Returns the current state of this sync object
      * @see module:client~MatrixClient#event:"sync"
@@ -173,11 +173,11 @@ declare class SyncApi {
      * @param {Room} room
      * @return {MatrixEvent[]}
      */
-    _mapSyncEventsFormat(obj: any, room: import("./models/room")): any[];
+    _mapSyncEventsFormat(obj: any, room: Room): any[];
     /**
      * @param {Room} room
      */
-    _resolveInvites(room: import("./models/room")): void;
+    _resolveInvites(room: Room): void;
     /**
      * @param {Room} room
      * @param {MatrixEvent[]} stateEventList A list of state events. This is the state
@@ -185,7 +185,7 @@ declare class SyncApi {
      * @param {MatrixEvent[]} [timelineEventList] A list of timeline events. Lower index
      * is earlier in time. Higher index is later.
      */
-    _processRoomEvents(room: import("./models/room"), stateEventList: any[], timelineEventList?: any[]): void;
+    _processRoomEvents(room: Room, stateEventList: any[], timelineEventList?: any[]): void;
     /**
      * Takes a list of timelineEvents and adds and adds to _notifEvents
      * as appropriate.
@@ -195,7 +195,7 @@ declare class SyncApi {
      * @param {MatrixEvent[]} [timelineEventList] A list of timeline events. Lower index
      * is earlier in time. Higher index is later.
      */
-    _processEventsForNotifs(room: import("./models/room"), timelineEventList?: any[]): void;
+    _processEventsForNotifs(room: Room, timelineEventList?: any[]): void;
     /**
      * @return {string}
      */
@@ -214,4 +214,6 @@ declare class SyncApi {
      */
     _onOnline(): void;
 }
+import Room from "./models/room";
+import Group from "./models/group";
 //# sourceMappingURL=sync.d.ts.map

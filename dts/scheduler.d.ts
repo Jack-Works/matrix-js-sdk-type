@@ -1,4 +1,23 @@
-export = MatrixScheduler;
+export default MatrixScheduler;
+/**
+ * The retry algorithm to apply when retrying events. To stop retrying, return
+ * <code>-1</code>. If this event was part of a queue, it will be removed from
+ * the queue.
+ */
+export type retryAlgorithm = (event: any, attempts: number, err: any) => number;
+/**
+ * The queuing algorithm to apply to events. This function must be idempotent as
+ * it may be called multiple times with the same event. All queues created are
+ * serviced in a FIFO manner. To send the event ASAP, return <code>null</code>
+ * which will not put this event in a queue. Events that fail to send that form
+ * part of a queue will be removed from the queue and the next event in the
+ * queue will be sent.
+ */
+export type queueAlgorithm = (event: any) => string;
+/**
+ * The function to invoke to process (send) events in the queue.
+ */
+export type processFn = (event: any) => Promise<any>;
 /**
  * Construct a scheduler for Matrix. Requires
  * {@link module:scheduler~MatrixScheduler#setProcessFunction} to be provided
@@ -12,6 +31,26 @@ export = MatrixScheduler;
  * given event. Defaults to {@link module:scheduler~MatrixScheduler.QUEUE_MESSAGES}.
  */
 declare class MatrixScheduler {
+    /**
+     * Retries events up to 4 times using exponential backoff. This produces wait
+     * times of 2, 4, 8, and 16 seconds (30s total) after which we give up. If the
+     * failure was due to a rate limited request, the time specified in the error is
+     * waited before being retried.
+     * @param {MatrixEvent} event
+     * @param {Number} attempts
+     * @param {MatrixError} err
+     * @return {Number}
+     * @see module:scheduler~retryAlgorithm
+     */
+    static RETRY_BACKOFF_RATELIMIT(event: any, attempts: number, err: any): number;
+    /**
+     * Queues <code>m.room.message</code> events and lets other events continue
+     * concurrently.
+     * @param {MatrixEvent} event
+     * @return {string}
+     * @see module:scheduler~queueAlgorithm
+     */
+    static QUEUE_MESSAGES(event: any): string;
     constructor(retryAlgorithm: any, queueAlgorithm: any);
     retryAlgorithm: any;
     queueAlgorithm: any;
@@ -51,26 +90,4 @@ declare class MatrixScheduler {
      */
     queueEvent(event: any): Promise<any>;
 }
-declare namespace MatrixScheduler {
-    export { RETRY_BACKOFF_RATELIMIT, QUEUE_MESSAGES, retryAlgorithm, queueAlgorithm, processFn };
-}
-/**
- * The retry algorithm to apply when retrying events. To stop retrying, return
- * <code>-1</code>. If this event was part of a queue, it will be removed from
- * the queue.
- */
-type retryAlgorithm = (event: any, attempts: number, err: any) => number;
-/**
- * The queuing algorithm to apply to events. This function must be idempotent as
- * it may be called multiple times with the same event. All queues created are
- * serviced in a FIFO manner. To send the event ASAP, return <code>null</code>
- * which will not put this event in a queue. Events that fail to send that form
- * part of a queue will be removed from the queue and the next event in the
- * queue will be sent.
- */
-type queueAlgorithm = (event: any) => string;
-/**
- * The function to invoke to process (send) events in the queue.
- */
-type processFn = (event: any) => Promise<any>;
 //# sourceMappingURL=scheduler.d.ts.map
