@@ -139,7 +139,7 @@ export class DecryptionAlgorithm {
      * @return {Promise<boolean>} true if we have the keys and could (theoretically) share
      *  them; else false.
      */
-    hasKeysForKeyRequest(keyRequest: any): any;
+    hasKeysForKeyRequest(keyRequest: any): Promise<boolean>;
     /**
      * Send the response to a room key request
      *

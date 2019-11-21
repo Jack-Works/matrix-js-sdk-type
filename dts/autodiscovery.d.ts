@@ -25,7 +25,7 @@ export class AutoDiscovery {
      * configuration, which may include error states. Rejects on unexpected
      * failure, not when verification fails.
      */
-    static fromDiscoveryConfig(wellknown: string): any;
+    static fromDiscoveryConfig(wellknown: string): Promise<DiscoveredClientConfig>;
     /**
      * Attempts to automatically discover client configuration information
      * prior to logging in. Such information includes the homeserver URL
@@ -38,7 +38,7 @@ export class AutoDiscovery {
      * configuration, which may include error states. Rejects on unexpected
      * failure, not when discovery fails.
      */
-    static findClientConfig(domain: string): any;
+    static findClientConfig(domain: string): Promise<DiscoveredClientConfig>;
     /**
      * Gets the raw discovery client configuration for the given domain name.
      * Should only be used if there's no validation to be done on the resulting
@@ -47,7 +47,7 @@ export class AutoDiscovery {
      * @returns {Promise<object>} Resolves to the domain's client config. Can
      * be an empty object.
      */
-    static getRawClientConfig(domain: string): any;
+    static getRawClientConfig(domain: string): Promise<any>;
     /**
      * Sanitizes a given URL to ensure it is either an HTTP or HTTP URL and
      * is suitable for the requirements laid out by .well-known auto discovery.
@@ -73,6 +73,35 @@ export class AutoDiscovery {
      * @return {Promise<object>} Resolves to the returned state.
      * @private
      */
-    static _fetchWellKnownObject(url: string): any;
+    static _fetchWellKnownObject(url: string): Promise<any>;
 }
+/**
+ * Description for what an automatically discovered client configuration
+ * would look like. Although this is a class, it is recommended that it
+ * be treated as an interface definition rather than as a class.
+ *
+ * Additional properties than those defined here may be present, and
+ * should follow the Java package naming convention.
+ */
+declare class DiscoveredClientConfig {
+    /**
+     * The homeserver configuration the client should use. This will
+     * always be present on the object.
+     * @type {{state: string, base_url: string}} The configuration.
+     */
+    "m.homeserver": {
+        state: string;
+        base_url: string;
+    };
+    /**
+     * The identity server configuration the client should use. This
+     * will always be present on teh object.
+     * @type {{state: string, base_url: string}} The configuration.
+     */
+    "m.identity_server": {
+        state: string;
+        base_url: string;
+    };
+}
+export {};
 //# sourceMappingURL=autodiscovery.d.ts.map

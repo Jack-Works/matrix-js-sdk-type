@@ -1,4 +1,6 @@
-export class CrossSigningInfo extends EventEmitter {
+/// <reference types="node" />
+declare const CrossSigningInfo_base: typeof import("events").EventEmitter;
+export class CrossSigningInfo extends CrossSigningInfo_base {
     static fromStorage(obj: any, userId: any): any;
     /**
      * Information about a user's cross-signing keys
@@ -118,5 +120,5 @@ export class DeviceTrustLevel {
      */
     isTofu(): any;
 }
-import { EventEmitter } from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+export {};
 //# sourceMappingURL=CrossSigning.d.ts.map

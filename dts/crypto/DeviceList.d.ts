@@ -1,7 +1,9 @@
+/// <reference types="node" />
+declare const DeviceList_base: typeof import("events").EventEmitter;
 /**
  * @alias module:crypto/DeviceList
  */
-export default class DeviceList extends EventEmitter {
+export default class DeviceList extends DeviceList_base {
     constructor(baseApis: any, cryptoStore: any, olmDevice: any);
     _cryptoStore: any;
     _devices: {};
@@ -13,7 +15,7 @@ export default class DeviceList extends EventEmitter {
     _keyDownloadsInProgressByUser: {};
     _dirty: boolean;
     _savePromise: any;
-    _resolveSavePromise: any;
+    _resolveSavePromise: (thenableOrResult?: any) => void;
     _savePromiseTime: any;
     _saveTimer: NodeJS.Timeout;
     /**
@@ -38,7 +40,7 @@ export default class DeviceList extends EventEmitter {
      *     will only resolve once the data is saved, so may take some time
      *     to resolve.
      */
-    saveIfDirty(delay: any): any;
+    saveIfDirty(delay: any): Promise<any>;
     /**
      * Gets the sync token last set with setSyncToken
      *
@@ -199,7 +201,6 @@ export default class DeviceList extends EventEmitter {
     removeAllListeners(event?: string | symbol): DeviceList;
     setMaxListeners(n: number): DeviceList;
 }
-import { EventEmitter } from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
 /**
  * Serialises updates to device lists
  *
@@ -216,7 +217,7 @@ declare class DeviceListUpdateSerialiser {
     _deviceList: any;
     _downloadInProgress: boolean;
     _keyDownloadsQueuedByUser: {};
-    _queuedQueryDeferred: any;
+    _queuedQueryDeferred: import("bluebird").Resolver<any>;
     _syncToken: string;
     /**
      * Make a key query request for the given users
@@ -231,7 +232,7 @@ declare class DeviceListUpdateSerialiser {
      *     users.
      */
     updateDevicesForUsers(users: string[], syncToken: string): any;
-    _doQueuedQueries(): any;
+    _doQueuedQueries(): import("bluebird")<any>;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }
 export {};

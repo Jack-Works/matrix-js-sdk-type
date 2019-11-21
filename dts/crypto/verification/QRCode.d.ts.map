@@ -1,1 +1,1 @@
-{"version":3,"file":"QRCode.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/verification/QRCode.js"],"names":[],"mappings":"AAkCA;;;GAGG;AACH;IACI,wBAWC;CACJ;;;;AAID;;;GAGG;AACH;IAKI,iCAuDC;CACJ"}
+{"version":3,"file":"QRCode.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/verification/QRCode.js"],"names":[],"mappings":"AAwBA;;;GAGG;AACH;IACI,wBAWC;CACJ;;;;AAID;;;GAGG;AACH;IAKI,iCAuDC;CACJ"}

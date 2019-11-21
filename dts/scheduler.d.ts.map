@@ -1,1 +1,1 @@
-{"version":3,"file":"scheduler.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["scheduler.js"],"names":[],"mappings":""}
+{"version":3,"file":"scheduler.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["scheduler.js"],"names":[],"mappings":";AA2BA;;;;;;;;;;;GAWG;AACH;IACI,sDAYC;IAXG,oBAA+E;IAC/E,oBAAsE;IACtE,YAMC;IACD,qBAAuB;IACvB,aAAmB;IAEvB;;;;;;;;OAQG;IACH,oCAQC;IACD;;;;;OAKG;IACH,0CAeC;IACD;;;;;;OAMG;IACH,kCAGC;IACD;;;;;OAKG;IACH,qCAkBC;CAiDJ"}
