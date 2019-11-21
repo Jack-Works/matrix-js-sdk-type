@@ -30,64 +30,30 @@ export type processFn = (event: any) => Promise<any>;
  * algorithm to apply when determining which events should be sent before the
  * given event. Defaults to {@link module:scheduler~MatrixScheduler.QUEUE_MESSAGES}.
  */
+declare function MatrixScheduler(retryAlgorithm: any, queueAlgorithm: any): void;
 declare class MatrixScheduler {
     /**
-     * Retries events up to 4 times using exponential backoff. This produces wait
-     * times of 2, 4, 8, and 16 seconds (30s total) after which we give up. If the
-     * failure was due to a rate limited request, the time specified in the error is
-     * waited before being retried.
-     * @param {MatrixEvent} event
-     * @param {Number} attempts
-     * @param {MatrixError} err
-     * @return {Number}
-     * @see module:scheduler~retryAlgorithm
+     * Construct a scheduler for Matrix. Requires
+     * {@link module:scheduler~MatrixScheduler#setProcessFunction} to be provided
+     * with a way of processing events.
+     * @constructor
+     * @param {module:scheduler~retryAlgorithm} retryAlgorithm Optional. The retry
+     * algorithm to apply when determining when to try to send an event again.
+     * Defaults to {@link module:scheduler~MatrixScheduler.RETRY_BACKOFF_RATELIMIT}.
+     * @param {module:scheduler~queueAlgorithm} queueAlgorithm Optional. The queuing
+     * algorithm to apply when determining which events should be sent before the
+     * given event. Defaults to {@link module:scheduler~MatrixScheduler.QUEUE_MESSAGES}.
      */
-    static RETRY_BACKOFF_RATELIMIT(event: any, attempts: number, err: any): number;
-    /**
-     * Queues <code>m.room.message</code> events and lets other events continue
-     * concurrently.
-     * @param {MatrixEvent} event
-     * @return {string}
-     * @see module:scheduler~queueAlgorithm
-     */
-    static QUEUE_MESSAGES(event: any): string;
     constructor(retryAlgorithm: any, queueAlgorithm: any);
     retryAlgorithm: any;
     queueAlgorithm: any;
     _queues: {};
     _activeQueues: any[];
     _procFn: any;
-    /**
-     * Retrieve a queue based on an event. The event provided does not need to be in
-     * the queue.
-     * @param {MatrixEvent} event An event to get the queue for.
-     * @return {?Array<MatrixEvent>} A shallow copy of events in the queue or null.
-     * Modifying this array will not modify the list itself. Modifying events in
-     * this array <i>will</i> modify the underlying event in the queue.
-     * @see MatrixScheduler.removeEventFromQueue To remove an event from the queue.
-     */
     getQueueForEvent(event: any): any[];
-    /**
-     * Remove this event from the queue. The event is equal to another event if they
-     * have the same ID returned from event.getId().
-     * @param {MatrixEvent} event The event to remove.
-     * @return {boolean} True if this event was removed.
-     */
     removeEventFromQueue(event: any): boolean;
-    /**
-     * Set the process function. Required for events in the queue to be processed.
-     * If set after events have been added to the queue, this will immediately start
-     * processing them.
-     * @param {module:scheduler~processFn} fn The function that can process events
-     * in the queue.
-     */
     setProcessFunction(fn: any): void;
-    /**
-     * Queue an event if it is required and start processing queues.
-     * @param {MatrixEvent} event The event that may be queued.
-     * @return {?Promise} A promise if the event was queued, which will be
-     * resolved or rejected in due time, else null.
-     */
     queueEvent(event: any): Promise<any>;
 }
+declare namespace MatrixScheduler { }
 //# sourceMappingURL=scheduler.d.ts.map
