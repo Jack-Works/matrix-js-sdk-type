@@ -1,1 +1,1 @@
-{"version":3,"file":"realtime-callbacks.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["realtime-callbacks.js"],"names":[],"mappings":"AAoBA;;;;;;;;GAQG;AACH,0CAEC;AAGD;;;;;;;;;GASG;AACH,oFA6BC;AAED;;;;GAIG;AACH,gDAmBC"}
+{"version":3,"file":"realtime-callbacks.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["realtime-callbacks.js"],"names":[],"mappings":"AA6CA;;;;;;;;GAQG;AACH,0CAEC;AAGD;;;;;;;;;GASG;AACH,oFA6BC;AAED;;;;GAIG;AACH,gDAmBC"}

@@ -1,3 +1,6 @@
+/**
+ * @module
+ */
 export default class Reemitter {
     constructor(target: any);
     target: any;

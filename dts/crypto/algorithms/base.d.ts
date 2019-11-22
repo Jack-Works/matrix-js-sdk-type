@@ -12,7 +12,15 @@
  *     implementation
  */
 export function registerAlgorithm(algorithm: string, encryptor: any, decryptor: any): void;
-export const ENCRYPTION_CLASSES: {};
+/**
+ * map of registered encryption algorithm classes. A map from string to {@link
+ * module:crypto/algorithms/base.EncryptionAlgorithm|EncryptionAlgorithm} class
+ *
+ * @type {Object.<string, function(new: module:crypto/algorithms/base.EncryptionAlgorithm)>}
+ */
+export const ENCRYPTION_CLASSES: {
+    [x: string]: new () => ;
+};
 /**
  * map of registered encryption algorithm classes. Map from string to {@link
  * module:crypto/algorithms/base.DecryptionAlgorithm|DecryptionAlgorithm} class

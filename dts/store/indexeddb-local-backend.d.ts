@@ -11,7 +11,7 @@ export default LocalIndexedDBStoreBackend;
  * to open the same database.
  */
 declare class LocalIndexedDBStoreBackend {
-    static exists(indexedDB: any, dbName: any): Promise<any>;
+    static exists(indexedDB: any, dbName: any): boolean;
     constructor(indexedDBInterface: any, dbName: any);
     indexedDB: any;
     _dbName: string;

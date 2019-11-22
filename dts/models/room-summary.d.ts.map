@@ -1,1 +1,1 @@
-{"version":3,"file":"room-summary.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["models/room-summary.js"],"names":[],"mappings":";AACA;;GAEG;AACH;;;;;;;;;;;;GAYG;AACH;IACI,oCAGC;IAFG,YAAoB;IACpB,UAAgB;CAEvB"}
+{"version":3,"file":"room-summary.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["models/room-summary.js"],"names":[],"mappings":";AAgBA;;GAEG;AACH;;;;;;;;;;;;GAYG;AACH;IACI,oCAGC;IAFG,YAAoB;IACpB,UAAgB;CAEvB"}

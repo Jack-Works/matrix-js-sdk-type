@@ -14,5 +14,4 @@ now the matrix is typed.
 
 Problems:
 
-src/client.js
-Symbol `Promise` is reported as SymbolAccessibility: NotAccessible so the `.d.ts` can not be generated
+Type is not so accurate and may have type error in it.
