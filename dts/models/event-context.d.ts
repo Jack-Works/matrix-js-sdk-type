@@ -1,9 +1,6 @@
 export default EventContext;
 /**
- * @module models/event-context
- */
-/**
- * Construct a new EventContext
+  * Construct a new EventContext
  *
  * An eventcontext is used for circumstances such as search results, when we
  * have a particular event of interest, and a bunch of events before and after
@@ -11,11 +8,9 @@ export default EventContext;
  *
  * It also stores pagination tokens for going backwards and forwards in the
  * timeline.
- *
- * @param {MatrixEvent} ourEvent  the event at the centre of this context
- *
+ * @param {MatrixEvent} ourEvent the event at the centre of this context
  * @constructor
- */
+*/
 declare class EventContext {
     constructor(ourEvent: any);
     _timeline: any;

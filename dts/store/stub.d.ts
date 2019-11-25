@@ -1,12 +1,8 @@
 export default StubStore;
 /**
- * This is an internal module.
- * @module store/stub
- */
-/**
- * Construct a stub store. This does no-ops on most store methods.
+  * Construct a stub store. This does no-ops on most store methods.
  * @constructor
- */
+*/
 declare class StubStore {
     fromToken: string;
     /** @return {Promise<bool>} whether or not the database was newly created in this session. */

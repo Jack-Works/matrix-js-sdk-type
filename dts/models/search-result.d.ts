@@ -1,13 +1,11 @@
 export default SearchResult;
 /**
- * Construct a new SearchResult
- *
- * @param {number} rank   where this SearchResult ranks in the results
- * @param {event-context.EventContext} eventContext  the matching event and its
+  * Construct a new SearchResult
+ * @param {number} rank where this SearchResult ranks in the results
+ * @param {event-context.EventContext} eventContext the matching event and its
  *    context
- *
  * @constructor
- */
+*/
 declare class SearchResult {
     /**
      * Create a SearchResponse from the response to /search

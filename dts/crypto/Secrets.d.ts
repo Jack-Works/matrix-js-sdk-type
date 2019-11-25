@@ -1,7 +1,7 @@
 /**
- * Implements Secure Secret Storage and Sharing (MSC1946)
- * @module crypto/Secrets
- */
+  * Implements Secure Secret Storage and Sharing (MSC1946)
+ * @module  crypto/Secrets
+*/
 export default class SecretStorage extends $_generated_0.EventEmitter {
     constructor(baseApis: any, cryptoCallbacks: any, crossSigningInfo: any);
     _baseApis: any;

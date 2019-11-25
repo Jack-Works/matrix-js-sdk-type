@@ -1,34 +1,34 @@
 /**
- * Set an audio output device to use for MatrixCalls
+  * Set an audio output device to use for MatrixCalls
  * @function
- * @param {string=} deviceId the identifier for the device
+ * @param {(string | undefined)} deviceId the identifier for the device
  * undefined treated as unset
- */
-export function setAudioOutput(deviceId?: string): void;
+*/
+export function setAudioOutput(deviceId: string): void;
 /**
- * Set an audio input device to use for MatrixCalls
+  * Set an audio input device to use for MatrixCalls
  * @function
- * @param {string=} deviceId the identifier for the device
+ * @param {(string | undefined)} deviceId the identifier for the device
  * undefined treated as unset
- */
-export function setAudioInput(deviceId?: string): void;
+*/
+export function setAudioInput(deviceId: string): void;
 /**
- * Set a video input device to use for MatrixCalls
+  * Set a video input device to use for MatrixCalls
  * @function
- * @param {string=} deviceId the identifier for the device
+ * @param {(string | undefined)} deviceId the identifier for the device
  * undefined treated as unset
- */
-export function setVideoInput(deviceId?: string): void;
+*/
+export function setVideoInput(deviceId: string): void;
 /**
- * Create a new Matrix call for the browser.
+  * Create a new Matrix call for the browser.
  * @param {MatrixClient} client The client instance to use.
  * @param {string} roomId The room the call is in.
- * @param {Object?} options DEPRECATED optional options map.
+ * @param {(object | null)} options DEPRECATED optional options map.
  * @param {boolean} options.forceTURN DEPRECATED whether relay through TURN should be
  * forced. This option is deprecated - use opts.forceTURN when creating the matrix client
  * since it's only possible to set this option on outbound calls.
- * @return {MatrixCall} the call or null if the browser doesn't support calling.
- */
+ * @return {MatrixCall}  the call or null if the browser doesn't support calling.
+*/
 export function createNewMatrixCall(client: any, roomId: string, options: any): MatrixCall;
 export class MatrixCall {
     constructor(opts: any);

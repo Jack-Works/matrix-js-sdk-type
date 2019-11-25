@@ -1,10 +1,8 @@
 export default RoomMember;
 /**
- * Construct a new room member.
- *
+  * Construct a new room member.
  * @constructor
- * @alias module:models/room-member
- *
+ * @alias  module:models/room-member
  * @param {string} roomId The room ID of the member.
  * @param {string} userId The user ID of the member.
  * @prop {string} roomId The room ID for this member.
@@ -14,14 +12,14 @@ export default RoomMember;
  * disambiguated with a suffix of " (@user_id:matrix.org)" if another member shares the
  * same displayname.
  * @prop {string} rawDisplayName The ambiguous displayname of this room member.
- * @prop {Number} powerLevel The power level for this room member.
- * @prop {Number} powerLevelNorm The normalised power level (0-100) for this
+ * @prop {number} powerLevel The power level for this room member.
+ * @prop {number} powerLevelNorm The normalised power level (0-100) for this
  * room member.
  * @prop {User} user The User object for this room member, if one exists.
  * @prop {string} membership The membership state for this room member e.g. 'join'.
- * @prop {Object} events The events describing this RoomMember.
+ * @prop {object} events The events describing this RoomMember.
  * @prop {MatrixEvent} events.member The m.room.member event for this RoomMember.
- */
+*/
 declare class RoomMember {
     constructor(roomId: any, userId: any);
     roomId: any;

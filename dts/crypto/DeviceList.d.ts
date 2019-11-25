@@ -1,6 +1,7 @@
 /**
- * @alias module:crypto/DeviceList
- */
+  *
+ * @alias  module:crypto/DeviceList
+*/
 export default class DeviceList extends $_generated_0.EventEmitter {
     constructor(baseApis: any, cryptoStore: any, olmDevice: any);
     _cryptoStore: any;

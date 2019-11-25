@@ -1,6 +1,6 @@
 export default RoomState;
 /**
- * Construct room state.
+  * Construct room state.
  *
  * Room State represents the state of the room at a given point.
  * It can be mutated by adding state events to it.
@@ -19,20 +19,19 @@ export default RoomState;
  * will still have his old display name. Calling getSentinelMember again
  * after the display name change will return a new RoomMember object
  * with Bob's new display name.
- *
  * @constructor
- * @param {?string} roomId Optional. The ID of the room which has this state.
+ * @param {(string | null)} roomId Optional. The ID of the room which has this state.
  * If none is specified it just tracks paginationTokens, useful for notifTimelineSet
- * @param {?object} oobMemberFlags Optional. The state of loading out of bound members.
+ * @param {(object | null)} oobMemberFlags Optional. The state of loading out of bound members.
  * As the timeline might get reset while they are loading, this state needs to be inherited
  * and shared when the room state is cloned for the new timeline.
  * This should only be passed from clone.
- * @prop {Object.<string, RoomMember>} members The room member dictionary, keyed
+ * @prop {object.<string, RoomMember>} members The room member dictionary, keyed
  * on the user's ID.
- * @prop {Object.<string, Object.<string, MatrixEvent>>} events The state
+ * @prop {object.<string, object.<string, MatrixEvent>>} events The state
  * events dictionary, keyed on the event type and then the state_key value.
  * @prop {string} paginationToken The pagination token for this state.
- */
+*/
 declare class RoomState {
     constructor(roomId: any, oobMemberFlags?: any);
     roomId: any;

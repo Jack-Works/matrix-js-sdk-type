@@ -1,45 +1,41 @@
 /**
- * Return the currently-set request function.
- * @return {requestFunction} The current request function.
- */
+      * Return the currently-set request function.
+     * @return {requestFunction}  The current request function.
+    */
 export function getRequest(): requestFunction;
 /**
- * Apply wrapping code around the request function. The wrapper function is
+  * Apply wrapping code around the request function. The wrapper function is
  * installed as the new request handler, and when invoked it is passed the
  * previous value, along with the options and callback arguments.
  * @param {requestWrapperFunction} wrapper The wrapping function.
- */
+*/
 export function wrapRequest(wrapper: requestWrapperFunction): void;
 /**
- * Configure a different factory to be used for creating crypto stores
- *
- * @param {Function} fac  a function which will return a new
+  * Configure a different factory to be used for creating crypto stores
+ * @param {((...args: any) => any)} fac a function which will return a new
  *    {@link module:crypto.store.base~CryptoStore}.
- */
-export function setCryptoStoreFactory(fac: Function): void;
+*/
+export function setCryptoStoreFactory(fac: (...args: any) => any): void;
 /**
- * Construct a Matrix Client. Similar to {@link module:client~MatrixClient}
+  * Construct a Matrix Client. Similar to {@link module:client~MatrixClient}
  * except that the 'request', 'store' and 'scheduler' dependencies are satisfied.
- * @param {(Object|string)} opts The configuration options for this client. If
+ * @param {(object | string)} opts The configuration options for this client. If
  * this is a string, it is assumed to be the base URL. These configuration
  * options will be passed directly to {@link module:client~MatrixClient}.
- * @param {Object} opts.store If not set, defaults to
+ * @param {object} opts.store If not set, defaults to
  * {@link module:store/memory.MemoryStore}.
- * @param {Object} opts.scheduler If not set, defaults to
+ * @param {object} opts.scheduler If not set, defaults to
  * {@link module:scheduler~MatrixScheduler}.
  * @param {requestFunction} opts.request If not set, defaults to the function
  * supplied to {@link request} which defaults to the request module from NPM.
- *
- * @param {module:crypto.store.base~CryptoStore=} opts.cryptoStore
- *    crypto store implementation. Calls the factory supplied to
+ * @param {(store.base.CryptoStore | undefined)} opts.cryptoStore crypto store implementation. Calls the factory supplied to
  *    {@link setCryptoStoreFactory} if unspecified; or if no factory has been
  *    specified, uses a default implementation (indexeddb in the browser,
  *    in-memory otherwise).
- *
- * @return {MatrixClient} A new matrix client.
- * @see {@link module:client~MatrixClient} for the full list of options for
+ * @return {MatrixClient}  A new matrix client.
+ * @see   {@link module:client~MatrixClient} for the full list of options for
  * <code>opts</code>.
- */
+*/
 export function createClient(opts: any): typeof $_generated_10.MatrixClient;
 export const ContentHelpers: typeof $_generated_0;
 export const MatrixEvent: typeof $_generated_1.MatrixEvent;

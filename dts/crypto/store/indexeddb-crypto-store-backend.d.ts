@@ -1,12 +1,11 @@
 export function upgradeDatabase(db: any, oldVersion: any): void;
 export const VERSION: 7;
 /**
- * Implementation of a CryptoStore which is backed by an existing
+  * Implementation of a CryptoStore which is backed by an existing
  * IndexedDB connection. Generally you want IndexedDBCryptoStore
  * which connects to the database and defers to one of these.
- *
- * @implements {module:crypto/store/base~CryptoStore}
- */
+ * @implements {CryptoStore}
+*/
 export class Backend {
     /**
      * @param {IDBDatabase} db

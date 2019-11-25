@@ -1,54 +1,50 @@
 /**
- * Registers an encryption/decryption class for a particular algorithm
- *
+  * Registers an encryption/decryption class for a particular algorithm
  * @param {string} algorithm algorithm tag to register for
- *
- * @param {class} encryptor {@link
+ * @param {any} encryptor {@link
  *     module:crypto/algorithms/base.EncryptionAlgorithm|EncryptionAlgorithm}
  *     implementation
- *
- * @param {class} decryptor {@link
+ * @param {any} decryptor {@link
  *     module:crypto/algorithms/base.DecryptionAlgorithm|DecryptionAlgorithm}
  *     implementation
- */
+*/
 export function registerAlgorithm(algorithm: string, encryptor: any, decryptor: any): void;
-export const ENCRYPTION_CLASSES: {};
 /**
- * map of registered encryption algorithm classes. Map from string to {@link
+  * map of registered encryption algorithm classes. A map from string to {@link
+ * module:crypto/algorithms/base.EncryptionAlgorithm|EncryptionAlgorithm} class
+ * @type {object.<string, function (new: module:crypto/algorithms/base.EncryptionAlgorithm)>}
+*/
+export const ENCRYPTION_CLASSES: object<string, new () => >;
+/**
+  * map of registered encryption algorithm classes. Map from string to {@link
  * module:crypto/algorithms/base.DecryptionAlgorithm|DecryptionAlgorithm} class
- *
- * @type {Object.<string, function(new: module:crypto/algorithms/base.DecryptionAlgorithm)>}
- */
-export const DECRYPTION_CLASSES: {
-    [x: string]: new () => ;
-};
+ * @type {object.<string, function (new: module:crypto/algorithms/base.DecryptionAlgorithm)>}
+*/
+export const DECRYPTION_CLASSES: object<string, new () => >;
 /**
- * Exception thrown specifically when we want to warn the user to consider
+  * Exception thrown specifically when we want to warn the user to consider
  * the security of their conversation before continuing
- *
  * @param {string} msg message describing the problem
- * @param {Object} devices userId -> {deviceId -> object}
+ * @param {object} devices userId -> {deviceId -> object}
  *      set of unknown devices per user we're warning about
- * @extends Error
- */
+ * @extends  Error
+*/
 export class UnknownDeviceError extends Error {
     constructor(msg: any, devices: any);
     devices: any;
 }
 /**
- * base type for encryption implementations
- *
- * @alias module:crypto/algorithms/base.EncryptionAlgorithm
- *
+  * base type for encryption implementations
+ * @alias  module:crypto/algorithms/base.EncryptionAlgorithm
  * @param {object} params parameters
- * @param {string} params.userId  The UserID for the local user
+ * @param {string} params.userId The UserID for the local user
  * @param {string} params.deviceId The identifier for this device.
- * @param {module:crypto} params.crypto crypto core
- * @param {module:crypto/OlmDevice} params.olmDevice olm.js wrapper
- * @param {module:base-apis~MatrixBaseApis} baseApis base matrix api interface
- * @param {string} params.roomId  The ID of the room we will be sending to
- * @param {object} params.config  The body of the m.room.encryption event
- */
+ * @param {} params.crypto crypto core
+ * @param {OlmDevice} params.olmDevice olm.js wrapper
+ * @param {MatrixBaseApis} baseApis base matrix api interface
+ * @param {string} params.roomId The ID of the room we will be sending to
+ * @param {object} params.config The body of the m.room.encryption event
+*/
 export class EncryptionAlgorithm {
     constructor(params: any);
     _userId: any;
@@ -80,17 +76,16 @@ export class EncryptionAlgorithm {
     onRoomMembership(event: any, member: any, oldMembership?: string): void;
 }
 /**
- * base type for decryption implementations
- *
- * @alias module:crypto/algorithms/base.DecryptionAlgorithm
- * @param {object} params parameters
- * @param {string} params.userId  The UserID for the local user
- * @param {module:crypto} params.crypto crypto core
- * @param {module:crypto/OlmDevice} params.olmDevice olm.js wrapper
- * @param {module:base-apis~MatrixBaseApis} baseApis base matrix api interface
- * @param {string=} params.roomId The ID of the room we will be receiving
- *     from. Null for to-device events.
- */
+      * base type for decryption implementations
+     * @alias  module:crypto/algorithms/base.DecryptionAlgorithm
+     * @param {object} params parameters
+     * @param {string} params.userId The UserID for the local user
+     * @param {} params.crypto crypto core
+     * @param {OlmDevice} params.olmDevice olm.js wrapper
+     * @param {MatrixBaseApis} baseApis base matrix api interface
+     * @param {(string | undefined)} params.roomId The ID of the room we will be receiving
+     *     from. Null for to-device events.
+    */
 export class DecryptionAlgorithm {
     constructor(params: any);
     _userId: any;
@@ -140,16 +135,13 @@ export class DecryptionAlgorithm {
     shareKeysWithDevice(keyRequest: any): void;
 }
 /**
- * Exception thrown when decryption fails
- *
- * @alias module:crypto/algorithms/base.DecryptionError
- * @param {string} msg user-visible message describing the problem
- *
- * @param {Object=} details key/value pairs reported in the logs but not shown
- *   to the user.
- *
- * @extends Error
- */
+      * Exception thrown when decryption fails
+     * @alias  module:crypto/algorithms/base.DecryptionError
+     * @param {string} msg user-visible message describing the problem
+     * @param {(object | undefined)} details key/value pairs reported in the logs but not shown
+     *   to the user.
+     * @extends  Error
+    */
 export class DecryptionError extends Error {
     constructor(code: any, msg: any, details: any);
     code: any;

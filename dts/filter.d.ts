@@ -1,12 +1,12 @@
 export default Filter;
 /**
- * Construct a new Filter.
+  * Construct a new Filter.
  * @constructor
  * @param {string} userId The user ID for this filter.
- * @param {string=} filterId The filter ID if known.
+ * @param {(string | undefined)} filterId The filter ID if known.
  * @prop {string} userId The user ID of the filter
- * @prop {?string} filterId The filter ID
- */
+ * @prop {(string | null)} filterId The filter ID
+*/
 declare class Filter {
     constructor(userId: any, filterId: any);
     userId: any;

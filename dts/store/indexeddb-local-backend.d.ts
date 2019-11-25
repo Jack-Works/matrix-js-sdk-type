@@ -1,15 +1,15 @@
 export default LocalIndexedDBStoreBackend;
 /**
- * Does the actual reading from and writing to the indexeddb
+  * Does the actual reading from and writing to the indexeddb
  *
  * Construct a new Indexed Database store backend. This requires a call to
  * <code>connect()</code> before this store can be used.
  * @constructor
- * @param {Object} indexedDBInterface The Indexed DB interface e.g
+ * @param {object} indexedDBInterface The Indexed DB interface e.g
  * <code>window.indexedDB</code>
- * @param {string=} dbName Optional database name. The same name must be used
+ * @param {(string | undefined)} dbName Optional database name. The same name must be used
  * to open the same database.
- */
+*/
 declare class LocalIndexedDBStoreBackend {
     static exists(indexedDB: any, dbName: any): Promise<any>;
     constructor(indexedDBInterface: any, dbName: any);

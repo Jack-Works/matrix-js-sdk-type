@@ -1,14 +1,8 @@
 /**
- * Internal module. indexeddb storage for e2e.
- *
- * @module
- */
-/**
- * An implementation of CryptoStore, which is normally backed by an indexeddb,
+  * An implementation of CryptoStore, which is normally backed by an indexeddb,
  * but with fallback to MemoryCryptoStore.
- *
- * @implements {module:crypto/store/base~CryptoStore}
- */
+ * @implements {CryptoStore}
+*/
 declare class IndexedDBCryptoStore {
     /**
      * Create a new IndexedDBCryptoStore

@@ -480,12 +480,12 @@ export class MatrixClient {
      * @param {string} roomId The room ID
      * @return {Room} The Room or null if it doesn't exist or there is no data store.
      */
-    getRoom(roomId: string): any;
+    getRoom(roomId: string): Room;
     /**
      * Retrieve all known rooms.
      * @return {Room[]} A list of rooms, or an empty list if there is no data store.
      */
-    getRooms(): any[];
+    getRooms(): Room[];
     /**
      * Retrieve all rooms that should be displayed to the user
      * This is essentially getRooms() with some rooms filtered out, eg. old versions
@@ -493,7 +493,7 @@ export class MatrixClient {
      * marked at the protocol level as not to be displayed to the user.
      * @return {Room[]} A list of rooms, or an empty list if there is no data store.
      */
-    getVisibleRooms(): any[];
+    getVisibleRooms(): Room[];
     /**
      * Retrieve a user.
      * @param {string} userId The user ID to retrieve.
@@ -568,7 +568,7 @@ export class MatrixClient {
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    resendEvent(event: MatrixEvent, room: any): Promise_<any>;
+    resendEvent(event: MatrixEvent, room: Room): Promise_<any>;
     /**
      * Cancel a queued or unsent event.
      *
@@ -829,7 +829,7 @@ export class MatrixClient {
      * @return {Room[]} An array of rooms representing the upgrade
      * history.
      */
-    getRoomUpgradeHistory(roomId: string, verifyLinks?: boolean): any[];
+    getRoomUpgradeHistory(roomId: string, verifyLinks?: boolean): Room[];
     /**
      * @param {string} roomId
      * @param {string} userId
@@ -1015,7 +1015,7 @@ export class MatrixClient {
      * <code>null</code>.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    scrollback(room: any, limit: any, callback?: any): Promise_<any>;
+    scrollback(room: Room, limit: any, callback?: any): Promise_<any>;
     /**
      * Get an EventTimeline for the given event
      *
@@ -1513,6 +1513,8 @@ import RoomList from "./crypto/RoomList";
 import PushProcessor from "./pushprocessor";
 type Promise_<T = any> = Promise<T>;
 declare const Promise_: typeof globalThis['Promise'];
+import { Promise_ } from "./client";
 import { MatrixEvent } from "./models/event";
+import Room from "./models/room";
 export {};
 //# sourceMappingURL=client.d.ts.map

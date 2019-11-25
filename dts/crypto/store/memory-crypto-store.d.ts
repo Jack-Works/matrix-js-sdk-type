@@ -1,11 +1,7 @@
 /**
- * Internal module. in-memory storage for e2e.
- *
- * @module
- */
-/**
- * @implements {module:crypto/store/base~CryptoStore}
- */
+  *
+ * @implements {CryptoStore}
+*/
 export default class MemoryCryptoStore {
     _outgoingRoomKeyRequests: any[];
     _account: any;

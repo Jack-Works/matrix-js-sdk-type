@@ -1,44 +1,33 @@
 export default MatrixBaseApis;
 /**
- * Low-level wrappers for the Matrix APIs
- *
+  * Low-level wrappers for the Matrix APIs
  * @constructor
- *
- * @param {Object} opts Configuration options
- *
+ * @param {object} opts Configuration options
  * @param {string} opts.baseUrl Required. The base URL to the client-server
  * HTTP API.
- *
  * @param {string} opts.idBaseUrl Optional. The base identity server URL for
  * identity server requests.
- *
- * @param {Function} opts.request Required. The function to invoke for HTTP
+ * @param {((...args: any) => any)} opts.request Required. The function to invoke for HTTP
  * requests. The value of this property is typically <code>require("request")
  * </code> as it returns a function which meets the required interface. See
  * {@link requestFunction} for more information.
- *
  * @param {string} opts.accessToken The access_token for this user.
- *
- * @param {IdentityServerProvider} [opts.identityServer]
- * Optional. A provider object with one function `getAccessToken`, which is a
+ * @param {(IdentityServerProvider | undefined)} opts.identityServer Optional. A provider object with one function `getAccessToken`, which is a
  * callback that returns a Promise<String> of an identity access token to supply
  * with identity requests. If the object is unset, no access token will be
  * supplied.
  * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
  * replace the previous approach of manual access tokens params with this
  * callback throughout the SDK.
- *
- * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
+ * @param {(number | undefined)} opts.localTimeoutMs Optional. The default maximum amount of
  * time to wait before timing out HTTP requests. If not specified, there is no
  * timeout.
- *
- * @param {Object} opts.queryParams Optional. Extra query parameters to append
+ * @param {object} opts.queryParams Optional. Extra query parameters to append
  * to all requests with this client. Useful for application services which require
  * <code>?user_id=</code>.
- *
- * @param {boolean} [opts.useAuthorizationHeader = false] Set to true to use
+ * @param {(boolean | undefined)} opts.useAuthorizationHeader Set to true to use
  * Authorization header instead of query param to send the access token to the server.
- */
+*/
 declare class MatrixBaseApis {
     constructor(opts: any);
     baseUrl: any;

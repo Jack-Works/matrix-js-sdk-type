@@ -1,6 +1,7 @@
 /**
- * @implements {module:crypto/store/base~CryptoStore}
- */
+  *
+ * @implements {CryptoStore}
+*/
 export default class LocalStorageCryptoStore {
     static exists(webStore: any): boolean;
     constructor(webStore: any);

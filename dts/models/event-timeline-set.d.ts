@@ -1,6 +1,6 @@
 export default EventTimelineSet;
 /**
- * Construct a set of EventTimeline objects, typically on behalf of a given
+  * Construct a set of EventTimeline objects, typically on behalf of a given
  * room.  A room may have multiple EventTimelineSets for different levels
  * of filtering.  The global notification list is also an EventTimelineSet, but
  * lacks a room.
@@ -19,22 +19,16 @@ export default EventTimelineSet;
  *
  * <p>In order that we can find events from their ids later, we also maintain a
  * map from event_id to timeline and index.
- *
  * @constructor
- * @param {?Room} room
- * Room for this timelineSet. May be null for non-room cases, such as the
+ * @param {(Room | null)} room Room for this timelineSet. May be null for non-room cases, such as the
  * notification timeline.
- * @param {Object} opts Options inherited from Room.
- *
- * @param {boolean} [opts.timelineSupport = false]
- * Set to true to enable improved timeline support.
- * @param {Object} [opts.filter = null]
- * The filter object, if any, for this timelineSet.
- * @param {boolean} [opts.unstableClientRelationAggregation = false]
- * Optional. Set to true to enable client-side aggregation of event relations
+ * @param {object} opts Options inherited from Room.
+ * @param {(boolean | undefined)} opts.timelineSupport Set to true to enable improved timeline support.
+ * @param {(object | undefined)} opts.filter The filter object, if any, for this timelineSet.
+ * @param {(boolean | undefined)} opts.unstableClientRelationAggregation Optional. Set to true to enable client-side aggregation of event relations
  * via `getRelationsForEvent`.
  * This feature is currently unstable and the API may change without notice.
- */
+*/
 declare class EventTimelineSet {
     constructor(room: any, opts: any);
     room: any;

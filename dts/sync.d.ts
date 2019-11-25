@@ -1,19 +1,19 @@
 export default SyncApi;
 /**
- * <b>Internal class - unstable.</b>
+  * <b>Internal class - unstable.</b>
  * Construct an entity which is able to sync with a homeserver.
  * @constructor
  * @param {MatrixClient} client The matrix client instance to use.
- * @param {Object} opts Config options
- * @param {module:crypto=} opts.crypto Crypto manager
- * @param {Function=} opts.canResetEntireTimeline A function which is called
+ * @param {object} opts Config options
+ * @param {( | undefined)} opts.crypto Crypto manager
+ * @param {(((...args: any) => any) | undefined)} opts.canResetEntireTimeline A function which is called
  * with a room ID and returns a boolean. It should return 'true' if the SDK can
  * SAFELY remove events from this room. It may not be safe to remove events if
  * there are other references to the timelines for this room.
  * Default: returns false.
- * @param {Boolean=} opts.disablePresence True to perform syncing without automatically
+ * @param {(boolean | undefined)} opts.disablePresence True to perform syncing without automatically
  * updating presence.
- */
+*/
 declare class SyncApi {
     constructor(client: any, opts: any);
     client: any;

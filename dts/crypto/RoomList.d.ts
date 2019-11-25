@@ -1,6 +1,7 @@
 /**
- * @alias module:crypto/RoomList
- */
+  *
+ * @alias  module:crypto/RoomList
+*/
 export default class RoomList {
     constructor(cryptoStore: any);
     _cryptoStore: any;

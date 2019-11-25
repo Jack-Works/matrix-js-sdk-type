@@ -1,6 +1,6 @@
 export default EventTimeline;
 /**
- * Construct a new EventTimeline
+  * Construct a new EventTimeline
  *
  * <p>An EventTimeline represents a contiguous sequence of events in a room.
  *
@@ -15,10 +15,9 @@ export default EventTimeline;
  *
  * <p>Once a timeline joins up with its neighbour, they are linked together into a
  * doubly-linked list.
- *
  * @param {EventTimelineSet} eventTimelineSet the set of timelines this is part of
  * @constructor
- */
+*/
 declare class EventTimeline {
     constructor(eventTimelineSet: any);
     _eventTimelineSet: any;

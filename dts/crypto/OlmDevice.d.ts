@@ -1,62 +1,15 @@
 export default OlmDevice;
 /**
- * :crypto/OlmDevice.MegolmSessionData
- */
-export type module = {
-    /**
-     * Sender's Curve25519 device key
-     */
-    sender_key: string;
-    /**
-     * Devices which forwarded
-     * this session to us (normally empty).
-     */
-    forwarding_curve25519_key_chain: string[];
-    /**
-     * Other keys the sender claims.
-     */
-    sender_claimed_keys: {
-        [x: string]: string;
-    };
-    /**
-     * Room this session is used in
-     */
-    room_id: string;
-    /**
-     * Unique id for the session
-     */
-    session_id: string;
-    /**
-     * Base64'ed key data
-     */
-    session_key: string;
-};
-/**
- * The type of object we use for importing and exporting megolm session data.
- *
- * @typedef {Object} module:crypto/OlmDevice.MegolmSessionData
- * @property {String} sender_key  Sender's Curve25519 device key
- * @property {String[]} forwarding_curve25519_key_chain Devices which forwarded
- *     this session to us (normally empty).
- * @property {Object<string, string>} sender_claimed_keys Other keys the sender claims.
- * @property {String} room_id     Room this session is used in
- * @property {String} session_id  Unique id for the session
- * @property {String} session_key Base64'ed key data
- */
-/**
- * Manages the olm cryptography functions. Each OlmDevice has a single
+  * Manages the olm cryptography functions. Each OlmDevice has a single
  * OlmAccount and a number of OlmSessions.
  *
  * Accounts and sessions are kept pickled in the cryptoStore.
- *
  * @constructor
- * @alias module:crypto/OlmDevice
- *
- * @param {Object} cryptoStore A store for crypto data
- *
- * @property {string} deviceCurve25519Key   Curve25519 key for the account
- * @property {string} deviceEd25519Key      Ed25519 key for the account
- */
+ * @alias  module:crypto/OlmDevice
+ * @param {object} cryptoStore A store for crypto data
+ * @property {string} deviceCurve25519Key Curve25519 key for the account
+ * @property {string} deviceEd25519Key Ed25519 key for the account
+*/
 declare class OlmDevice {
     /**
      * @return {array} The version of Olm.

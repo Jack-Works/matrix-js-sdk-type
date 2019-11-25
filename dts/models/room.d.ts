@@ -1,6 +1,6 @@
 export default Room;
 /**
- * Construct a new Room.
+  * Construct a new Room.
  *
  * <p>For a room, we store an ordered sequence of timelines, which may or may not
  * be continuous. Each timeline lists a series of events, as well as tracking
@@ -16,33 +16,29 @@ export default Room;
  *
  * <p>In order that we can find events from their ids later, we also maintain a
  * map from event_id to timeline and index.
- *
  * @constructor
- * @alias module:models/room
+ * @alias  module:models/room
  * @param {string} roomId Required. The ID of this room.
  * @param {MatrixClient} client Required. The client, used to lazy load members.
  * @param {string} myUserId Required. The ID of the syncing user.
- * @param {Object=} opts Configuration options
+ * @param {(object | undefined)} opts Configuration options
  * @param {*} opts.storageToken Optional. The token which a data store can use
  * to remember the state of the room. What this means is dependent on the store
  * implementation.
- *
- * @param {String=} opts.pendingEventOrdering Controls where pending messages
+ * @param {(string | undefined)} opts.pendingEventOrdering Controls where pending messages
  * appear in a room's timeline. If "<b>chronological</b>", messages will appear
  * in the timeline when the call to <code>sendEvent</code> was made. If
  * "<b>detached</b>", pending messages will appear in a separate list,
  * accessbile via {@link module:models/room#getPendingEvents}. Default:
  * "chronological".
- * @param {boolean} [opts.timelineSupport = false] Set to true to enable improved
+ * @param {(boolean | undefined)} opts.timelineSupport Set to true to enable improved
  * timeline support.
- * @param {boolean} [opts.unstableClientRelationAggregation = false]
- * Optional. Set to true to enable client-side aggregation of event relations
+ * @param {(boolean | undefined)} opts.unstableClientRelationAggregation Optional. Set to true to enable client-side aggregation of event relations
  * via `EventTimelineSet#getRelationsForEvent`.
  * This feature is currently unstable and the API may change without notice.
- *
  * @prop {string} roomId The ID of this room.
  * @prop {string} name The human-readable display name for this room.
- * @prop {Array<MatrixEvent>} timeline The live event timeline for this room,
+ * @prop {Array.<MatrixEvent>} timeline The live event timeline for this room,
  * with the oldest event at index 0. Present for backwards compatibility -
  * prefer getLiveTimeline().getEvents().
  * @prop {object} tags Dict of room tags; the keys are the tag name and the values
@@ -58,7 +54,7 @@ export default Room;
  * @prop {RoomSummary} summary The room summary.
  * @prop {*} storageToken A token which a data store can use to remember
  * the state of the room.
- */
+*/
 declare class Room {
     constructor(roomId: any, client: any, myUserId: any, opts: any);
     reEmitter: ReEmitter;

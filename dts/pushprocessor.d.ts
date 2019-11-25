@@ -21,10 +21,10 @@ export type PushAction = {
     };
 };
 /**
- * Construct a Push Processor.
+  * Construct a Push Processor.
  * @constructor
- * @param {Object} client The Matrix client object to use
- */
+ * @param {object} client The Matrix client object to use
+*/
 declare class PushProcessor {
     /**
      * Convert a list of actions into a object with the actions as keys and their values

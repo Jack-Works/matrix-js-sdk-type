@@ -65,26 +65,26 @@ export default class OutgoingRoomKeyRequestManager {
  *
  * The state machine looks like:
  *
- *    |         (cancellation sent)
- *    | .-------------------------------------------------.
- *    | |                                                 |
- *    V V       (cancellation requested)                  |
- * UNSENT  -----------------------------+                |
- *    |                                  |                |
- *    |                                  |                |
- *    | (send successful)                |  CANCELLATION_PENDING_AND_WILL_RESEND
- *    V                                  |                Λ
- *   SENT                                |                |
- *    |--------------------------------  |  --------------'
- *    |                                  |  (cancellation requested with intent
- *    |                                  |   to resend the original request)
- *    |                                  |
- *    | (cancellation requested)         |
- *    V                                  |
+ *     |         (cancellation sent)
+ *     | .-------------------------------------------------.
+ *     | |                                                 |
+ *     V V       (cancellation requested)                  |
+ *   UNSENT  -----------------------------+                |
+ *     |                                  |                |
+ *     |                                  |                |
+ *     | (send successful)                |  CANCELLATION_PENDING_AND_WILL_RESEND
+ *     V                                  |                Λ
+ *    SENT                                |                |
+ *     |--------------------------------  |  --------------'
+ *     |                                  |  (cancellation requested with intent
+ *     |                                  |   to resend the original request)
+ *     |                                  |
+ *     | (cancellation requested)         |
+ *     V                                  |
  * CANCELLATION_PENDING                   |
- *    |                                  |
- *    | (cancellation sent)              |
- *    V                                  |
+ *     |                                  |
+ *     | (cancellation sent)              |
+ *     V                                  |
  * (deleted)  <---------------------------+
  */
 export type ROOM_KEY_REQUEST_STATES = number;

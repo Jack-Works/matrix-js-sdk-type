@@ -5,65 +5,23 @@ export namespace verificationMethods {
     export const SAS: any;
 }
 /**
- * Cryptography bits
+  * Cryptography bits
  *
  * This module is internal to the js-sdk; the public API is via MatrixClient.
- *
  * @constructor
- * @alias module:crypto
- *
+ * @alias  module:crypto
  * @internal
- *
- * @param {module:base-apis~MatrixBaseApis} baseApis base matrix api interface
- *
- * @param {module:store/session/webstorage~WebStorageSessionStore} sessionStore
- *    Store to be used for end-to-end crypto session data
- *
+ * @param {MatrixBaseApis} baseApis base matrix api interface
+ * @param {WebStorageSessionStore} sessionStore Store to be used for end-to-end crypto session data
  * @param {string} userId The user ID for the local user
- *
  * @param {string} deviceId The identifier for this device.
- *
- * @param {Object} clientStore the MatrixClient data store.
- *
- * @param {module:crypto/store/base~CryptoStore} cryptoStore
- *    storage for the crypto layer.
- *
+ * @param {object} clientStore the MatrixClient data store.
+ * @param {CryptoStore} cryptoStore storage for the crypto layer.
  * @param {RoomList} roomList An initialised RoomList object
- *
  * @param {Array} verificationMethods Array of verification methods to use.
  *    Each element can either be a string from MatrixClient.verificationMethods
  *    or a class that implements a verification method.
- */
-/**
- * Cryptography bits
- *
- * This module is internal to the js-sdk; the public API is via MatrixClient.
- *
- * @constructor
- * @alias module:crypto
- *
- * @internal
- *
- * @param {module:base-apis~MatrixBaseApis} baseApis base matrix api interface
- *
- * @param {module:store/session/webstorage~WebStorageSessionStore} sessionStore
- *    Store to be used for end-to-end crypto session data
- *
- * @param {string} userId The user ID for the local user
- *
- * @param {string} deviceId The identifier for this device.
- *
- * @param {Object} clientStore the MatrixClient data store.
- *
- * @param {module:crypto/store/base~CryptoStore} cryptoStore
- *    storage for the crypto layer.
- *
- * @param {RoomList} roomList An initialised RoomList object
- *
- * @param {Array} verificationMethods Array of verification methods to use.
- *    Each element can either be a string from MatrixClient.verificationMethods
- *    or a class that implements a verification method.
- */
+*/
 export class Crypto {
     /**
      * @return {string} The version of Olm.
@@ -665,12 +623,6 @@ export class Crypto {
     _signObject(obj: any): Promise<void>;
 }
 /**
- * The parameters of a room key request. The details of the request may
- * vary with the crypto algorithm, but the management and storage layers for
- * outgoing requests expect it to have 'room_id' and 'session_id' properties.
- */
-export type RoomKeyRequestBody = any;
-/**
  * The result of a (successful) call to decryptEvent.
  */
 export type EventDecryptionResult = {
@@ -701,23 +653,15 @@ export type EventDecryptionResult = {
 import * as $_generated_9 from "./DeviceList";
 import * as $_generated_11 from "./CrossSigning";
 /**
- * The parameters of a room key request. The details of the request may
- * vary with the crypto algorithm, but the management and storage layers for
- * outgoing requests expect it to have 'room_id' and 'session_id' properties.
- *
- * @typedef {Object} RoomKeyRequestBody
- */
-/**
- * Represents a received m.room_key_request event
- *
- * @property {string} userId    user requesting the key
- * @property {string} deviceId  device requesting the key
+  * Represents a received m.room_key_request event
+ * @property {string} userId user requesting the key
+ * @property {string} deviceId device requesting the key
  * @property {string} requestId unique id for the request
- * @property {module:crypto~RoomKeyRequestBody} requestBody
- * @property {function()} share  callback which, when called, will ask
+ * @property {RoomKeyRequestBody} requestBody
+ * @property {function ()} share callback which, when called, will ask
  *    the relevant crypto algorithm implementation to share the keys for
  *    this request.
- */
+*/
 declare class IncomingRoomKeyRequest {
     constructor(event: any);
     userId: any;
@@ -727,12 +671,11 @@ declare class IncomingRoomKeyRequest {
     share: () => never;
 }
 /**
- * Represents a received m.room_key_request cancellation
- *
- * @property {string} userId    user requesting the cancellation
- * @property {string} deviceId  device requesting the cancellation
+  * Represents a received m.room_key_request cancellation
+ * @property {string} userId user requesting the cancellation
+ * @property {string} deviceId device requesting the cancellation
  * @property {string} requestId unique id for the request to be cancelled
- */
+*/
 declare class IncomingRoomKeyRequestCancellation {
     constructor(event: any);
     userId: any;
