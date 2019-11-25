@@ -1,1 +1,1 @@
-{"version":3,"file":"search-result.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["models/search-result.js"],"names":[],"mappings":";AAwBA;;;;;;;;GAQG;AACH;IAKI;;;;;;OAMG;IACH,mEAUC;IArBD,0CAGC;IAFG,UAAgB;IAChB,aAA2B;CAoBlC"}
+{"version":3,"file":"search-result.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["models/search-result.js"],"names":[],"mappings":";AASA;;;;;;;;GAQG;AACH;IAKI;;;;;;OAMG;IACH,mEAUC;IArBD,0CAGC;IAFG,UAAgB;IAChB,aAA2B;CAoBlC"}

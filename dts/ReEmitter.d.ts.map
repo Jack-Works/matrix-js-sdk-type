@@ -1,1 +1,1 @@
-{"version":3,"file":"ReEmitter.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["ReEmitter.js"],"names":[],"mappings":"AAkBA;;GAEG;AAEH;IACI,yBAMC;IALG,YAAoB;IAIpB,kBAAuB;IAG3B,mDAEC;IAED,2CAeC;CACJ"}
+{"version":3,"file":"ReEmitter.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["ReEmitter.js"],"names":[],"mappings":"AAAA;IACI,yBAMC;IALG,YAAoB;IAIpB,kBAAuB;IAG3B,mDAEC;IAED,2CAeC;CACJ"}

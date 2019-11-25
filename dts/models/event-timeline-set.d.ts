@@ -106,17 +106,17 @@ declare class EventTimelineSet {
      * Get the timeline which contains the given event, if any
      *
      * @param {string} eventId  event ID to look for
-     * @return {?module:models/event-timeline~EventTimeline} timeline containing
+     * @return {any} timeline containing
      * the given event, or null if unknown
      */
-    getTimelineForEvent(eventId: string): NodeModule;
+    getTimelineForEvent(eventId: string): any;
     /**
      * Get an event which is stored in our timelines
      *
      * @param {string} eventId  event ID to look for
-     * @return {?module:models/event~MatrixEvent} the given event, or undefined if unknown
+     * @return {any} the given event, or undefined if unknown
      */
-    findEventById(eventId: string): NodeModule;
+    findEventById(eventId: string): any;
     /**
      * Add a new timeline to this timeline list
      *

@@ -241,10 +241,10 @@ declare class Room {
      * Get the timeline which contains the given event from the unfiltered set, if any
      *
      * @param {string} eventId  event ID to look for
-     * @return {?module:models/event-timeline~EventTimeline} timeline containing
+     * @return {any} timeline containing
      * the given event, or null if unknown
      */
-    getTimelineForEvent(eventId: string): NodeModule;
+    getTimelineForEvent(eventId: string): any;
     /**
      * Add a new timeline to this room's unfiltered timeline set
      *
@@ -255,9 +255,9 @@ declare class Room {
      * Get an event which is stored in our unfiltered timeline set
      *
      * @param {string} eventId  event ID to look for
-     * @return {?module:models/event.MatrixEvent} the given event, or undefined if unknown
+     * @return {any} the given event, or undefined if unknown
      */
-    findEventById(eventId: string): NodeModule;
+    findEventById(eventId: string): any;
     /**
      * Get one of the notification counts for this room
      * @param {String} type The type of notification count to get. default: 'total'

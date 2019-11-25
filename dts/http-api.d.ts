@@ -83,7 +83,7 @@ export class MatrixHttpApi {
      * @param {Object=} queryParams A dict of query params (these will NOT be
      * urlencoded). If unspecified, there will be no query params.
      *
-     * @param {Object} data The HTTP JSON body.
+     * @param {Object} [data] The HTTP JSON body.
      *
      * @param {Object|Number=} opts additional options. If a number is specified,
      * this is treated as `opts.localTimeoutMs`.
@@ -103,7 +103,7 @@ export class MatrixHttpApi {
      * @return {module:http-api.MatrixError} Rejects with an error if a problem
      * occurred. This includes network problems and Matrix-specific error JSON.
      */
-    authedRequest(callback: Function, method: string, path: string, queryParams?: any, data: any, opts?: any): any;
+    authedRequest(callback: Function, method: string, path: string, queryParams?: any, data?: any, opts?: any): any;
     /**
      * Perform a request to the homeserver without any credentials.
      * @param {Function} callback Optional. The callback to invoke on
@@ -115,7 +115,7 @@ export class MatrixHttpApi {
      * @param {Object=} queryParams A dict of query params (these will NOT be
      * urlencoded). If unspecified, there will be no query params.
      *
-     * @param {Object} data The HTTP JSON body.
+     * @param {Object} [data] The HTTP JSON body.
      *
      * @param {Object=} opts additional options
      *
@@ -134,7 +134,7 @@ export class MatrixHttpApi {
      * @return {module:http-api.MatrixError} Rejects with an error if a problem
      * occurred. This includes network problems and Matrix-specific error JSON.
      */
-    request(callback: Function, method: string, path: string, queryParams?: any, data: any, opts?: any): any;
+    request(callback: Function, method: string, path: string, queryParams?: any, data?: any, opts?: any): any;
     /**
      * Perform a request to an arbitrary URL.
      * @param {Function} callback Optional. The callback to invoke on
@@ -145,7 +145,7 @@ export class MatrixHttpApi {
      * @param {Object=} queryParams A dict of query params (these will NOT be
      * urlencoded). If unspecified, there will be no query params.
      *
-     * @param {Object} data The HTTP JSON body.
+     * @param {Object} [data] The HTTP JSON body.
      *
      * @param {Object=} opts additional options
      *
@@ -164,7 +164,7 @@ export class MatrixHttpApi {
      * @return {module:http-api.MatrixError} Rejects with an error if a problem
      * occurred. This includes network problems and Matrix-specific error JSON.
      */
-    requestOtherUrl(callback: Function, method: string, uri: string, queryParams?: any, data: any, opts?: any): any;
+    requestOtherUrl(callback: Function, method: string, uri: string, queryParams?: any, data?: any, opts?: any): any;
     /**
      * Form and return a homeserver request URL based on the given path
      * params and prefix.

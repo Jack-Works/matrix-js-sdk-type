@@ -40,7 +40,7 @@ export class MatrixClient {
      *
      * @returns {Promise_} Promise_ which resolves when the stores have been cleared.
      */
-    clearStores(): any;
+    clearStores(): Promise_<any>;
     /**
      * Get the user-id of the logged-in user
      *
@@ -96,9 +96,9 @@ export class MatrixClient {
     isGuest(): boolean;
     /**
      * Return the provided scheduler, if any.
-     * @return {?module:scheduler~MatrixScheduler} The scheduler or null
+     * @return {any} The scheduler or null
      */
-    getScheduler(): module;
+    getScheduler(): any;
     /**
      * Set whether this client is a guest account. <b>This method is experimental
      * and may change without warning.</b>
@@ -130,7 +130,7 @@ export class MatrixClient {
      * @return {Promise_} Resolves to the capabilities of the homeserver
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getCapabilities(fresh?: boolean): any;
+    getCapabilities(fresh?: boolean): Promise_<any>;
     /**
      * Initialise support for end-to-end encryption in this client
      *
@@ -167,7 +167,7 @@ export class MatrixClient {
      * @return {Promise_} A promise which resolves to a map userId->deviceId->{@link
      * module:crypto~DeviceInfo|DeviceInfo}.
      */
-    downloadKeys(userIds: any[], forceDownload: any): any;
+    downloadKeys(userIds: any[], forceDownload: any): Promise_<any>;
     /**
      * Get the stored device keys for a user id
      *
@@ -175,7 +175,7 @@ export class MatrixClient {
      *
      * @return {Promise_<module:crypto-deviceinfo[]>} list of devices
      */
-    getStoredDevicesForUser(userId: string): any;
+    getStoredDevicesForUser(userId: string): Promise_<module>;
     /**
      * Get the stored device key for a user id and device id
      *
@@ -184,7 +184,7 @@ export class MatrixClient {
      *
      * @return {Promise_<?module:crypto-deviceinfo>} device or null
      */
-    getStoredDevice(userId: string, deviceId: string): any;
+    getStoredDevice(userId: string, deviceId: string): Promise_<module>;
     /**
      * Mark the given device as verified
      *
@@ -198,7 +198,7 @@ export class MatrixClient {
      *
      * @fires module:client~event:MatrixClient"deviceVerificationChanged"
      */
-    setDeviceVerified(userId: string, deviceId: string, verified?: boolean): any;
+    setDeviceVerified(userId: string, deviceId: string, verified?: boolean): Promise_<any>;
     /**
      * Mark the given device as blocked/unblocked
      *
@@ -212,7 +212,7 @@ export class MatrixClient {
      *
      * @fires module:client~event:MatrixClient"deviceVerificationChanged"
      */
-    setDeviceBlocked(userId: string, deviceId: string, blocked?: boolean): any;
+    setDeviceBlocked(userId: string, deviceId: string, blocked?: boolean): Promise_<any>;
     /**
      * Mark the given device as known/unknown
      *
@@ -226,7 +226,7 @@ export class MatrixClient {
      *
      * @fires module:client~event:MatrixClient"deviceVerificationChanged"
      */
-    setDeviceKnown(userId: string, deviceId: string, known?: boolean): any;
+    setDeviceKnown(userId: string, deviceId: string, known?: boolean): Promise_<any>;
     /**
      * Request a key verification from another user, using a DM.
      *
@@ -238,7 +238,7 @@ export class MatrixClient {
      * @returns {Promise_<module:crypto/verification/Base>} resolves to a verifier
      *    when the request is accepted by the other user
      */
-    requestVerificationDM(userId: string, roomId: string, methods: any[]): any;
+    requestVerificationDM(userId: string, roomId: string, methods: any[]): Promise_<module>;
     /**
      * Accept a key verification request from a DM.
      *
@@ -261,7 +261,7 @@ export class MatrixClient {
      * @returns {Promise_<module:crypto/verification/Base>} resolves to a verifier
      *    when the request is accepted by the other user
      */
-    requestVerification(userId: string, methods: any[], devices: any[]): any;
+    requestVerification(userId: string, methods: any[], devices: any[]): Promise_<module>;
     /**
      * Begin a key verification.
      *
@@ -300,7 +300,7 @@ export class MatrixClient {
      *
      * @return {Promise_<module:crypto/deviceinfo?>}
      */
-    getEventSenderDeviceInfo(event: MatrixEvent): any;
+    getEventSenderDeviceInfo(event: MatrixEvent): Promise_<module>;
     /**
      * Check if the sender of an event is verified
      *
@@ -317,14 +317,14 @@ export class MatrixClient {
      *                            key request.
      * @return {Promise_} A promise that will resolve when the key request is queued
      */
-    cancelAndResendEventRoomKeyRequest(event: MatrixEvent): any;
+    cancelAndResendEventRoomKeyRequest(event: MatrixEvent): Promise_<any>;
     /**
      * Enable end-to-end encryption for a room.
      * @param {string} roomId The room ID to enable encryption in.
      * @param {object} config The encryption config for the room.
      * @return {Promise_} A promise that will resolve when encryption is set up.
      */
-    setRoomEncryption(roomId: string, config: any): any;
+    setRoomEncryption(roomId: string, config: any): Promise_<any>;
     /**
      * Whether encryption is enabled for a room.
      * @param {string} roomId the room id to query.
@@ -348,7 +348,7 @@ export class MatrixClient {
      * @return {Promise_} a promise which resolves to a list of
      *    session export objects
      */
-    exportRoomKeys(): any;
+    exportRoomKeys(): Promise_<any>;
     /**
      * Import a list of room keys previously exported by exportRoomKeys
      *
@@ -357,7 +357,7 @@ export class MatrixClient {
      * @return {Promise_} a promise which resolves when the keys
      *    have been imported
      */
-    importRoomKeys(keys: any[]): any;
+    importRoomKeys(keys: any[]): Promise_<any>;
     /**
      * Force a re-check of the local key backup status against
      * what's on the server.
@@ -372,7 +372,7 @@ export class MatrixClient {
      * Get information about the current key backup.
      * @returns {Promise_} Information object from API or null
      */
-    getKeyBackupVersion(): any;
+    getKeyBackupVersion(): Promise_<any>;
     /**
      * @param {object} info key backup info dict from getKeyBackupVersion()
      * @return {object} {
@@ -411,7 +411,7 @@ export class MatrixClient {
      * @returns {Promise_<object>} Object that can be passed to createKeyBackupVersion and
      *     additionally has a 'recovery_key' member with the user-facing recovery key string.
      */
-    prepareKeyBackupVersion(password: string): any;
+    prepareKeyBackupVersion(password: string): Promise_<any>;
     /**
      * Create a new key backup version and enable it, using the information return
      * from prepareKeyBackupVersion.
@@ -419,7 +419,7 @@ export class MatrixClient {
      * @param {object} info Info object from prepareKeyBackupVersion
      * @returns {Promise_<object>} Object with 'version' param indicating the version created
      */
-    createKeyBackupVersion(info: any): any;
+    createKeyBackupVersion(info: any): Promise_<any>;
     deleteKeyBackupVersion(version: any): any;
     _makeKeyBackupPath(roomId: any, sessionId: any, version: any): {
         path: string;
@@ -436,7 +436,7 @@ export class MatrixClient {
      * @return {Promise_} a promise that will resolve when the keys
      * are uploaded
      */
-    sendKeyBackup(roomId: string, sessionId: string, version: any, data: any): any;
+    sendKeyBackup(roomId: string, sessionId: string, version: any, data: any): Promise_<any>;
     /**
      * Marks all group sessions as needing to be backed up and schedules them to
      * upload in the background as soon as possible.
@@ -447,7 +447,7 @@ export class MatrixClient {
      * them to upload in the background.
      * @returns {Promise_<int>} Resolves to the number of sessions requiring a backup.
      */
-    flagAllGroupSessionsForBackup(): any;
+    flagAllGroupSessionsForBackup(): Promise_<any>;
     isValidRecoveryKey(recoveryKey: any): boolean;
     restoreKeyBackupWithPassword(password: any, targetRoomId: any, targetSessionId: any, backupInfo: any): Promise<any>;
     restoreKeyBackupWithRecoveryKey(recoveryKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any): any;
@@ -468,10 +468,10 @@ export class MatrixClient {
     getGroups(): any[];
     /**
      * Get the config for the media repository.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves with an object containing the config.
      */
-    getMediaConfig(callback: any): any;
+    getMediaConfig(callback?: any): Promise_<any>;
     /**
      * Get the room for the given room ID.
      * This function will return a valid room for any room for which a Room event
@@ -510,11 +510,11 @@ export class MatrixClient {
      * Set account data event for the current user.
      * @param {string} eventType The event type
      * @param {Object} contents the contents object for the event
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setAccountData(eventType: string, contents: any, callback: any): any;
+    setAccountData(eventType: string, contents: any, callback?: any): Promise_<any>;
     /**
      * Get account data event of given type for the current user.
      * @param {string} eventType The event type
@@ -528,12 +528,12 @@ export class MatrixClient {
     getIgnoredUsers(): string[];
     /**
      * Sets the users that the current user should ignore.
-     * @param {string[]} userIds the user IDs to ignore
+     * @param {string[]} [userIds] the user IDs to ignore
      * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: Account data event
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setIgnoredUsers(userIds: string[], callback?: any): any;
+    setIgnoredUsers(userIds?: string[], callback?: any): Promise_<any>;
     /**
      * Gets whether or not a specific user is being ignored by this client.
      * @param {string} userId the user ID to check
@@ -551,7 +551,7 @@ export class MatrixClient {
      *                                     the signing URL is passed in this parameter.
      * @param {string[]} opts.viaServers The server names to try and join through in
      *                                   addition to those that are automatically chosen.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: Room object.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
@@ -559,7 +559,7 @@ export class MatrixClient {
         syncRoom: boolean;
         inviteSignUrl: boolean;
         viaServers: string[];
-    }, callback: any): any;
+    }, callback?: any): Promise_<any>;
     /**
      * Resend an event.
      * @param {MatrixEvent} event The event to resend.
@@ -568,7 +568,7 @@ export class MatrixClient {
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    resendEvent(event: MatrixEvent, room: any): any;
+    resendEvent(event: MatrixEvent, room: any): Promise_<any>;
     /**
      * Cancel a queued or unsent event.
      *
@@ -579,185 +579,185 @@ export class MatrixClient {
     /**
      * @param {string} roomId
      * @param {string} name
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomName(roomId: string, name: string, callback: any): any;
+    setRoomName(roomId: string, name: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} topic
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomTopic(roomId: string, topic: string, callback: any): any;
+    setRoomTopic(roomId: string, topic: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getRoomTags(roomId: string, callback: any): any;
+    getRoomTags(roomId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} tagName name of room tag to be set
      * @param {object} metadata associated with that tag to be stored
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomTag(roomId: string, tagName: string, metadata: any, callback: any): any;
+    setRoomTag(roomId: string, tagName: string, metadata: any, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} tagName name of room tag to be removed
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    deleteRoomTag(roomId: string, tagName: string, callback: any): any;
+    deleteRoomTag(roomId: string, tagName: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} eventType event type to be set
      * @param {object} content event content
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomAccountData(roomId: string, eventType: string, content: any, callback: any): any;
+    setRoomAccountData(roomId: string, eventType: string, content: any, callback?: any): Promise_<any>;
     /**
      * Set a user's power level.
      * @param {string} roomId
      * @param {string} userId
      * @param {Number} powerLevel
      * @param {MatrixEvent} event
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setPowerLevel(roomId: string, userId: string, powerLevel: number, event: MatrixEvent, callback: any): any;
+    setPowerLevel(roomId: string, userId: string, powerLevel: number, event: MatrixEvent, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} eventType
      * @param {Object} content
      * @param {string} txnId Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendEvent(roomId: string, eventType: string, content: any, txnId: string, callback: any): any;
+    sendEvent(roomId: string, eventType: string, content: any, txnId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {object} eventObject An object with the partial structure of an event, to which event_id, user_id, room_id and origin_server_ts will be added.
      * @param {string} txnId the txnId.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    _sendCompleteEvent(roomId: string, eventObject: any, txnId: string, callback: any): any;
+    _sendCompleteEvent(roomId: string, eventObject: any, txnId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} eventId
      * @param {string} [txnId]  transaction id. One will be made up if not
      *    supplied.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    redactEvent(roomId: string, eventId: string, txnId?: string, callback: any): any;
+    redactEvent(roomId: string, eventId: string, txnId?: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {Object} content
      * @param {string} txnId Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendMessage(roomId: string, content: any, txnId: string, callback: any): any;
+    sendMessage(roomId: string, content: any, txnId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} body
      * @param {string} txnId Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendTextMessage(roomId: string, body: string, txnId: string, callback: any): any;
+    sendTextMessage(roomId: string, body: string, txnId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} body
      * @param {string} txnId Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendNotice(roomId: string, body: string, txnId: string, callback: any): any;
+    sendNotice(roomId: string, body: string, txnId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} body
      * @param {string} txnId Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendEmoteMessage(roomId: string, body: string, txnId: string, callback: any): any;
+    sendEmoteMessage(roomId: string, body: string, txnId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} url
      * @param {Object} info
      * @param {string} text
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendImageMessage(roomId: string, url: string, info: any, text: string, callback: any): any;
+    sendImageMessage(roomId: string, url: string, info: any, text: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} url
      * @param {Object} info
      * @param {string} text
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendStickerMessage(roomId: string, url: string, info: any, text: string, callback: any): any;
+    sendStickerMessage(roomId: string, url: string, info: any, text: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} body
      * @param {string} htmlBody
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendHtmlMessage(roomId: string, body: string, htmlBody: string, callback: any): any;
+    sendHtmlMessage(roomId: string, body: string, htmlBody: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} body
      * @param {string} htmlBody
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendHtmlNotice(roomId: string, body: string, htmlBody: string, callback: any): any;
+    sendHtmlNotice(roomId: string, body: string, htmlBody: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} body
      * @param {string} htmlBody
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendHtmlEmote(roomId: string, body: string, htmlBody: string, callback: any): any;
+    sendHtmlEmote(roomId: string, body: string, htmlBody: string, callback?: any): Promise_<any>;
     /**
      * Send a receipt.
      * @param {Event} event The event being acknowledged
      * @param {string} receiptType The kind of receipt e.g. "m.read"
      * @param {object} opts Additional content to send alongside the receipt.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendReceipt(event: Event, receiptType: string, opts: any, callback: any): any;
+    sendReceipt(event: Event, receiptType: string, opts: any, callback?: any): Promise_<any>;
     /**
      * Send a read receipt.
      * @param {Event} event The event that has been read.
@@ -765,13 +765,13 @@ export class MatrixClient {
      * @param {boolean} opts.hidden True to prevent the receipt from being sent to
      * other users and homeservers. Default false (send to everyone). <b>This
      * property is unstable and may change in the future.</b>
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
     sendReadReceipt(event: Event, opts: {
         hidden: boolean;
-    }, callback: any): any;
+    }, callback?: any): Promise_<any>;
     /**
      * Set a marker to indicate the point in a room before which the user has read every
      * event. This can be retrieved from room account data (the event type is `m.fully_read`)
@@ -789,7 +789,7 @@ export class MatrixClient {
      */
     setRoomReadMarkers(roomId: string, rmEventId: string, rrEvent: string, opts: {
         hidden: any;
-    }): any;
+    }): Promise_<any>;
     /**
      * Get a preview of the given URL as of (roughly) the given point in time,
      * described as an object with OpenGraph keys and associated values.
@@ -800,21 +800,21 @@ export class MatrixClient {
      * describe (ms since epoch).  The preview returned will either be the most
      * recent one preceding this timestamp if available, or failing that the next
      * most recent available preview.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: Object of OG metadata.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      * May return synthesized attributes if the URL lacked OG meta.
      */
-    getUrlPreview(url: string, ts: number, callback: any): any;
+    getUrlPreview(url: string, ts: number, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {boolean} isTyping
      * @param {Number} timeoutMs
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendTyping(roomId: string, isTyping: boolean, timeoutMs: number, callback: any): any;
+    sendTyping(roomId: string, isTyping: boolean, timeoutMs: number, callback?: any): Promise_<any>;
     /**
      * Determines the history of room upgrades for a given room, as far as the
      * client can see. Returns an array of Rooms where the first entry is the
@@ -833,37 +833,37 @@ export class MatrixClient {
     /**
      * @param {string} roomId
      * @param {string} userId
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    invite(roomId: string, userId: string, callback: any): any;
+    invite(roomId: string, userId: string, callback?: any): Promise_<any>;
     /**
      * Invite a user to a room based on their email address.
      * @param {string} roomId The room to invite the user to.
      * @param {string} email The email address to invite.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    inviteByEmail(roomId: string, email: string, callback: any): any;
+    inviteByEmail(roomId: string, email: string, callback?: any): Promise_<any>;
     /**
      * Invite a user to a room based on a third-party identifier.
      * @param {string} roomId The room to invite the user to.
      * @param {string} medium The medium to invite the user e.g. "email".
      * @param {string} address The address for the specified medium.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    inviteByThreePid(roomId: string, medium: string, address: string, callback: any): any;
+    inviteByThreePid(roomId: string, medium: string, address: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    leave(roomId: string, callback: any): any;
+    leave(roomId: string, callback?: any): Promise_<any>;
     /**
      * Leaves all rooms in the chain of room upgrades based on the given room. By
      * default, this will leave all the previous and upgraded rooms, including the
@@ -875,42 +875,42 @@ export class MatrixClient {
      * @return {Promise_} Resolves when completed with an object keyed
      * by room ID and value of the error encountered when leaving or null.
      */
-    leaveRoomChain(roomId: string, includeFuture?: boolean): any;
+    leaveRoomChain(roomId: string, includeFuture?: boolean): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} userId
      * @param {string} reason Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    ban(roomId: string, userId: string, reason: string, callback: any): any;
+    ban(roomId: string, userId: string, reason: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {boolean} deleteRoom True to delete the room from the store on success.
      * Default: true.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    forget(roomId: string, deleteRoom: boolean, callback: any): any;
+    forget(roomId: string, deleteRoom: boolean, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} userId
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: Object (currently empty)
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    unban(roomId: string, userId: string, callback: any): any;
+    unban(roomId: string, userId: string, callback?: any): Promise_<any>;
     /**
      * @param {string} roomId
      * @param {string} userId
      * @param {string} reason Optional.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    kick(roomId: string, userId: string, reason: string, callback: any): any;
+    kick(roomId: string, userId: string, reason: string, callback?: any): Promise_<any>;
     /**
      * Obtain a dict of actions which should be performed for this event according
      * to the push rules for this user.  Caches the dict on the event.
@@ -921,25 +921,25 @@ export class MatrixClient {
     /**
      * @param {string} info The kind of info to set (e.g. 'avatar_url')
      * @param {Object} data The JSON object to set.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setProfileInfo(info: string, data: any, callback: any): any;
+    setProfileInfo(info: string, data: any, callback?: any): Promise_<any>;
     /**
      * @param {string} name
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setDisplayName(name: string, callback: any): any;
+    setDisplayName(name: string, callback?: any): Promise_<any>;
     /**
      * @param {string} url
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setAvatarUrl(url: string, callback: any): any;
+    setAvatarUrl(url: string, callback?: any): Promise_<any>;
     /**
      * Turn an MXC URL into an HTTP one. <strong>This method is experimental and
      * may change.</strong>
@@ -961,12 +961,12 @@ export class MatrixClient {
      * @return {Promise_} Resolves: to nothing
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    _unstable_setStatusMessage(newMessage: string): any;
+    _unstable_setStatusMessage(newMessage: string): Promise_<any>;
     /**
      * @param {Object} opts Options to apply
      * @param {string} opts.presence One of "online", "offline" or "unavailable"
      * @param {string} opts.status_msg The status message to attach.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      * @throws If 'presence' isn't a valid presence enum value.
@@ -974,30 +974,30 @@ export class MatrixClient {
     setPresence(opts: {
         presence: string;
         status_msg: string;
-    }, callback: any): any;
+    }, callback?: any): Promise_<any>;
     /**
     * Retrieve current user presence list.
-    * @param {module:client.callback} callback Optional.
+    * @param {module:client.callback} [callback] Optional.
     * @return {Promise_} Resolves: TODO
     * @return {module:http-api.MatrixError} Rejects: with an error response.
     */
-    getPresenceList(callback: any): any;
+    getPresenceList(callback?: any): Promise_<any>;
     /**
     * Add users to the current user presence list.
-    * @param {module:client.callback} callback Optional.
-    * @param {string[]} userIds
+    * @param {module:client.callback} [callback] Optional.
+    * @param {string[]} [userIds]
     * @return {Promise_} Resolves: TODO
     * @return {module:http-api.MatrixError} Rejects: with an error response.
     */
-    inviteToPresenceList(callback: any, userIds: string[]): any;
+    inviteToPresenceList(callback?: any, userIds?: string[]): Promise_<any>;
     /**
     * Drop users from the current user presence list.
-    * @param {module:client.callback} callback Optional.
-    * @param {string[]} userIds
+    * @param {module:client.callback} [callback] Optional.
+    * @param {string[]} [userIds]
     * @return {Promise_} Resolves: TODO
     * @return {module:http-api.MatrixError} Rejects: with an error response.
     **/
-    dropFromPresenceList(callback: any, userIds: string[]): any;
+    dropFromPresenceList(callback?: any, userIds?: string[]): Promise_<any>;
     /**
      * Retrieve older messages from the given room and put them in the timeline.
      *
@@ -1009,13 +1009,13 @@ export class MatrixClient {
      * @param {Room} room The room to get older messages in.
      * @param {Integer} limit Optional. The maximum number of previous events to
      * pull in. Default: 30.
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: Room. If you are at the beginning
      * of the timeline, <code>Room.oldState.paginationToken</code> will be
      * <code>null</code>.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    scrollback(room: any, limit: any, callback: any): any;
+    scrollback(room: any, limit: any, callback?: any): Promise_<any>;
     /**
      * Get an EventTimeline for the given event
      *
@@ -1030,7 +1030,7 @@ export class MatrixClient {
      *    {@link module:models/event-timeline~EventTimeline} including the given
      *    event
      */
-    getEventTimeline(timelineSet: any, eventId: string): any;
+    getEventTimeline(timelineSet: any, eventId: string): Promise_<any>;
     /**
      * Makes a request to /messages with the appropriate lazy loading filter set.
      * XXX: if we do get rid of scrollback (as it's not used at the moment),
@@ -1043,7 +1043,7 @@ export class MatrixClient {
      * @param {Filter} timelineFilter the timeline filter to pass
      * @return {Promise_}
      */
-    _createMessagesRequest(roomId: string, fromToken: string, limit: number, dir: string, timelineFilter?: any): any;
+    _createMessagesRequest(roomId: string, fromToken: string, limit: number, dir: string, timelineFilter?: any): Promise_<any>;
     /**
      * Take an EventTimeline, and back/forward-fill results.
      *
@@ -1060,7 +1060,7 @@ export class MatrixClient {
     paginateEventTimeline(eventTimeline: any, opts?: {
         backwards?: any;
         limit?: number;
-    }): any;
+    }): Promise_<any>;
     /**
      * Reset the notifTimelineSet entirely, paginating in some historical notifs as
      * a starting point for subsequent pagination.
@@ -1073,7 +1073,7 @@ export class MatrixClient {
      * @return {Promise_} Resolves: Room object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    peekInRoom(roomId: string): any;
+    peekInRoom(roomId: string): Promise_<any>;
     /**
      * Stop any ongoing room peeking.
      */
@@ -1094,7 +1094,7 @@ export class MatrixClient {
     setGuestAccess(roomId: string, opts: {
         allowJoin: boolean;
         allowRead: boolean;
-    }): any;
+    }): Promise_<any>;
     /**
      * Requests an email verification token for the purposes of registration.
      * This API requests a token from the homeserver.
@@ -1109,7 +1109,7 @@ export class MatrixClient {
      * @param {string} nextLink As requestEmailToken
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    requestRegisterEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): any;
+    requestRegisterEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise_<any>;
     /**
      * Requests a text message verification token for the purposes of registration.
      * This API requests a token from the homeserver.
@@ -1124,7 +1124,7 @@ export class MatrixClient {
      * @param {string} nextLink As requestEmailToken
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    requestRegisterMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string): any;
+    requestRegisterMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise_<any>;
     /**
      * Requests an email verification token for the purposes of adding a
      * third party identifier to an account.
@@ -1142,7 +1142,7 @@ export class MatrixClient {
      * @param {string} nextLink As requestEmailToken
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    requestAdd3pidEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): any;
+    requestAdd3pidEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise_<any>;
     /**
      * Requests a text message verification token for the purposes of adding a
      * third party identifier to an account.
@@ -1157,7 +1157,7 @@ export class MatrixClient {
      * @param {string} nextLink As requestEmailToken
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    requestAdd3pidMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string): any;
+    requestAdd3pidMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise_<any>;
     /**
      * Requests an email verification token for the purposes of resetting
      * the password on an account.
@@ -1174,10 +1174,10 @@ export class MatrixClient {
      * @param {string} clientSecret As requestEmailToken
      * @param {number} sendAttempt As requestEmailToken
      * @param {string} nextLink As requestEmailToken
-     * @param {module:client.callback} callback Optional. As requestEmailToken
+     * @param {module:client.callback} [callback] Optional. As requestEmailToken
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    requestPasswordEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): any;
+    requestPasswordEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise_<any>;
     /**
      * Requests a text message verification token for the purposes of resetting
      * the password on an account.
@@ -1191,7 +1191,7 @@ export class MatrixClient {
      * @param {string} nextLink As requestEmailToken
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    requestPasswordMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string): any;
+    requestPasswordMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise_<any>;
     /**
      * Internal utility function for requesting validation tokens from usage-specific
      * requestToken endpoints.
@@ -1200,7 +1200,7 @@ export class MatrixClient {
      * @param {object} params Parameters for the POST request
      * @return {Promise_} Resolves: As requestEmailToken
      */
-    _requestTokenFromEndpoint(endpoint: string, params: any): any;
+    _requestTokenFromEndpoint(endpoint: string, params: any): Promise_<any>;
     /**
      * Get the room-kind push rule associated with a room.
      * @param {string} scope "global" or device-specific.
@@ -1217,21 +1217,21 @@ export class MatrixClient {
      * @return {Promise_} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomMutePushRule(scope: string, roomId: string, mute: string): any;
+    setRoomMutePushRule(scope: string, roomId: string, mute: string): Promise_<any>;
     /**
      * Perform a server-side search for messages containing the given text.
      * @param {Object} opts Options for the search.
      * @param {string} opts.query The text to query.
      * @param {string=} opts.keys The keys to search on. Defaults to all keys. One
      * of "content.body", "content.name", "content.topic".
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
     searchMessageText(opts: {
         query: string;
         keys?: string;
-    }, callback: any): any;
+    }, callback?: any): Promise_<any>;
     /**
      * Perform a server-side search for room events.
      *
@@ -1255,7 +1255,7 @@ export class MatrixClient {
     searchRoomEvents(opts: {
         term: string;
         filter: any;
-    }): any;
+    }): Promise_<any>;
     /**
      * Take a result from an earlier searchRoomEvents call, and backfill results.
      *
@@ -1263,7 +1263,7 @@ export class MatrixClient {
      * @return {Promise_} Resolves: updated result object
      * @return {Error} Rejects: with an error response.
      */
-    backPaginateRoomEventsSearch(searchResults: any): any;
+    backPaginateRoomEventsSearch(searchResults: any): Promise_<any>;
     /**
      * helper for searchRoomEvents and backPaginateRoomEventsSearch. Processes the
      * response from the API call and updates the searchResults
@@ -1280,7 +1280,7 @@ export class MatrixClient {
      * been added to the data store.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    syncLeftRooms(): any;
+    syncLeftRooms(): Promise_<any>;
     _syncLeftRoomsPromise_: Promise<any>;
     /**
      * Create a new filter.
@@ -1298,13 +1298,13 @@ export class MatrixClient {
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getFilter(userId: string, filterId: string, allowCached: boolean): any;
+    getFilter(userId: string, filterId: string, allowCached: boolean): Promise_<any>;
     /**
      * @param {string} filterName
      * @param {Filter} filter
      * @return {Promise_<String>} Filter ID
      */
-    getOrCreateFilter(filterName: string, filter: any): any;
+    getOrCreateFilter(filterName: string, filter: any): Promise_<string>;
     /**
      * Gets a bearer token from the Home Server that the user can
      * present to a third party in order to prove their ownership
@@ -1312,13 +1312,13 @@ export class MatrixClient {
      * @return {Promise_} Resolves: Token object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getOpenIdToken(): any;
+    getOpenIdToken(): Promise_<any>;
     /**
-     * @param {module:client.callback} callback Optional.
+     * @param {module:client.callback} [callback] Optional.
      * @return {Promise_} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    turnServer(callback: any): any;
+    turnServer(callback?: any): Promise_<any>;
     /**
      * Get the TURN servers for this home server.
      * @return {Array<Object>} The servers or an empty list.
@@ -1404,7 +1404,7 @@ export class MatrixClient {
      * created with (e.g. lazy loading)
      * @param {object} opts the complete set of client options
      * @return {Promise_} for store operation */
-    _storeClientOptions(): any;
+    _storeClientOptions(): Promise_<any>;
     /**
      * High level helper method to stop the client from polling and allow a
      * clean shutdown.
@@ -1415,38 +1415,38 @@ export class MatrixClient {
      * unstable APIs it supports
      * @return {Promise_<object>} The server /versions response
      */
-    getVersions(): any;
+    getVersions(): Promise_<any>;
     /**
      * Check if a particular spec version is supported by the server.
      * @param {string} version The spec version (such as "r0.5.0") to check for.
      * @return {Promise_<bool>} Whether it is supported
      */
-    isVersionSupported(version: string): any;
+    isVersionSupported(version: string): Promise_<any>;
     /**
      * Query the server to see if it support members lazy loading
      * @return {Promise_<boolean>} true if server supports lazy loading
      */
-    doesServerSupportLazyLoading(): any;
+    doesServerSupportLazyLoading(): Promise_<boolean>;
     /**
      * Query the server to see if the `id_server` parameter is required
      * when registering with an 3pid, adding a 3pid or resetting password.
      * @return {Promise_<boolean>} true if id_server parameter is required
      */
-    doesServerRequireIdServerParam(): any;
+    doesServerRequireIdServerParam(): Promise_<boolean>;
     /**
      * Query the server to see if the `id_access_token` parameter can be safely
      * passed to the homeserver. Some homeservers may trigger errors if they are not
      * prepared for the new parameter.
      * @return {Promise_<boolean>} true if id_access_token can be sent
      */
-    doesServerAcceptIdentityAccessToken(): any;
+    doesServerAcceptIdentityAccessToken(): Promise_<boolean>;
     /**
      * Query the server to see if it supports separate 3PID add and bind functions.
      * This affects the sequence of API calls clients should use for these operations,
      * so it's helpful to be able to check for support.
      * @return {Promise_<boolean>} true if separate functions are supported
      */
-    doesServerSupportSeparateAddAndBind(): any;
+    doesServerSupportSeparateAddAndBind(): Promise_<boolean>;
     /**
      * Get if lazy loading members is being used.
      * @return {boolean} Whether or not members are lazy loaded by this client
@@ -1511,5 +1511,8 @@ import ReEmitter from "./ReEmitter";
 import SyncApi from "./sync";
 import RoomList from "./crypto/RoomList";
 import PushProcessor from "./pushprocessor";
+type Promise_<T = any> = Promise<T>;
+declare const Promise_: typeof globalThis['Promise'];
 import { MatrixEvent } from "./models/event";
+export {};
 //# sourceMappingURL=client.d.ts.map
