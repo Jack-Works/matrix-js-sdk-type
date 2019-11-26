@@ -350,11 +350,11 @@ declare class OlmDevice {
      *
      * @param {string} roomId    room in which the message was received
      * @param {string} senderKey base64-encoded curve25519 key of the sender
-     * @param {sring} sessionId session identifier
+     * @param {string} sessionId session identifier
      *
      * @returns {Promise<boolean>} true if we have the keys to this session
      */
-    hasInboundSessionKeys(roomId: string, senderKey: string, sessionId: any): Promise<boolean>;
+    hasInboundSessionKeys(roomId: string, senderKey: string, sessionId: string): Promise<boolean>;
     /**
      * Extract the keys to a given megolm session, for sharing
      *

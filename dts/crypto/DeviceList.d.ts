@@ -185,11 +185,11 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      *
      * @param {String[]} users  list of userIds
      *
-     * @return {module:client.Promise} resolves when all the users listed have
+     * @return {Promise} resolves when all the users listed have
      *     been updated. rejects if there was a problem updating any of the
      *     users.
      */
-    _doKeyDownload(users: string[]): any;
+    _doKeyDownload(users: string[]): Promise<any>;
     addListener(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
     on(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
     once(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
@@ -227,11 +227,11 @@ declare class DeviceListUpdateSerialiser {
      * @param {String} syncToken sync token to pass in the query request, to
      *     help the HS give the most recent results
      *
-     * @return {module:client.Promise} resolves when all the users listed have
+     * @return {Promise} resolves when all the users listed have
      *     been updated. rejects if there was a problem updating any of the
      *     users.
      */
-    updateDevicesForUsers(users: string[], syncToken: string): any;
+    updateDevicesForUsers(users: string[], syncToken: string): Promise<any>;
     _doQueuedQueries(): any;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }

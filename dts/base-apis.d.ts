@@ -70,9 +70,9 @@ declare class MatrixBaseApis {
      * Check whether a username is available prior to registration. An error response
      * indicates an invalid/unavailable username.
      * @param {string} username The username to check the availability of.
-     * @return {module:client.Promise} Resolves: to `true`.
+     * @return {Promise} Resolves: to `true`.
      */
-    isUsernameAvailable(username: string): any;
+    isUsernameAvailable(username: string): Promise<any>;
     /**
      * @param {string} username
      * @param {string} password
@@ -84,41 +84,41 @@ declare class MatrixBaseApis {
      * @param {string} guestAccessToken
      * @param {string} inhibitLogin
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    register(username: string, password: string, sessionId: string, auth: any, bindThreepids: any, guestAccessToken: string, inhibitLogin: string, callback: any): any;
+    register(username: string, password: string, sessionId: string, auth: any, bindThreepids: any, guestAccessToken: string, inhibitLogin: string, callback: any): Promise<any>;
     /**
      * Register a guest account.
      * @param {Object=} opts Registration options
      * @param {Object} opts.body JSON HTTP body to provide.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    registerGuest(opts?: any, callback: any): any;
+    registerGuest(opts?: any, callback: any): Promise<any>;
     /**
      * @param {Object} data   parameters for registration request
      * @param {string=} kind  type of user to register. may be "guest"
      * @param {module:client.callback=} callback
-     * @return {module:client.Promise} Resolves: to the /register response
+     * @return {Promise} Resolves: to the /register response
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    registerRequest(data: any, kind?: string, callback: any): any;
+    registerRequest(data: any, kind?: string, callback: any): Promise<any>;
     /**
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    loginFlows(callback: any): any;
+    loginFlows(callback: any): Promise<any>;
     /**
      * @param {string} loginType
      * @param {Object} data
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    login(loginType: string, data: any, callback: any): any;
+    login(loginType: string, data: any, callback: any): Promise<any>;
     credentials: {
         userId: any;
     };
@@ -126,17 +126,17 @@ declare class MatrixBaseApis {
      * @param {string} user
      * @param {string} password
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    loginWithPassword(user: string, password: string, callback: any): any;
+    loginWithPassword(user: string, password: string, callback: any): Promise<any>;
     /**
      * @param {string} relayState URL Callback after SAML2 Authentication
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    loginWithSAML2(relayState: string, callback: any): any;
+    loginWithSAML2(relayState: string, callback: any): Promise<any>;
     /**
      * @param {string} redirectUrl The URL to redirect to after the HS
      * authenticates with CAS.
@@ -154,10 +154,10 @@ declare class MatrixBaseApis {
     /**
      * @param {string} token Login token previously received from homeserver
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    loginWithToken(token: string, callback: any): any;
+    loginWithToken(token: string, callback: any): Promise<any>;
     /**
      * Logs out the current session.
      * Obviously, further calls that require authorisation should fail after this
@@ -165,9 +165,9 @@ declare class MatrixBaseApis {
      * it is up to the caller to either reset or destroy the MatrixClient after
      * this method succeeds.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: On success, the empty object
+     * @return {Promise} Resolves: On success, the empty object
      */
-    logout(callback: any): any;
+    logout(callback: any): Promise<any>;
     /**
      * Deactivates the logged-in account.
      * Obviously, further calls that require authorisation should fail after this
@@ -178,9 +178,9 @@ declare class MatrixBaseApis {
      * @param {boolean} erase Optional. If set, send as `erase` attribute in the
      * JSON request body, indicating whether the account should be erased. Defaults
      * to false.
-     * @return {module:client.Promise} Resolves: On success, the empty object
+     * @return {Promise} Resolves: On success, the empty object
      */
-    deactivateAccount(auth: any, erase: boolean): any;
+    deactivateAccount(auth: any, erase: boolean): Promise<any>;
     /**
      * Get the fallback URL to use for unknown interactive-auth stages.
      *
@@ -200,7 +200,7 @@ declare class MatrixBaseApis {
      * @param {string} options.name The name to give this room.
      * @param {string} options.topic The topic to give this room.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: <code>{room_id: {string},
+     * @return {Promise} Resolves: <code>{room_id: {string},
      * room_alias: {string(opt)}}</code>
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
@@ -210,7 +210,7 @@ declare class MatrixBaseApis {
         invite: string[];
         name: string;
         topic: string;
-    }, callback: any): any;
+    }, callback: any): Promise<any>;
     /**
      * Fetches relations for a given event
      * @param {string} roomId the room of the event
@@ -227,10 +227,10 @@ declare class MatrixBaseApis {
     /**
      * @param {string} roomId
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    roomState(roomId: string, callback: any): any;
+    roomState(roomId: string, callback: any): Promise<any>;
     /**
      * Get an event in a room by its event id.
      * @param {string} roomId
@@ -247,30 +247,30 @@ declare class MatrixBaseApis {
      * @param {string} excludeMembership the membership type to exclude from the response
      * @param {string} atEventId the id of the event for which moment in the timeline the members should be returned for
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: dictionary of userid to profile information
+     * @return {Promise} Resolves: dictionary of userid to profile information
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    members(roomId: string, includeMembership: string, excludeMembership: string, atEventId: string, callback: any): any;
+    members(roomId: string, includeMembership: string, excludeMembership: string, atEventId: string, callback: any): Promise<any>;
     /**
      * Upgrades a room to a new protocol version
      * @param {string} roomId
      * @param {string} newVersion The target version to upgrade to
-     * @return {module:client.Promise} Resolves: Object with key 'replacement_room'
+     * @return {Promise} Resolves: Object with key 'replacement_room'
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    upgradeRoom(roomId: string, newVersion: string): any;
+    upgradeRoom(roomId: string, newVersion: string): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Group summary object
+     * @return {Promise} Resolves: Group summary object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getGroupSummary(groupId: string): any;
+    getGroupSummary(groupId: string): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Group profile object
+     * @return {Promise} Resolves: Group profile object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getGroupProfile(groupId: string): any;
+    getGroupProfile(groupId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {Object} profile The group profile object
@@ -278,7 +278,7 @@ declare class MatrixBaseApis {
      * @param {string=} profile.avatar_url MXC avatar URL
      * @param {string=} profile.short_description A short description of the room
      * @param {string=} profile.long_description A longer HTML description of the room
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
     setGroupProfile(groupId: string, profile: {
@@ -286,141 +286,141 @@ declare class MatrixBaseApis {
         avatar_url?: string;
         short_description?: string;
         long_description?: string;
-    }): any;
+    }): Promise<any>;
     /**
      * @param {string} groupId
      * @param {object} policy The join policy for the group. Must include at
      *     least a 'type' field which is 'open' if anyone can join the group
      *     the group without prior approval, or 'invite' if an invite is
      *     required to join.
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setGroupJoinPolicy(groupId: string, policy: any): any;
+    setGroupJoinPolicy(groupId: string, policy: any): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Group users list object
+     * @return {Promise} Resolves: Group users list object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getGroupUsers(groupId: string): any;
+    getGroupUsers(groupId: string): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Group users list object
+     * @return {Promise} Resolves: Group users list object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getGroupInvitedUsers(groupId: string): any;
+    getGroupInvitedUsers(groupId: string): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Group rooms list object
+     * @return {Promise} Resolves: Group rooms list object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getGroupRooms(groupId: string): any;
-    /**
-     * @param {string} groupId
-     * @param {string} userId
-     * @return {module:client.Promise} Resolves: Empty object
-     * @return {module:http-api.MatrixError} Rejects: with an error response.
-     */
-    inviteUserToGroup(groupId: string, userId: string): any;
+    getGroupRooms(groupId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} userId
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    removeUserFromGroup(groupId: string, userId: string): any;
+    inviteUserToGroup(groupId: string, userId: string): Promise<any>;
+    /**
+     * @param {string} groupId
+     * @param {string} userId
+     * @return {Promise} Resolves: Empty object
+     * @return {module:http-api.MatrixError} Rejects: with an error response.
+     */
+    removeUserFromGroup(groupId: string, userId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} userId
      * @param {string} roleId Optional.
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    addUserToGroupSummary(groupId: string, userId: string, roleId: string): any;
+    addUserToGroupSummary(groupId: string, userId: string, roleId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} userId
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    removeUserFromGroupSummary(groupId: string, userId: string): any;
+    removeUserFromGroupSummary(groupId: string, userId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} roomId
      * @param {string} categoryId Optional.
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    addRoomToGroupSummary(groupId: string, roomId: string, categoryId: string): any;
+    addRoomToGroupSummary(groupId: string, roomId: string, categoryId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} roomId
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    removeRoomFromGroupSummary(groupId: string, roomId: string): any;
+    removeRoomFromGroupSummary(groupId: string, roomId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} roomId
      * @param {bool} isPublic Whether the room-group association is visible to non-members
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    addRoomToGroup(groupId: string, roomId: string, isPublic: any): any;
+    addRoomToGroup(groupId: string, roomId: string, isPublic: any): Promise<any>;
     /**
      * Configure the visibility of a room-group association.
      * @param {string} groupId
      * @param {string} roomId
      * @param {bool} isPublic Whether the room-group association is visible to non-members
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    updateGroupRoomVisibility(groupId: string, roomId: string, isPublic: any): any;
+    updateGroupRoomVisibility(groupId: string, roomId: string, isPublic: any): Promise<any>;
     /**
      * @param {string} groupId
      * @param {string} roomId
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    removeRoomFromGroup(groupId: string, roomId: string): any;
+    removeRoomFromGroup(groupId: string, roomId: string): Promise<any>;
     /**
      * @param {string} groupId
      * @param {Object} opts Additional options to send alongside the acceptance.
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    acceptGroupInvite(groupId: string, opts?: any): any;
+    acceptGroupInvite(groupId: string, opts?: any): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    joinGroup(groupId: string): any;
+    joinGroup(groupId: string): Promise<any>;
     /**
      * @param {string} groupId
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    leaveGroup(groupId: string): any;
+    leaveGroup(groupId: string): Promise<any>;
     /**
-     * @return {module:client.Promise} Resolves: The groups to which the user is joined
+     * @return {Promise} Resolves: The groups to which the user is joined
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getJoinedGroups(): any;
+    getJoinedGroups(): Promise<any>;
     /**
      * @param {Object} content Request content
      * @param {string} content.localpart The local part of the desired group ID
      * @param {Object} content.profile Group profile object
-     * @return {module:client.Promise} Resolves: Object with key group_id: id of the created group
+     * @return {Promise} Resolves: Object with key group_id: id of the created group
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
     createGroup(content: {
         localpart: string;
         profile: any;
-    }): any;
+    }): Promise<any>;
     /**
      * @param {string[]} userIds List of user IDs
-     * @return {module:client.Promise} Resolves: Object as exmaple below
+     * @return {Promise} Resolves: Object as exmaple below
      *
      *     {
      *         "users": {
@@ -431,42 +431,42 @@ declare class MatrixBaseApis {
      *     }
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getPublicisedGroups(userIds: string[]): any;
+    getPublicisedGroups(userIds: string[]): Promise<any>;
     /**
      * @param {string} groupId
      * @param {bool} isPublic Whether the user's membership of this group is made public
-     * @return {module:client.Promise} Resolves: Empty object
+     * @return {Promise} Resolves: Empty object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setGroupPublicity(groupId: string, isPublic: any): any;
+    setGroupPublicity(groupId: string, isPublic: any): Promise<any>;
     /**
      * Retrieve a state event.
      * @param {string} roomId
      * @param {string} eventType
      * @param {string} stateKey
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getStateEvent(roomId: string, eventType: string, stateKey: string, callback: any): any;
+    getStateEvent(roomId: string, eventType: string, stateKey: string, callback: any): Promise<any>;
     /**
      * @param {string} roomId
      * @param {string} eventType
      * @param {Object} content
      * @param {string} stateKey
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    sendStateEvent(roomId: string, eventType: string, content: any, stateKey: string, callback: any): any;
+    sendStateEvent(roomId: string, eventType: string, content: any, stateKey: string, callback: any): Promise<any>;
     /**
      * @param {string} roomId
      * @param {Number} limit
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    roomInitialSync(roomId: string, limit: number, callback: any): any;
+    roomInitialSync(roomId: string, limit: number, callback: any): Promise<any>;
     /**
      * Set a marker to indicate the point in a room before which the user has read every
      * event. This can be retrieved from room account data (the event type is `m.fully_read`)
@@ -480,24 +480,24 @@ declare class MatrixBaseApis {
      * @param {object} opts Options for the read markers.
      * @param {object} opts.hidden True to hide the read receipt from other users. <b>This
      * property is currently unstable and may change in the future.</b>
-     * @return {module:client.Promise} Resolves: the empty object, {}.
+     * @return {Promise} Resolves: the empty object, {}.
      */
     setRoomReadMarkersHttpRequest(roomId: string, rmEventId: string, rrEventId: string, opts: {
         hidden: any;
-    }): any;
+    }): Promise<any>;
     /**
-     * @return {module:client.Promise} Resolves: A list of the user's current rooms
+     * @return {Promise} Resolves: A list of the user's current rooms
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getJoinedRooms(): any;
+    getJoinedRooms(): Promise<any>;
     /**
      * Retrieve membership info. for a room.
      * @param {string} roomId ID of the room to get membership for
-     * @return {module:client.Promise} Resolves: A list of currently joined users
+     * @return {Promise} Resolves: A list of currently joined users
      *                                 and their profile data.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getJoinedRoomMembers(roomId: string): any;
+    getJoinedRoomMembers(roomId: string): Promise<any>;
     /**
      * @param {Object} options Options for this request
      * @param {string} options.server The remote server to query for the room list.
@@ -508,7 +508,7 @@ declare class MatrixBaseApis {
      * @param {object} options.filter Filter parameters
      * @param {string} options.filter.generic_search_term String to search for
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
     publicRooms(options: {
@@ -518,48 +518,48 @@ declare class MatrixBaseApis {
         filter: {
             generic_search_term: string;
         };
-    }, callback: any): any;
+    }, callback: any): Promise<any>;
     /**
      * Create an alias to room ID mapping.
      * @param {string} alias The room alias to create.
      * @param {string} roomId The room ID to link the alias to.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO.
+     * @return {Promise} Resolves: TODO.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    createAlias(alias: string, roomId: string, callback: any): any;
+    createAlias(alias: string, roomId: string, callback: any): Promise<any>;
     /**
      * Delete an alias to room ID mapping.  This alias must be on your local server
      * and you must have sufficient access to do this operation.
      * @param {string} alias The room alias to delete.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO.
+     * @return {Promise} Resolves: TODO.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    deleteAlias(alias: string, callback: any): any;
+    deleteAlias(alias: string, callback: any): Promise<any>;
     /**
      * Get room info for the given alias.
      * @param {string} alias The room alias to resolve.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: Object with room_id and servers.
+     * @return {Promise} Resolves: Object with room_id and servers.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getRoomIdForAlias(alias: string, callback: any): any;
+    getRoomIdForAlias(alias: string, callback: any): Promise<any>;
     /**
      * @param {string} roomAlias
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    resolveRoomAlias(roomAlias: string, callback: any): any;
+    resolveRoomAlias(roomAlias: string, callback: any): Promise<any>;
     /**
      * Get the visibility of a room in the current HS's room directory
      * @param {string} roomId
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getRoomDirectoryVisibility(roomId: string, callback: any): any;
+    getRoomDirectoryVisibility(roomId: string, callback: any): Promise<any>;
     /**
      * Set the visbility of a room in the current HS's room directory
      * @param {string} roomId
@@ -567,10 +567,10 @@ declare class MatrixBaseApis {
      *                 in the public directory, or "private" to make
      *                 it invisible.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomDirectoryVisibility(roomId: string, visibility: string, callback: any): any;
+    setRoomDirectoryVisibility(roomId: string, visibility: string, callback: any): Promise<any>;
     /**
      * Set the visbility of a room bridged to a 3rd party network in
      * the current HS's room directory.
@@ -581,22 +581,22 @@ declare class MatrixBaseApis {
      *                 in the public directory, or "private" to make
      *                 it invisible.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setRoomDirectoryVisibilityAppService(networkId: string, roomId: string, visibility: string, callback: any): any;
+    setRoomDirectoryVisibilityAppService(networkId: string, roomId: string, visibility: string, callback: any): Promise<any>;
     /**
      * Query the user directory with a term matching user IDs, display names and domains.
      * @param {object} opts options
      * @param {string} opts.term the term with which to search.
      * @param {number} opts.limit the maximum number of results to return. The server will
      *                 apply a limit if unspecified.
-     * @return {module:client.Promise} Resolves: an array of results.
+     * @return {Promise} Resolves: an array of results.
      */
     searchUserDirectory(opts: {
         term: string;
         limit: number;
-    }): any;
+    }): Promise<any>;
     /**
      * Upload a file to the media repository on the home server.
      *
@@ -633,7 +633,7 @@ declare class MatrixBaseApis {
      *    data has been uploaded, with an object containing the fields `loaded`
      *    (number of bytes transferred) and `total` (total size, if known).
      *
-     * @return {module:client.Promise} Resolves to response object, as
+     * @return {Promise} Resolves to response object, as
      *    determined by this.opts.onlyData, opts.rawResponse, and
      *    opts.onlyContentUri.  Rejects with an error (usually a MatrixError).
      */
@@ -645,13 +645,13 @@ declare class MatrixBaseApis {
         onlyContentUri?: boolean;
         callback?: Function;
         progressHandler?: Function;
-    }): any;
+    }): Promise<any>;
     /**
      * Cancel a file upload in progress
-     * @param {module:client.Promise} promise The promise returned from uploadContent
+     * @param {Promise} promise The promise returned from uploadContent
      * @return {boolean} true if canceled, otherwise false
      */
-    cancelUpload(promise: any): boolean;
+    cancelUpload(promise: Promise<any>): boolean;
     /**
      * Get a list of all file uploads in progress
      * @return {array} Array of objects representing current uploads.
@@ -666,16 +666,16 @@ declare class MatrixBaseApis {
      * @param {string} info The kind of info to retrieve (e.g. 'displayname',
      * 'avatar_url').
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getProfileInfo(userId: string, info: string, callback: any): any;
+    getProfileInfo(userId: string, info: string, callback: any): Promise<any>;
     /**
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getThreePids(callback: any): any;
+    getThreePids(callback: any): Promise<any>;
     /**
      * Add a 3PID to your homeserver account and optionally bind it to an identity
      * server as well. An identity server is required as part of the `creds` object.
@@ -686,10 +686,10 @@ declare class MatrixBaseApis {
      * @param {Object} creds
      * @param {boolean} bind
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: on success
+     * @return {Promise} Resolves: on success
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    addThreePid(creds: any, bind: boolean, callback: any): any;
+    addThreePid(creds: any, bind: boolean, callback: any): Promise<any>;
     /**
      * Add a 3PID to your homeserver account. This API does not use an identity
      * server, as the homeserver is expected to handle 3PID ownership validation.
@@ -699,10 +699,10 @@ declare class MatrixBaseApis {
      *
      * @param {Object} data A object with 3PID validation data from having called
      * `account/3pid/<medium>/requestToken` on the homeserver.
-     * @return {module:client.Promise} Resolves: on success
+     * @return {Promise} Resolves: on success
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    addThreePidOnly(data: any): any;
+    addThreePidOnly(data: any): Promise<any>;
     /**
      * Bind a 3PID for discovery onto an identity server via the homeserver. The
      * identity server handles 3PID ownership validation and the homeserver records
@@ -714,10 +714,10 @@ declare class MatrixBaseApis {
      * @param {Object} data A object with 3PID validation data from having called
      * `validate/<medium>/requestToken` on the identity server. It should also
      * contain `id_server` and `id_access_token` fields as well.
-     * @return {module:client.Promise} Resolves: on success
+     * @return {Promise} Resolves: on success
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    bindThreePid(data: any): any;
+    bindThreePid(data: any): Promise<any>;
     /**
      * Unbind a 3PID for discovery on an identity server via the homeserver. The
      * homeserver removes its record of the binding to keep an updated record of
@@ -726,103 +726,103 @@ declare class MatrixBaseApis {
      * @param {string} medium The threepid medium (eg. 'email')
      * @param {string} address The threepid address (eg. 'bob@example.com')
      *        this must be as returned by getThreePids.
-     * @return {module:client.Promise} Resolves: on success
+     * @return {Promise} Resolves: on success
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    unbindThreePid(medium: string, address: string): any;
+    unbindThreePid(medium: string, address: string): Promise<any>;
     /**
      * @param {string} medium The threepid medium (eg. 'email')
      * @param {string} address The threepid address (eg. 'bob@example.com')
      *        this must be as returned by getThreePids.
-     * @return {module:client.Promise} Resolves: The server response on success
+     * @return {Promise} Resolves: The server response on success
      *     (generally the empty JSON object)
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    deleteThreePid(medium: string, address: string): any;
+    deleteThreePid(medium: string, address: string): Promise<any>;
     /**
      * Make a request to change your password.
      * @param {Object} authDict
      * @param {string} newPassword The new desired password.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setPassword(authDict: any, newPassword: string, callback: any): any;
+    setPassword(authDict: any, newPassword: string, callback: any): Promise<any>;
     /**
      * Gets all devices recorded for the logged-in user
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getDevices(): any;
+    getDevices(): Promise<any>;
     /**
      * Update the given device
      *
      * @param {string} device_id  device to update
      * @param {Object} body       body of request
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setDeviceDetails(device_id: string, body: any): any;
+    setDeviceDetails(device_id: string, body: any): Promise<any>;
     /**
      * Delete the given device
      *
      * @param {string} device_id  device to delete
      * @param {object} auth Optional. Auth data to supply for User-Interactive auth.
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    deleteDevice(device_id: string, auth: any): any;
+    deleteDevice(device_id: string, auth: any): Promise<any>;
     /**
      * Delete multiple device
      *
      * @param {string[]} devices IDs of the devices to delete
      * @param {object} auth Optional. Auth data to supply for User-Interactive auth.
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    deleteMultipleDevices(devices: string[], auth: any): any;
+    deleteMultipleDevices(devices: string[], auth: any): Promise<any>;
     /**
      * Gets all pushers registered for the logged-in user
      *
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: Array of objects representing pushers
+     * @return {Promise} Resolves: Array of objects representing pushers
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getPushers(callback: any): any;
+    getPushers(callback: any): Promise<any>;
     /**
      * Adds a new pusher or updates an existing pusher
      *
      * @param {Object} pusher Object representing a pusher
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: Empty json object on success
+     * @return {Promise} Resolves: Empty json object on success
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setPusher(pusher: any, callback: any): any;
+    setPusher(pusher: any, callback: any): Promise<any>;
     /**
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getPushRules(callback: any): any;
+    getPushRules(callback: any): Promise<any>;
     /**
      * @param {string} scope
      * @param {string} kind
      * @param {string} ruleId
      * @param {Object} body
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    addPushRule(scope: string, kind: string, ruleId: string, body: any, callback: any): any;
+    addPushRule(scope: string, kind: string, ruleId: string, body: any, callback: any): Promise<any>;
     /**
      * @param {string} scope
      * @param {string} kind
      * @param {string} ruleId
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    deletePushRule(scope: string, kind: string, ruleId: string, callback: any): any;
+    deletePushRule(scope: string, kind: string, ruleId: string, callback: any): Promise<any>;
     /**
      * Enable or disable a push notification rule.
      * @param {string} scope
@@ -830,10 +830,10 @@ declare class MatrixBaseApis {
      * @param {string} ruleId
      * @param {boolean} enabled
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setPushRuleEnabled(scope: string, kind: string, ruleId: string, enabled: boolean, callback: any): any;
+    setPushRuleEnabled(scope: string, kind: string, ruleId: string, enabled: boolean, callback: any): Promise<any>;
     /**
      * Set the actions for a push notification rule.
      * @param {string} scope
@@ -841,23 +841,23 @@ declare class MatrixBaseApis {
      * @param {string} ruleId
      * @param {array} actions
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: result object
+     * @return {Promise} Resolves: result object
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    setPushRuleActions(scope: string, kind: string, ruleId: string, actions: any[], callback: any): any;
+    setPushRuleActions(scope: string, kind: string, ruleId: string, actions: any[], callback: any): Promise<any>;
     /**
      * Perform a server-side search.
      * @param {Object} opts
      * @param {string} opts.next_batch the batch token to pass in the query string
      * @param {Object} opts.body the JSON object to pass to the request body.
      * @param {module:client.callback} callback Optional.
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
     search(opts: {
         next_batch: string;
         body: any;
-    }, callback: any): any;
+    }, callback: any): Promise<any>;
     /**
      * Upload keys
      *
@@ -870,11 +870,11 @@ declare class MatrixBaseApis {
      *
      * @param {module:client.callback=} callback
      *
-     * @return {module:client.Promise} Resolves: result object. Rejects: with
+     * @return {Promise} Resolves: result object. Rejects: with
      *     an error response ({@link module:http-api.MatrixError}).
      */
-    uploadKeysRequest(content: any, opts?: any, callback: any): any;
-    uploadKeySignatures(content: any): any;
+    uploadKeysRequest(content: any, opts?: any, callback: any): Promise<any>;
+    uploadKeySignatures(content: any): Promise<any>;
     /**
      * Download device keys
      *
@@ -885,10 +885,10 @@ declare class MatrixBaseApis {
      * @param {string=} opts.token   sync token to pass in the query request, to help
      *   the HS give the most recent results
      *
-     * @return {module:client.Promise} Resolves: result object. Rejects: with
+     * @return {Promise} Resolves: result object. Rejects: with
      *     an error response ({@link module:http-api.MatrixError}).
      */
-    downloadKeysForUsers(userIds: string[], opts?: any): any;
+    downloadKeysForUsers(userIds: string[], opts?: any): Promise<any>;
     /**
      * Claim one-time keys
      *
@@ -896,10 +896,10 @@ declare class MatrixBaseApis {
      *
      * @param {string} [key_algorithm = signed_curve25519]  desired key type
      *
-     * @return {module:client.Promise} Resolves: result object. Rejects: with
+     * @return {Promise} Resolves: result object. Rejects: with
      *     an error response ({@link module:http-api.MatrixError}).
      */
-    claimOneTimeKeys(devices: string[], key_algorithm?: string): any;
+    claimOneTimeKeys(devices: string[], key_algorithm?: string): Promise<any>;
     /**
      * Ask the server for a list of users who have changed their device lists
      * between a pair of sync tokens
@@ -907,11 +907,11 @@ declare class MatrixBaseApis {
      * @param {string} oldToken
      * @param {string} newToken
      *
-     * @return {module:client.Promise} Resolves: result object. Rejects: with
+     * @return {Promise} Resolves: result object. Rejects: with
      *     an error response ({@link module:http-api.MatrixError}).
      */
-    getKeyChanges(oldToken: string, newToken: string): any;
-    uploadDeviceSigningKeys(auth: any, keys: any): any;
+    getKeyChanges(oldToken: string, newToken: string): Promise<any>;
+    uploadDeviceSigningKeys(auth: any, keys: any): Promise<any>;
     /**
      * Register with an Identity Server using the OpenID token from the user's
      * Homeserver, which can be retrieved via
@@ -921,11 +921,11 @@ declare class MatrixBaseApis {
      * general) was added as part of the v2 API version.
      *
      * @param {object} hsOpenIdToken
-     * @return {module:client.Promise} Resolves: with object containing an Identity
+     * @return {Promise} Resolves: with object containing an Identity
      * Server access token.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    registerWithIdentityServer(hsOpenIdToken: any): any;
+    registerWithIdentityServer(hsOpenIdToken: any): Promise<any>;
     /**
      * Requests an email verification token directly from an identity server.
      *
@@ -946,11 +946,11 @@ declare class MatrixBaseApis {
      * @param {string} identityAccessToken The `access_token` field of the identity
      * server `/account/register` response (see {@link registerWithIdentityServer}).
      *
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      * @throws Error if no identity server is set
      */
-    requestEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: any, identityAccessToken: string): any;
+    requestEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: any, identityAccessToken: string): Promise<any>;
     /**
      * Requests a MSISDN verification token directly from an identity server.
      *
@@ -974,11 +974,11 @@ declare class MatrixBaseApis {
      * @param {string} identityAccessToken The `access_token` field of the Identity
      * Server `/account/register` response (see {@link registerWithIdentityServer}).
      *
-     * @return {module:client.Promise} Resolves: TODO
+     * @return {Promise} Resolves: TODO
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      * @throws Error if no identity server is set
      */
-    requestMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: any, identityAccessToken: string): any;
+    requestMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: any, identityAccessToken: string): Promise<any>;
     /**
      * Submits a MSISDN token to the identity server
      *
@@ -994,11 +994,11 @@ declare class MatrixBaseApis {
      * @param {string} identityAccessToken The `access_token` field of the Identity
      * Server `/account/register` response (see {@link registerWithIdentityServer}).
      *
-     * @return {module:client.Promise} Resolves: Object, currently with no parameters.
+     * @return {Promise} Resolves: Object, currently with no parameters.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      * @throws Error if No ID server is set
      */
-    submitMsisdnToken(sid: string, clientSecret: string, msisdnToken: string, identityAccessToken: string): any;
+    submitMsisdnToken(sid: string, clientSecret: string, msisdnToken: string, identityAccessToken: string): Promise<any>;
     /**
      * Submits a MSISDN token to an arbitrary URL.
      *
@@ -1014,10 +1014,10 @@ declare class MatrixBaseApis {
      *                 This must be the same value submitted in the requestToken call.
      * @param {string} msisdnToken The MSISDN token, as enetered by the user.
      *
-     * @return {module:client.Promise} Resolves: Object, currently with no parameters.
+     * @return {Promise} Resolves: Object, currently with no parameters.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    submitMsisdnTokenOtherUrl(url: string, sid: string, clientSecret: string, msisdnToken: string): any;
+    submitMsisdnTokenOtherUrl(url: string, sid: string, clientSecret: string, msisdnToken: string): Promise<any>;
     /**
      * Gets the V2 hashing information from the identity server. Primarily useful for
      * lookups.
@@ -1049,12 +1049,12 @@ declare class MatrixBaseApis {
      * @param {string} identityAccessToken The `access_token` field of the Identity
      * Server `/account/register` response (see {@link registerWithIdentityServer}).
      *
-     * @return {module:client.Promise} Resolves: A threepid mapping
+     * @return {Promise} Resolves: A threepid mapping
      *                                 object or the empty object if no mapping
      *                                 exists
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    lookupThreePid(medium: string, address: string, callback: any, identityAccessToken: string): any;
+    lookupThreePid(medium: string, address: string, callback: any, identityAccessToken: string): Promise<any>;
     /**
      * Looks up the public Matrix ID mappings for multiple 3PIDs.
      *
@@ -1063,10 +1063,10 @@ declare class MatrixBaseApis {
      * @param {string} identityAccessToken The `access_token` field of the Identity
      * Server `/account/register` response (see {@link registerWithIdentityServer}).
      *
-     * @return {module:client.Promise} Resolves: Lookup results from IS.
+     * @return {Promise} Resolves: Lookup results from IS.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    bulkLookupThreePids(query: string[][], identityAccessToken: string): any;
+    bulkLookupThreePids(query: string[][], identityAccessToken: string): Promise<any>;
     /**
      * Get account info from the Identity Server. This is useful as a neutral check
      * to verify that other APIs are likely to approve access by testing that the
@@ -1075,10 +1075,10 @@ declare class MatrixBaseApis {
      * @param {string} identityAccessToken The `access_token` field of the Identity
      * Server `/account/register` response (see {@link registerWithIdentityServer}).
      *
-     * @return {module:client.Promise} Resolves: an object with account info.
+     * @return {Promise} Resolves: an object with account info.
      * @return {module:http-api.MatrixError} Rejects: with an error response.
      */
-    getIdentityAccount(identityAccessToken: string): any;
+    getIdentityAccount(identityAccessToken: string): Promise<any>;
     /**
      * Send an event to a specific list of devices
      *
@@ -1087,48 +1087,48 @@ declare class MatrixBaseApis {
      *    content to send. Map from user_id to device_id to content object.
      * @param {string=} txnId     transaction id. One will be made up if not
      *    supplied.
-     * @return {module:client.Promise} Resolves to the result object
+     * @return {Promise} Resolves to the result object
      */
     sendToDevice(eventType: string, contentMap: {
         [x: string]: {
             [x: string]: any;
         };
-    }, txnId?: string): any;
+    }, txnId?: string): Promise<any>;
     /**
      * Get the third party protocols that can be reached using
      * this HS
-     * @return {module:client.Promise} Resolves to the result object
+     * @return {Promise} Resolves to the result object
      */
-    getThirdpartyProtocols(): any;
+    getThirdpartyProtocols(): Promise<any>;
     /**
      * Get information on how a specific place on a third party protocol
      * may be reached.
      * @param {string} protocol The protocol given in getThirdpartyProtocols()
      * @param {object} params Protocol-specific parameters, as given in the
      *                        response to getThirdpartyProtocols()
-     * @return {module:client.Promise} Resolves to the result object
+     * @return {Promise} Resolves to the result object
      */
-    getThirdpartyLocation(protocol: string, params: any): any;
+    getThirdpartyLocation(protocol: string, params: any): Promise<any>;
     /**
      * Get information on how a specific user on a third party protocol
      * may be reached.
      * @param {string} protocol The protocol given in getThirdpartyProtocols()
      * @param {object} params Protocol-specific parameters, as given in the
      *                        response to getThirdpartyProtocols()
-     * @return {module:client.Promise} Resolves to the result object
+     * @return {Promise} Resolves to the result object
      */
-    getThirdpartyUser(protocol: string, params: any): any;
-    getTerms(serviceType: any, baseUrl: any): any;
-    agreeToTerms(serviceType: any, baseUrl: any, accessToken: any, termsUrls: any): any;
+    getThirdpartyUser(protocol: string, params: any): Promise<any>;
+    getTerms(serviceType: any, baseUrl: any): Promise<any>;
+    agreeToTerms(serviceType: any, baseUrl: any, accessToken: any, termsUrls: any): Promise<any>;
     /**
      * Reports an event as inappropriate to the server, which may then notify the appropriate people.
      * @param {string} roomId The room in which the event being reported is located.
      * @param {string} eventId The event to report.
      * @param {number} score The score to rate this content as where -100 is most offensive and 0 is inoffensive.
      * @param {string} reason The reason the content is being reported. May be blank.
-     * @returns {module:client.Promise} Resolves to an empty object if successful
+     * @returns {Promise} Resolves to an empty object if successful
      */
-    reportEvent(roomId: string, eventId: string, score: number, reason: string): any;
+    reportEvent(roomId: string, eventId: string, score: number, reason: string): Promise<any>;
 }
 import { MatrixHttpApi } from "./http-api";
 //# sourceMappingURL=base-apis.d.ts.map

@@ -63,7 +63,7 @@ export class EncryptionAlgorithm {
      * @param {string} eventType
      * @param {object} plaintext event content
      *
-     * @return {module:client.Promise} Promise which resolves to the new event body
+     * @return {Promise} Promise which resolves to the new event body
      */
     /**
      * Called when the membership of a member of the room changes.

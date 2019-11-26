@@ -16,12 +16,12 @@ export default InteractiveAuth;
  * @param {object} opts.matrixClient A matrix client to use for the auth process
  * @param {(object | null)} opts.authData error response from the last request. If
  *    null, a request will be made with no auth before starting.
- * @param {function (object?): module:client.Promise} opts.doRequest called with the new auth dict to submit the request. Also passes a
+ * @param {function (object?): Promise} opts.doRequest called with the new auth dict to submit the request. Also passes a
  *     second deprecated arg which is a flag set to true if this request
  *     is a background request. The busyChanged callback should be used
  *     instead of the backfround flag. Should return a promise which resolves
  *     to the successful response or rejects with a MatrixError.
- * @param {function (bool): module:client.Promise} opts.busyChanged called whenever the interactive auth logic becomes busy submitting
+ * @param {function (bool): Promise} opts.busyChanged called whenever the interactive auth logic becomes busy submitting
  *     information provided by the user or finsihes. After this has been
  *     called with true the UI should indicate that a request is in progress
  *     until it is called again with false.

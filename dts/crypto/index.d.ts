@@ -376,11 +376,11 @@ export class Crypto {
      *
      * @param {string[]} users list of user ids
      *
-     * @return {module:client.Promise} resolves once the sessions are complete, to
+     * @return {Promise} resolves once the sessions are complete, to
      *    an Object mapping from userId to deviceId to
      *    {@link module:crypto~OlmSessionResult}
      */
-    ensureOlmSessionsForUsers(users: string[]): any;
+    ensureOlmSessionsForUsers(users: string[]): Promise<any>;
     /**
      * Get a list containing all of the room keys
      *
@@ -391,9 +391,9 @@ export class Crypto {
      * Import a list of room keys previously exported by exportRoomKeys
      *
      * @param {Object[]} keys a list of session export objects
-     * @return {module:client.Promise} a promise which resolves once the keys have been imported
+     * @return {Promise} a promise which resolves once the keys have been imported
      */
-    importRoomKeys(keys: any[]): any;
+    importRoomKeys(keys: any[]): Promise<any>;
     /**
      * Schedules sending all keys waiting to be sent to the backup, if not already
      * scheduled. Retries if necessary.
@@ -428,10 +428,10 @@ export class Crypto {
      *
      * @param {module:models/room} room destination room.
      *
-     * @return {module:client.Promise?} Promise which resolves when the event has been
+     * @return {Promise?} Promise which resolves when the event has been
      *     encrypted, or null if nothing was needed
      */
-    encryptEvent(event: any, room: any): any;
+    encryptEvent(event: any, room: any): Promise<any>;
     /**
      * Decrypt a received event
      *

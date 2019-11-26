@@ -56,7 +56,7 @@ export class MatrixHttpApi {
      *    data has been uploaded, with an object containing the fields `loaded`
      *    (number of bytes transferred) and `total` (total size, if known).
      *
-     * @return {module:client.Promise} Resolves to response object, as
+     * @return {Promise} Resolves to response object, as
      *    determined by this.opts.onlyData, opts.rawResponse, and
      *    opts.onlyContentUri.  Rejects with an error (usually a MatrixError).
      */
@@ -68,7 +68,7 @@ export class MatrixHttpApi {
         onlyContentUri?: boolean;
         callback?: Function;
         progressHandler?: Function;
-    }): any;
+    }): Promise<any>;
     cancelUpload(promise: any): boolean;
     getCurrentUploads(): any[];
     idServerRequest(callback: any, method: any, path: any, params: any, prefix: any, accessToken: any): any;
@@ -96,14 +96,14 @@ export class MatrixHttpApi {
      *
      * @param {Object=} opts.headers map of additional request headers
      *
-     * @return {module:client.Promise} Resolves to <code>{data: {Object},
+     * @return {Promise} Resolves to <code>{data: {Object},
      * headers: {Object}, code: {Number}}</code>.
      * If <code>onlyData</code> is set, this will resolve to the <code>data</code>
      * object only.
      * @return {module:http-api.MatrixError} Rejects with an error if a problem
      * occurred. This includes network problems and Matrix-specific error JSON.
      */
-    authedRequest(callback: Function, method: string, path: string, queryParams?: any, data?: any, opts?: any): any;
+    authedRequest(callback: Function, method: string, path: string, queryParams?: any, data?: any, opts?: any): Promise<any>;
     /**
      * Perform a request to the homeserver without any credentials.
      * @param {Function} callback Optional. The callback to invoke on
@@ -127,14 +127,14 @@ export class MatrixHttpApi {
      *
      * @param {Object=} opts.headers map of additional request headers
      *
-     * @return {module:client.Promise} Resolves to <code>{data: {Object},
+     * @return {Promise} Resolves to <code>{data: {Object},
      * headers: {Object}, code: {Number}}</code>.
      * If <code>onlyData</code> is set, this will resolve to the <code>data</code>
      * object only.
      * @return {module:http-api.MatrixError} Rejects with an error if a problem
      * occurred. This includes network problems and Matrix-specific error JSON.
      */
-    request(callback: Function, method: string, path: string, queryParams?: any, data?: any, opts?: any): any;
+    request(callback: Function, method: string, path: string, queryParams?: any, data?: any, opts?: any): Promise<any>;
     /**
      * Perform a request to an arbitrary URL.
      * @param {Function} callback Optional. The callback to invoke on
@@ -157,14 +157,14 @@ export class MatrixHttpApi {
      *
      * @param {Object=} opts.headers map of additional request headers
      *
-     * @return {module:client.Promise} Resolves to <code>{data: {Object},
+     * @return {Promise} Resolves to <code>{data: {Object},
      * headers: {Object}, code: {Number}}</code>.
      * If <code>onlyData</code> is set, this will resolve to the <code>data</code>
      * object only.
      * @return {module:http-api.MatrixError} Rejects with an error if a problem
      * occurred. This includes network problems and Matrix-specific error JSON.
      */
-    requestOtherUrl(callback: Function, method: string, uri: string, queryParams?: any, data?: any, opts?: any): any;
+    requestOtherUrl(callback: Function, method: string, uri: string, queryParams?: any, data?: any, opts?: any): Promise<any>;
     /**
      * Form and return a homeserver request URL based on the given path
      * params and prefix.
@@ -199,10 +199,10 @@ export class MatrixHttpApi {
      * @param {function=} opts.bodyParser function to parse the body of the
      *    response before passing it to the promise and callback.
      *
-     * @return {module:client.Promise} a promise which resolves to either the
+     * @return {Promise} a promise which resolves to either the
      * response object (if this.opts.onlyData is truthy), or the parsed
      * body. Rejects
      */
-    _request(callback: Function, method: string, uri: string, queryParams: any, data: any, opts?: any): any;
+    _request(callback: Function, method: string, uri: string, queryParams: any, data: any, opts?: any): Promise<any>;
 }
 //# sourceMappingURL=http-api.d.ts.map
