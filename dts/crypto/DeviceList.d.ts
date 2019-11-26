@@ -1,7 +1,10 @@
 /**
-  *
+ * @alias module:crypto/DeviceList
+ */
+/**
+ *
  * @alias  module:crypto/DeviceList
-*/
+ */
 export default class DeviceList extends $_generated_0.EventEmitter {
     constructor(baseApis: any, cryptoStore: any, olmDevice: any);
     _cryptoStore: any;
@@ -39,11 +42,24 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      *     will only resolve once the data is saved, so may take some time
      *     to resolve.
      */
-    saveIfDirty(delay: any): Promise<any>;
+    /**
+     * Save the device tracking state to storage, if any changes are
+     * pending other than updating the sync token
+     *
+     * The actual save will be delayed by a short amount of time to
+     * aggregate multiple writes to the database.
+     * @param {number} delay Time in ms before which the save actually happens.
+     *     By default, the save is delayed for a short period in order to batch
+     *     multiple writes, but this behaviour can be disabled by passing 0.
+     * @return {Promise.<boolean>}  true if the data was saved, false if
+     *     it was not (eg. because no changes were pending). The promise
+     *     will only resolve once the data is saved, so may take some time
+     *     to resolve.
+     */
+    saveIfDirty(delay: number): Promise<boolean>;
     /**
      * Gets the sync token last set with setSyncToken
-     *
-     * @return {string} The sync token
+     * @return {string}  The sync token
      */
     getSyncToken(): string;
     /**
@@ -53,7 +69,6 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * data in that sync since setting the sync token to a newer one will mean
      * those changed will not be synced from the server if a new client starts
      * up with that data.
-     *
      * @param {string} st The sync token
      */
     setSyncToken(st: string): void;
@@ -62,35 +77,28 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * downloading and storing them if they're not (or if forceDownload is
      * true).
      * @param {Array} userIds The users to fetch.
-     * @param {bool} forceDownload Always download the keys even if cached.
-     *
-     * @return {Promise} A promise which resolves to a map userId->deviceId->{@link
+     * @param {boolean} forceDownload Always download the keys even if cached.
+     * @return {Promise}  A promise which resolves to a map userId->deviceId->{@link
      * module:crypto/deviceinfo|DeviceInfo}.
      */
-    downloadKeys(userIds: any[], forceDownload: any): Promise<any>;
+    downloadKeys(userIds: any[], forceDownload: boolean): Promise<any>;
     /**
      * Get the stored device keys for a list of user ids
-     *
-     * @param {string[]} userIds the list of users to list keys for.
-     *
-     * @return {Object} userId->deviceId->{@link module:crypto/deviceinfo|DeviceInfo}.
+     * @param {Array.<string>} userIds the list of users to list keys for.
+     * @return {object}  userId->deviceId->{@link module:crypto/deviceinfo|DeviceInfo}.
      */
     _getDevicesFromStore(userIds: string[]): any;
     /**
      * Get the stored device keys for a user id
-     *
      * @param {string} userId the user to list keys for.
-     *
-     * @return {module:crypto/deviceinfo[]|null} list of devices, or null if we haven't
+     * @return {(Array.<DeviceInfo> | null)}  list of devices, or null if we haven't
      * managed to get a list of devices for this user yet.
      */
-    getStoredDevicesForUser(userId: string): any;
+    getStoredDevicesForUser(userId: string): DeviceInfo[];
     /**
      * Get the stored device data for a user, in raw object form
-     *
      * @param {string} userId the user to get data for
-     *
-     * @return {Object} deviceId->{object} devices, or undefined if
+     * @return {object}  deviceId->{object} devices, or undefined if
      * there is no data for this user.
      */
     getRawStoredDevicesForUser(userId: string): any;
@@ -102,24 +110,28 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * @param {string} userId
      * @param {string} deviceId
      *
-     * @return {module:crypto/deviceinfo?} device, or undefined
+     * @return {any} device, or undefined
      * if we don't know about this device
      */
-    getStoredDevice(userId: string, deviceId: string): any;
+    /**
+     * Get the stored keys for a single device
+     * @param {string} userId
+     * @param {string} deviceId
+     * @return {(DeviceInfo | null)}  device, or undefined
+     * if we don't know about this device
+     */
+    getStoredDevice(userId: string, deviceId: string): DeviceInfo;
     /**
      * Find a device by curve25519 identity key
-     *
-     * @param {string} algorithm  encryption algorithm
-     * @param {string} senderKey  curve25519 key to match
-     *
-     * @return {module:crypto/deviceinfo?}
+     * @param {string} algorithm encryption algorithm
+     * @param {string} senderKey curve25519 key to match
+     * @return {(DeviceInfo | null)}
      */
-    getDeviceByIdentityKey(algorithm: string, senderKey: string): any;
+    getDeviceByIdentityKey(algorithm: string, senderKey: string): DeviceInfo;
     /**
      * Replaces the list of devices for a user with the given device list
-     *
      * @param {string} u The user ID
-     * @param {Object} devs New device info for user
+     * @param {object} devs New device info for user
      */
     storeDevicesForUser(u: string, devs: any): void;
     /**
@@ -128,8 +140,7 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * This will mean that a subsequent call to refreshOutdatedDeviceLists()
      * will download the device list for the user, and that subsequent calls to
      * invalidateUserDeviceList will trigger more updates.
-     *
-     * @param {String} userId
+     * @param {string} userId
      */
     startTrackingDeviceList(userId: string): void;
     /**
@@ -138,16 +149,9 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * This won't affect any in-progress downloads, which will still go on to
      * complete; it will just mean that we don't think that we have an up-to-date
      * list for future calls to downloadKeys.
-     *
-     * @param {String} userId
+     * @param {string} userId
      */
     stopTrackingDeviceList(userId: string): void;
-    /**
-     * Set all users we're currently tracking to untracked
-     *
-     * This will flag each user whose devices we are tracking as in need of an
-     * update.
-     */
     stopTrackingAllDeviceLists(): void;
     /**
      * Mark the cached device list for the given user outdated.
@@ -157,24 +161,20 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      *
      * This doesn't actually set off an update, so that several users can be
      * batched together. Call refreshOutdatedDeviceLists() for that.
-     *
-     * @param {String} userId
+     * @param {string} userId
      */
     invalidateUserDeviceList(userId: string): void;
     /**
      * If we have users who have outdated device lists, start key downloads for them
-     *
-     * @returns {Promise} which completes when the download completes; normally there
+     * @returns {Promise}  which completes when the download completes; normally there
      *    is no need to wait for this (it's mostly for the unit tests).
      */
     refreshOutdatedDeviceLists(): Promise<any>;
     /**
      * Set the stored device data for a user, in raw object form
      * Used only by internal class DeviceListUpdateSerialiser
-     *
      * @param {string} userId the user to get data for
-     *
-     * @param {Object} devices deviceId->{object} the new devices
+     * @param {object} devices deviceId->{object} the new devices
      */
     _setRawStoredDevicesForUser(userId: string, devices: any): void;
     setRawStoredCrossSigningForUser(userId: any, info: any): void;
@@ -186,6 +186,15 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * @param {String[]} users  list of userIds
      *
      * @return {Promise} resolves when all the users listed have
+     *     been updated. rejects if there was a problem updating any of the
+     *     users.
+     */
+    /**
+     * Fire off download update requests for the given users, and update the
+     * device list tracking status for them, and the
+     * _keyDownloadsInProgressByUser map for them.
+     * @param {Array.<string>} users list of userIds
+     * @return {Promise}  resolves when all the users listed have
      *     been updated. rejects if there was a problem updating any of the
      *     users.
      */
@@ -201,16 +210,13 @@ export default class DeviceList extends $_generated_0.EventEmitter {
     setMaxListeners(n: number): DeviceList;
 }
 import * as $_generated_0 from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
-/**
- * Serialises updates to device lists
- *
- * Ensures that results from /keys/query are not overwritten if a second call
- * completes *before* an earlier one.
- *
- * It currently does this by ensuring only one call to /keys/query happens at a
- * time (and queuing other requests up).
- */
 declare class DeviceListUpdateSerialiser {
+    /**
+     *
+     * @param {object} baseApis Base API object
+     * @param {object} olmDevice The Olm Device
+     * @param {object} deviceList The device list object
+     */
     constructor(baseApis: any, olmDevice: any, deviceList: any);
     _baseApis: any;
     _olmDevice: any;
@@ -221,13 +227,10 @@ declare class DeviceListUpdateSerialiser {
     _syncToken: string;
     /**
      * Make a key query request for the given users
-     *
-     * @param {String[]} users list of user ids
-     *
-     * @param {String} syncToken sync token to pass in the query request, to
+     * @param {Array.<string>} users list of user ids
+     * @param {string} syncToken sync token to pass in the query request, to
      *     help the HS give the most recent results
-     *
-     * @return {Promise} resolves when all the users listed have
+     * @return {Promise}  resolves when all the users listed have
      *     been updated. rejects if there was a problem updating any of the
      *     users.
      */
@@ -235,5 +238,8 @@ declare class DeviceListUpdateSerialiser {
     _doQueuedQueries(): any;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }
+declare const DeviceInfo: typeof $_generated_2;
+import DeviceInfo from "./deviceinfo";
+import * as $_generated_2 from "./deviceinfo";
 export {};
 //# sourceMappingURL=DeviceList.d.ts.map

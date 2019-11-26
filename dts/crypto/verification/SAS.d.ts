@@ -1,10 +1,14 @@
 /**
-  *
+ * @alias module:crypto/verification/SAS
+ * @extends {any}
+ */
+/**
+ *
  * @alias  module:crypto/verification/SAS
  * @extends {VerificationBase}
-*/
+ */
 declare class SAS extends $_generated_0.default {
-    constructor(baseApis: any, userId: string, deviceId: string, transactionId: string, roomId?: string, startEvent?: any, request?: any);
+    constructor(baseApis: import("../../base-apis").default, userId: string, deviceId: string, transactionId: string, roomId: string, startEvent: any, request: any);
     get events(): string[];
     _doVerification(): Promise<void>;
     _doSendVerification(): Promise<void>;

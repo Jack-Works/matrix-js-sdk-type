@@ -8,27 +8,19 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
      * complete.</p>
      *
      * <p>Subclasses must have a NAME class property.</p>
-     *
      * @class
-     *
-     * @param {module:base-apis~MatrixBaseApis} baseApis base matrix api interface
-     *
+     * @param {MatrixBaseApis} baseApis base matrix api interface
      * @param {string} userId the user ID that is being verified
-     *
      * @param {string} deviceId the device ID that is being verified
-     *
      * @param {string} transactionId the transaction ID to be used when sending events
-     *
-     * @param {string} [roomId] the room to use for verification
-     *
-     * @param {object} [startEvent] the m.key.verification.start event that
+     * @param {(string | undefined)} roomId the room to use for verification
+     * @param {(object | undefined)} startEvent the m.key.verification.start event that
      * initiated this verification, if any
-     *
-     * @param {object} [request] the key verification request object related to
+     * @param {(object | undefined)} request the key verification request object related to
      * this verification, if any
      */
-    constructor(baseApis: any, userId: string, deviceId: string, transactionId: string, roomId?: string, startEvent?: any, request?: any);
-    _baseApis: any;
+    constructor(baseApis: MatrixBaseApis, userId: string, deviceId: string, transactionId: string, roomId: string, startEvent: any, request: any);
+    _baseApis: MatrixBaseApis;
     userId: string;
     deviceId: string;
     transactionId: string;
@@ -58,6 +50,11 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
      * @returns {Promise} Promise which resolves when the verification has
      *     completed.
      */
+    /**
+     * Begin the key verification
+     * @returns {Promise}  Promise which resolves when the verification has
+     *     completed.
+     */
     verify(): Promise<any>;
     _resolve: (...args: any[]) => void;
     _started: boolean;
@@ -73,4 +70,5 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
     setMaxListeners(n: number): VerificationBase;
 }
 import * as $_generated_1 from "../../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+import MatrixBaseApis from "../../base-apis";
 //# sourceMappingURL=Base.d.ts.map

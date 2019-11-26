@@ -10,9 +10,6 @@ export default class OutgoingRoomKeyRequestManager {
      * Called when the client is started. Sets background processes running.
      */
     start(): void;
-    /**
-     * Called when the client is stopped. Stops any running background processes.
-     */
     stop(): void;
     /**
      * Send off a room key request, if we haven't already done so.
@@ -21,13 +18,11 @@ export default class OutgoingRoomKeyRequestManager {
      * previous queued or sent requests and if it matches, no change is made.
      * Otherwise, a request is added to the pending list, and a job is started
      * in the background to send it.
-     *
-     * @param {module:crypto~RoomKeyRequestBody} requestBody
-     * @param {Array<{userId: string, deviceId: string}>} recipients
+     * @param {RoomKeyRequestBody} requestBody
+     * @param {Array.<{userId: string, deviceId: string}>} recipients
      * @param {boolean} resend whether to resend the key request if there is
      *    already one
-     *
-     * @returns {Promise} resolves when the request has been added to the
+     * @returns {Promise}  resolves when the request has been added to the
      *    pending list (or we have established that a similar request already
      *    exists)
      */
@@ -37,20 +32,16 @@ export default class OutgoingRoomKeyRequestManager {
     }[], resend?: boolean): Promise<any>;
     /**
      * Cancel room key requests, if any match the given requestBody
-     *
-     * @param {module:crypto~RoomKeyRequestBody} requestBody
-     *
-     * @returns {Promise} resolves when the request has been updated in our
+     * @param {RoomKeyRequestBody} requestBody
+     * @returns {Promise}  resolves when the request has been updated in our
      *    pending list.
      */
     cancelRoomKeyRequest(requestBody: any): Promise<any>;
     /**
      * Look for room key requests by target device and state
-     *
      * @param {string} userId Target user ID
      * @param {string} deviceId Target device ID
-     *
-     * @return {Promise} resolves to a list of all the
+     * @return {Promise}  resolves to a list of all the
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}
      */
     getOutgoingSentRoomKeyRequest(userId: string, deviceId: string): Promise<any>;
@@ -65,26 +56,26 @@ export default class OutgoingRoomKeyRequestManager {
  *
  * The state machine looks like:
  *
- *     |         (cancellation sent)
- *     | .-------------------------------------------------.
- *     | |                                                 |
- *     V V       (cancellation requested)                  |
- *   UNSENT  -----------------------------+                |
- *     |                                  |                |
- *     |                                  |                |
- *     | (send successful)                |  CANCELLATION_PENDING_AND_WILL_RESEND
- *     V                                  |                Λ
- *    SENT                                |                |
- *     |--------------------------------  |  --------------'
- *     |                                  |  (cancellation requested with intent
- *     |                                  |   to resend the original request)
- *     |                                  |
- *     | (cancellation requested)         |
- *     V                                  |
+ *      |         (cancellation sent)
+ *      | .-------------------------------------------------.
+ *      | |                                                 |
+ *      V V       (cancellation requested)                  |
+ *    UNSENT  -----------------------------+                |
+ *      |                                  |                |
+ *      |                                  |                |
+ *      | (send successful)                |  CANCELLATION_PENDING_AND_WILL_RESEND
+ *      V                                  |                Λ
+ *     SENT                                |                |
+ *      |--------------------------------  |  --------------'
+ *      |                                  |  (cancellation requested with intent
+ *      |                                  |   to resend the original request)
+ *      |                                  |
+ *      | (cancellation requested)         |
+ *      V                                  |
  * CANCELLATION_PENDING                   |
- *     |                                  |
- *     | (cancellation sent)              |
- *     V                                  |
+ *      |                                  |
+ *      | (cancellation sent)              |
+ *      V                                  |
  * (deleted)  <---------------------------+
  */
 export type ROOM_KEY_REQUEST_STATES = number;

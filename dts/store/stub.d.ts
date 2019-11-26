@@ -1,12 +1,28 @@
 export default StubStore;
 /**
-  * Construct a stub store. This does no-ops on most store methods.
+ * This is an internal module.
+ * @module store/stub
+ */
+/**
+ * Construct a stub store. This does no-ops on most store methods.
  * @constructor
-*/
+ */
+/**
+ * This is an internal module.
+ * @module  store/stub
+ */
+/**
+ * Construct a stub store. This does no-ops on most store methods.
+ * @constructor
+ */
 declare class StubStore {
     fromToken: string;
     /** @return {Promise<bool>} whether or not the database was newly created in this session. */
-    isNewlyCreated(): Promise<any>;
+    /**
+     *
+     * @return {Promise.<boolean>}  whether or not the database was newly created in this session.
+     */
+    isNewlyCreated(): Promise<boolean>;
     /**
      * Get the sync token.
      * @return {string}
@@ -30,7 +46,7 @@ declare class StubStore {
     getGroup(groupId: string): null;
     /**
      * No-op.
-     * @return {Array} An empty array.
+     * @return {Array}  An empty array.
      */
     getGroups(): any[];
     /**
@@ -46,7 +62,7 @@ declare class StubStore {
     getRoom(roomId: string): null;
     /**
      * No-op.
-     * @return {Array} An empty array.
+     * @return {Array}  An empty array.
      */
     getRooms(): any[];
     /**
@@ -56,7 +72,7 @@ declare class StubStore {
     removeRoom(roomId: string): void;
     /**
      * No-op.
-     * @return {Array} An empty array.
+     * @return {Array}  An empty array.
      */
     getRoomSummaries(): any[];
     /**
@@ -72,20 +88,20 @@ declare class StubStore {
     getUser(userId: string): null;
     /**
      * No-op.
-     * @return {User[]}
+     * @return {Array.<User>}
      */
     getUsers(): any[];
     /**
      * No-op.
      * @param {Room} room
-     * @param {integer} limit
+     * @param {number} limit
      * @return {Array}
      */
-    scrollback(room: any, limit: any): any[];
+    scrollback(room: any, limit: number): any[];
     /**
      * Store events for a room.
      * @param {Room} room The room to store events for.
-     * @param {Array<MatrixEvent>} events The events to store.
+     * @param {Array.<MatrixEvent>} events The events to store.
      * @param {string} token The token associated with these events.
      * @param {boolean} toStart True if these are paginated results.
      */
@@ -99,13 +115,13 @@ declare class StubStore {
      * Retrieve a filter.
      * @param {string} userId
      * @param {string} filterId
-     * @return {?Filter} A filter or null.
+     * @return {(Filter | null)}  A filter or null.
      */
     getFilter(userId: string, filterId: string): any;
     /**
      * Retrieve a filter ID with the given name.
      * @param {string} filterName The filter name.
-     * @return {?string} The filter ID or null.
+     * @return {(string | null)}  The filter ID or null.
      */
     getFilterIdByName(filterName: string): string;
     /**
@@ -116,7 +132,7 @@ declare class StubStore {
     setFilterIdByName(filterName: string, filterId: string): void;
     /**
      * Store user-scoped account data events
-     * @param {Array<MatrixEvent>} events The events to store.
+     * @param {Array.<MatrixEvent>} events The events to store.
      */
     storeAccountDataEvents(events: any[]): void;
     /**
@@ -126,41 +142,38 @@ declare class StubStore {
     getAccountData(eventType: string): void;
     /**
      * setSyncData does nothing as there is no backing data store.
-     *
-     * @param {Object} syncData The sync data
-     * @return {Promise} An immediately resolved promise.
+     * @param {object} syncData The sync data
+     * @return {Promise}  An immediately resolved promise.
      */
     setSyncData(syncData: any): Promise<any>;
     /**
      * We never want to save becase we have nothing to save to.
-     *
-     * @return {boolean} If the store wants to save
+     * @return {boolean}  If the store wants to save
      */
     wantsSave(): boolean;
-    /**
-     * Save does nothing as there is no backing data store.
-     */
     save(): void;
     /**
      * Startup does nothing.
-     * @return {Promise} An immediately resolved promise.
+     * @return {Promise}  An immediately resolved promise.
      */
     startup(): Promise<any>;
     /**
-     * @return {Promise} Resolves with a sync response to restore the
+     *
+     * @return {Promise}  Resolves with a sync response to restore the
      * client state to where it was at the last save, or null if there
      * is no saved sync data.
      */
     getSavedSync(): Promise<any>;
     /**
-     * @return {Promise} If there is a saved sync, the nextBatch token
+     *
+     * @return {Promise}  If there is a saved sync, the nextBatch token
      * for this sync, otherwise null.
      */
     getSavedSyncToken(): Promise<any>;
     /**
      * Delete all data from this store. Does nothing since this store
      * doesn't store anything.
-     * @return {Promise} An immediately resolved promise.
+     * @return {Promise}  An immediately resolved promise.
      */
     deleteAllData(): Promise<any>;
     getOutOfBandMembers(): Promise<any>;

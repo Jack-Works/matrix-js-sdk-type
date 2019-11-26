@@ -1,13 +1,13 @@
 export default WebStorageSessionStore;
 /**
-  * Construct a web storage session store, capable of storing account keys,
+ * Construct a web storage session store, capable of storing account keys,
  * session keys and access tokens.
  * @constructor
  * @param {WebStorage} webStore A web storage implementation, e.g.
  * 'window.localStorage' or 'window.sessionStorage' or a custom implementation.
  * @throws   if the supplied 'store' does not meet the Storage interface of the
  * WebStorage API.
-*/
+ */
 declare class WebStorageSessionStore {
     constructor(webStore: any);
     store: any;
@@ -20,12 +20,12 @@ declare class WebStorageSessionStore {
      * Note that the end-to-end account is now stored in the
      * crypto store rather than here: this remains here so
      * old sessions can be migrated out of the session store.
-     * @return {?string} Base64 encoded account.
+     * @return {(string | null)}  Base64 encoded account.
      */
     getEndToEndAccount(): string;
     /**
      * Retrieves the known devices for all users.
-     * @return {object} A map from user ID to map of device ID to keys for the device.
+     * @return {object}  A map from user ID to map of device ID to keys for the device.
      */
     getAllEndToEndDevices(): any;
     getEndToEndDeviceTrackingStatus(): any;
@@ -34,32 +34,28 @@ declare class WebStorageSessionStore {
      *
      * @return {String?} token
      */
-    getEndToEndDeviceSyncToken(): string;
     /**
-     * Removes all end to end device data from the store
+     * Get the sync token corresponding to the device list.
+     * @return {(string | null)}  token
      */
+    getEndToEndDeviceSyncToken(): string;
     removeEndToEndDeviceData(): void;
     /**
      * Retrieve the end-to-end sessions between the logged-in user and another
      * device.
      * @param {string} deviceKey The public key of the other device.
-     * @return {object} A map from sessionId to Base64 end-to-end session.
+     * @return {object}  A map from sessionId to Base64 end-to-end session.
      */
     getEndToEndSessions(deviceKey: string): any;
     /**
      * Retrieve all end-to-end sessions between the logged-in user and other
      * devices.
-     * @return {object} A map of {deviceKey -> {sessionId -> session pickle}}
+     * @return {object}  A map of {deviceKey -> {sessionId -> session pickle}}
      */
     getAllEndToEndSessions(): any;
-    /**
-     * Remove all end-to-end sessions from the store
-     * This is used after migrating sessions awat from the sessions store.
-     */
     removeAllEndToEndSessions(): void;
     /**
      * Retrieve a list of all known inbound group sessions
-     *
      * @return {{senderKey: string, sessionId: string}}
      */
     getAllEndToEndInboundGroupSessionKeys(): {
@@ -71,6 +67,10 @@ declare class WebStorageSessionStore {
     /**
      * Get the end-to-end state for all rooms
      * @return {object} roomId -> object with the end-to-end info for the room.
+     */
+    /**
+     * Get the end-to-end state for all rooms
+     * @return {object}  roomId -> object with the end-to-end info for the room.
      */
     getAllEndToEndRooms(): any;
     removeAllEndToEndRooms(): void;

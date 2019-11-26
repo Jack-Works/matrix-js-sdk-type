@@ -1,7 +1,10 @@
 /**
-  *
+ * @implements {any}
+ */
+/**
+ *
  * @implements {CryptoStore}
-*/
+ */
 export default class LocalStorageCryptoStore {
     static exists(webStore: any): boolean;
     constructor(webStore: any);
@@ -28,6 +31,10 @@ export default class LocalStorageCryptoStore {
      * Delete all data from this store.
      *
      * @returns {Promise} Promise which resolves when the store has been cleared.
+     */
+    /**
+     * Delete all data from this store.
+     * @returns {Promise}  Promise which resolves when the store has been cleared.
      */
     deleteAllData(): Promise<any>;
     getAccount(txn: any, func: any): void;

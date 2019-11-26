@@ -11,8 +11,9 @@ export default SyncAccumulator;
  */
 declare class SyncAccumulator {
     /**
-     * @param {Object} opts
-     * @param {Number=} opts.maxTimelineEntries The ideal maximum number of
+     *
+     * @param {object} opts
+     * @param {(number | undefined)} opts.maxTimelineEntries The ideal maximum number of
      * timeline entries to keep in the sync response. This is best-effort, as
      * clients do not always have a back-pagination token for each event, so
      * it's possible there may be slightly *less* than this value. There will
@@ -20,10 +21,10 @@ declare class SyncAccumulator {
      * back in a room. Default: 50.
      */
     constructor(opts: {
-        maxTimelineEntries?: number;
+        maxTimelineEntries: number;
     });
     opts: {
-        maxTimelineEntries?: number;
+        maxTimelineEntries: number;
     };
     accountData: {};
     inviteRooms: {};
@@ -40,13 +41,17 @@ declare class SyncAccumulator {
      * Accumulate incremental /sync room data.
      * @param {Object} syncResponse the complete /sync JSON
      */
+    /**
+     * Accumulate incremental /sync room data.
+     * @param {object} syncResponse the complete /sync JSON
+     */
     _accumulateRooms(syncResponse: any): void;
     _accumulateRoom(roomId: any, category: any, data: any): void;
     _accumulateInviteState(roomId: any, data: any): void;
     _accumulateJoinState(roomId: any, data: any): void;
     /**
      * Accumulate incremental /sync group data.
-     * @param {Object} syncResponse the complete /sync JSON
+     * @param {object} syncResponse the complete /sync JSON
      */
     _accumulateGroups(syncResponse: any): void;
     _accumulateGroup(groupId: any, category: any, data: any): void;
@@ -56,6 +61,20 @@ declare class SyncAccumulator {
      * with the sync token which represents the most recent /sync response
      * provided to accumulate().
      * @return {Object} An object with a "nextBatch", "roomsData" and "accountData"
+     * keys.
+     * The "nextBatch" key is a string which represents at what point in the
+     * /sync stream the accumulator reached. This token should be used when
+     * restarting a /sync stream at startup. Failure to do so can lead to missing
+     * events. The "roomsData" key is an Object which represents the entire
+     * /sync response from the 'rooms' key onwards. The "accountData" key is
+     * a list of raw events which represent global account data.
+     */
+    /**
+     * Return everything under the 'rooms' key from a /sync response which
+     * represents all room data that should be stored. This should be paired
+     * with the sync token which represents the most recent /sync response
+     * provided to accumulate().
+     * @return {object}  An object with a "nextBatch", "roomsData" and "accountData"
      * keys.
      * The "nextBatch" key is a string which represents at what point in the
      * /sync stream the accumulator reached. This token should be used when

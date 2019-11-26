@@ -1,7 +1,8 @@
+/** @module ContentHelpers */
 /**
-  *
+ *
  * @module  ContentHelpers
-*/
+ */
 export function makeHtmlMessage(body: any, htmlBody: any): {
     msgtype: string;
     format: string;

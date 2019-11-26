@@ -1,4 +1,2 @@
-export const ENCRYPTION_CLASSES: any;
-export const DECRYPTION_CLASSES: any;
-export const DecryptionError: any;
+export { ENCRYPTION_CLASSES, DECRYPTION_CLASSES, DecryptionError } from "./base";
 //# sourceMappingURL=index.d.ts.map

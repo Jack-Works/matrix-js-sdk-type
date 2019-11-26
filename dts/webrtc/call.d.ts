@@ -1,26 +1,32 @@
 /**
-  * Set an audio output device to use for MatrixCalls
+ * Set an audio output device to use for MatrixCalls
+ * @function
+ * @param {string=} deviceId the identifier for the device
+ * undefined treated as unset
+ */
+/**
+ * Set an audio output device to use for MatrixCalls
  * @function
  * @param {(string | undefined)} deviceId the identifier for the device
  * undefined treated as unset
-*/
+ */
 export function setAudioOutput(deviceId: string): void;
 /**
-  * Set an audio input device to use for MatrixCalls
+ * Set an audio input device to use for MatrixCalls
  * @function
  * @param {(string | undefined)} deviceId the identifier for the device
  * undefined treated as unset
-*/
+ */
 export function setAudioInput(deviceId: string): void;
 /**
-  * Set a video input device to use for MatrixCalls
+ * Set a video input device to use for MatrixCalls
  * @function
  * @param {(string | undefined)} deviceId the identifier for the device
  * undefined treated as unset
-*/
+ */
 export function setVideoInput(deviceId: string): void;
 /**
-  * Create a new Matrix call for the browser.
+ * Create a new Matrix call for the browser.
  * @param {MatrixClient} client The client instance to use.
  * @param {string} roomId The room the call is in.
  * @param {(object | null)} options DEPRECATED optional options map.
@@ -28,7 +34,7 @@ export function setVideoInput(deviceId: string): void;
  * forced. This option is deprecated - use opts.forceTURN when creating the matrix client
  * since it's only possible to set this option on outbound calls.
  * @return {MatrixCall}  the call or null if the browser doesn't support calling.
-*/
+ */
 export function createNewMatrixCall(client: any, roomId: string, options: any): MatrixCall;
 export class MatrixCall {
     constructor(opts: any);
@@ -50,6 +56,10 @@ export class MatrixCall {
      * Place a voice call to this room.
      * @throws If you have not specified a listener for 'error' events.
      */
+    /**
+     * Place a voice call to this room.
+     * @throws   If you have not specified a listener for 'error' events.
+     */
     placeVoiceCall(): void;
     type: string;
     /**
@@ -58,7 +68,7 @@ export class MatrixCall {
      * to render video to.
      * @param {Element} localVideoElement a <code>&lt;video&gt;</code> DOM element
      * to render the local camera preview.
-     * @throws If you have not specified a listener for 'error' events.
+     * @throws   If you have not specified a listener for 'error' events.
      */
     placeVideoCall(remoteVideoElement: Element, localVideoElement: Element): void;
     localVideoElement: Element;
@@ -71,7 +81,7 @@ export class MatrixCall {
      * to render video to.
      * @param {Element} localVideoElement a <code>&lt;video&gt;</code> DOM element
      * to render the local camera preview.
-     * @throws If you have not specified a listener for 'error' events.
+     * @throws   If you have not specified a listener for 'error' events.
      */
     placeScreenSharingCall(remoteVideoElement: Element, localVideoElement: Element): void;
     /**
@@ -99,19 +109,19 @@ export class MatrixCall {
     assignElement(element: Element, srcObject: MediaStream, queueId: string): void;
     /**
      * Retrieve the local <code>&lt;video&gt;</code> DOM element.
-     * @return {Element} The dom element
+     * @return {Element}  The dom element
      */
     getLocalVideoElement(): Element;
     /**
      * Retrieve the remote <code>&lt;video&gt;</code> DOM element
      * used for playing back video capable streams.
-     * @return {Element} The dom element
+     * @return {Element}  The dom element
      */
     getRemoteVideoElement(): Element;
     /**
      * Retrieve the remote <code>&lt;audio&gt;</code> DOM element
      * used for playing back audio only streams.
-     * @return {Element} The dom element
+     * @return {Element}  The dom element
      */
     getRemoteAudioElement(): Element;
     /**
@@ -149,9 +159,6 @@ export class MatrixCall {
      * @param {MatrixEvent} event The m.call.hangup event
      */
     _initWithHangup(event: any): void;
-    /**
-     * Answer a call.
-     */
     answer(): void;
     /**
      * Replace this call with a new call, e.g. for glare resolution. Used by
@@ -178,7 +185,7 @@ export class MatrixCall {
      * If there are multiple video tracks, <i>all</i> of the tracks need to be muted
      * for this to return true. This means if there are no video tracks, this will
      * return true.
-     * @return {Boolean} True if the local preview video is muted, else false
+     * @return {boolean}  True if the local preview video is muted, else false
      * (including if the call is not set up yet).
      */
     isLocalVideoMuted(): boolean;
@@ -193,14 +200,14 @@ export class MatrixCall {
      * If there are multiple audio tracks, <i>all</i> of the tracks need to be muted
      * for this to return true. This means if there are no audio tracks, this will
      * return true.
-     * @return {Boolean} True if the mic is muted, else false (including if the call
+     * @return {boolean}  True if the mic is muted, else false (including if the call
      * is not set up yet).
      */
     isMicrophoneMuted(): boolean;
     /**
      * Internal
      * @private
-     * @param {Object} stream
+     * @param {object} stream
      */
     _maybeGotUserMediaForInvite(stream: any): void;
     localAVStream: any;
@@ -210,41 +217,46 @@ export class MatrixCall {
      * @private
      * @param {Object} stream
      */
+    /**
+     * Internal
+     * @private
+     * @param {object} stream
+     */
     _maybeGotUserMediaForAnswer(stream: any): void;
     /**
      * Internal
      * @private
-     * @param {Object} event
+     * @param {object} event
      */
     _gotLocalIceCandidate(event: any): void;
     /**
      * Used by MatrixClient.
      * @protected
-     * @param {Object} cand
+     * @param {object} cand
      */
     _gotRemoteIceCandidate(cand: any): void;
     /**
      * Used by MatrixClient.
      * @protected
-     * @param {Object} msg
+     * @param {object} msg
      */
     _receivedAnswer(msg: any): void;
     /**
      * Internal
      * @private
-     * @param {Object} description
+     * @param {object} description
      */
     _gotLocalOffer(description: any): void;
     /**
      * Internal
      * @private
-     * @param {Object} error
+     * @param {object} error
      */
     _getLocalOfferFailed(error: any): void;
     /**
      * Internal
      * @private
-     * @param {Object} error
+     * @param {object} error
      */
     _getUserMediaFailed(error: any): void;
     /**
@@ -265,13 +277,13 @@ export class MatrixCall {
     /**
      * Internal
      * @private
-     * @param {Object} e
+     * @param {object} e
      */
     _onSetRemoteDescriptionError(e: any): void;
     /**
      * Internal
      * @private
-     * @param {Object} event
+     * @param {object} event
      */
     _onAddStream(event: any): void;
     remoteAVStream: any;
@@ -279,32 +291,32 @@ export class MatrixCall {
     /**
      * Internal
      * @private
-     * @param {Object} event
+     * @param {object} event
      */
     _onRemoteStreamStarted(event: any): void;
     /**
      * Internal
      * @private
-     * @param {Object} event
+     * @param {object} event
      */
     _onRemoteStreamEnded(event: any): void;
     hangupParty: string;
     /**
      * Internal
      * @private
-     * @param {Object} event
+     * @param {object} event
      */
     _onRemoteStreamTrackStarted(event: any): void;
     /**
      * Used by MatrixClient.
      * @protected
-     * @param {Object} msg
+     * @param {object} msg
      */
     _onHangupReceived(msg: any): void;
     /**
      * Used by MatrixClient.
      * @protected
-     * @param {Object} msg
+     * @param {object} msg
      */
     _onAnsweredElsewhere(msg: any): void;
 }

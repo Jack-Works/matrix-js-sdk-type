@@ -1,1 +1,1 @@
-{"version":3,"file":"RoomList.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/RoomList.js"],"names":[],"mappings":"AAIA;;;EAGE;AACF;IACI,8BAKC;IAJG,kBAA+B;IAG/B,oBAAyB;IAG7B,sBAQC;IAED,oCAEC;IAED,sCAEC;IAED,6DAUC;CACJ"}
+{"version":3,"file":"RoomList.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/RoomList.js"],"names":[],"mappings":"AAEA;;GAEG;AAEH;;;GAGG;AACH;IACE,8BAIC;IAHC,kBAA+B;IAE/B,oBAAyB;IAG3B,sBAMC;IAED,oCAEC;IAED,sCAEC;IAED,6DAQC;CAEF"}

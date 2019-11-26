@@ -1,14 +1,28 @@
 /**
-  * An implementation of CryptoStore, which is normally backed by an indexeddb,
+ * Internal module. indexeddb storage for e2e.
+ *
+ * @module
+ */
+/**
+ * An implementation of CryptoStore, which is normally backed by an indexeddb,
+ * but with fallback to MemoryCryptoStore.
+ *
+ * @implements {any}
+ */
+/**
+ * Internal module. indexeddb storage for e2e.
+ * @module
+ */
+/**
+ * An implementation of CryptoStore, which is normally backed by an indexeddb,
  * but with fallback to MemoryCryptoStore.
  * @implements {CryptoStore}
-*/
+ */
 declare class IndexedDBCryptoStore {
     /**
      * Create a new IndexedDBCryptoStore
-     *
-     * @param {IDBFactory} indexedDB  global indexedDB instance
-     * @param {string} dbName   name of db to connect to
+     * @param {IDBFactory} indexedDB global indexedDB instance
+     * @param {string} dbName name of db to connect to
      */
     constructor(indexedDB: IDBFactory, dbName: string);
     _indexedDB: IDBFactory;
@@ -21,41 +35,39 @@ declare class IndexedDBCryptoStore {
      * @return {Promise} resolves to either an IndexedDBCryptoStoreBackend.Backend,
      * or a MemoryCryptoStore
      */
+    /**
+     * Ensure the database exists and is up-to-date, or fall back to
+     * a local storage or in-memory store.
+     * @return {Promise}  resolves to either an IndexedDBCryptoStoreBackend.Backend,
+     * or a MemoryCryptoStore
+     */
     _connect(): Promise<any>;
     /**
      * Delete all data from this store.
-     *
-     * @returns {Promise} resolves when the store has been cleared.
+     * @returns {Promise}  resolves when the store has been cleared.
      */
     deleteAllData(): Promise<any>;
     /**
      * Look for an existing outgoing room key request, and if none is found,
      * add a new one
-     *
-     * @param {module:crypto/store/base~OutgoingRoomKeyRequest} request
-     *
-     * @returns {Promise} resolves to
+     * @param {OutgoingRoomKeyRequest} request
+     * @returns {Promise}  resolves to
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}: either the
      *    same instance as passed in, or the existing one.
      */
     getOrAddOutgoingRoomKeyRequest(request: any): Promise<any>;
     /**
      * Look for an existing room key request
-     *
-     * @param {module:crypto~RoomKeyRequestBody} requestBody
-     *    existing request to look for
-     *
-     * @return {Promise} resolves to the matching
+     * @param {RoomKeyRequestBody} requestBody existing request to look for
+     * @return {Promise}  resolves to the matching
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
      *    not found
      */
     getOutgoingRoomKeyRequest(requestBody: any): Promise<any>;
     /**
      * Look for room key requests by state
-     *
-     * @param {Array<Number>} wantedStates list of acceptable states
-     *
-     * @return {Promise} resolves to the a
+     * @param {Array.<number>} wantedStates list of acceptable states
+     * @return {Promise}  resolves to the a
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
      *    there are no pending requests in those states. If there are multiple
      *    requests in those states, an arbitrary one is chosen.
@@ -63,24 +75,20 @@ declare class IndexedDBCryptoStore {
     getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
     /**
      * Look for room key requests by target device and state
-     *
      * @param {string} userId Target user ID
      * @param {string} deviceId Target device ID
-     * @param {Array<Number>} wantedStates list of acceptable states
-     *
-     * @return {Promise} resolves to a list of all the
+     * @param {Array.<number>} wantedStates list of acceptable states
+     * @return {Promise}  resolves to a list of all the
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}
      */
     getOutgoingRoomKeyRequestsByTarget(userId: string, deviceId: string, wantedStates: number[]): Promise<any>;
     /**
      * Look for an existing room key request by id and state, and update it if
      * found
-     *
-     * @param {string} requestId      ID of request to update
-     * @param {number} expectedState  state we expect to find the request in
-     * @param {Object} updates        name/value map of updates to apply
-     *
-     * @returns {Promise} resolves to
+     * @param {string} requestId ID of request to update
+     * @param {number} expectedState state we expect to find the request in
+     * @param {object} updates name/value map of updates to apply
+     * @returns {Promise}  resolves to
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}
      *    updated request, or null if no matching row was found
      */
@@ -88,18 +96,21 @@ declare class IndexedDBCryptoStore {
     /**
      * Look for an existing room key request by id and state, and delete it if
      * found
-     *
-     * @param {string} requestId      ID of request to update
-     * @param {number} expectedState  state we expect to find the request in
-     *
-     * @returns {Promise} resolves once the operation is completed
+     * @param {string} requestId ID of request to update
+     * @param {number} expectedState state we expect to find the request in
+     * @returns {Promise}  resolves once the operation is completed
      */
     deleteOutgoingRoomKeyRequest(requestId: string, expectedState: number): Promise<any>;
-    getAccount(txn: any, func: any): void;
+    /**
+     * Get the account pickle from the store.
+     * This requires an active transaction. See doTxn().
+     * @param {*} txn An active transaction. See doTxn().
+     * @param {function (string)} func Called with the account pickle
+     */
+    getAccount(txn: any, func: (arg0: string) => any): void;
     /**
      * Write the account pickle to the store.
      * This requires an active transaction. See doTxn().
-     *
      * @param {*} txn An active transaction. See doTxn().
      * @param {string} newData The new account pickle to store.
      */
@@ -107,15 +118,13 @@ declare class IndexedDBCryptoStore {
     /**
      * Get the public part of the cross-signing keys (eg. self-signing key,
      * user signing key).
-     *
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(string)} func Called with the account keys object:
+     * @param {function (string)} func Called with the account keys object:
      *        { key_type: base64 encoded seed } where key type = user_signing_key_seed or self_signing_key_seed
      */
     getCrossSigningKeys(txn: any, func: (arg0: string) => any): void;
     /**
      * Write the cross-signing keys back to the store
-     *
      * @param {*} txn An active transaction. See doTxn().
      * @param {string} keys keys object as getCrossSigningKeys()
      */
@@ -123,7 +132,7 @@ declare class IndexedDBCryptoStore {
     /**
      * Returns the number of end-to-end sessions in the store
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(int)} func Called with the count of sessions
+     * @param {function (int)} func Called with the count of sessions
      */
     countEndToEndSessions(txn: any, func: (arg0: any) => any): void;
     /**
@@ -132,7 +141,7 @@ declare class IndexedDBCryptoStore {
      * @param {string} deviceKey The public key of the other device.
      * @param {string} sessionId The ID of the session to retrieve
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(object)} func Called with A map from sessionId
+     * @param {function (object)} func Called with A map from sessionId
      *     to session information object with 'session' key being the
      *     Base64 end-to-end session and lastReceivedMessageTs being the
      *     timestamp in milliseconds at which the session last received
@@ -144,7 +153,7 @@ declare class IndexedDBCryptoStore {
      * device.
      * @param {string} deviceKey The public key of the other device.
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(object)} func Called with A map from sessionId
+     * @param {function (object)} func Called with A map from sessionId
      *     to session information object with 'session' key being the
      *     Base64 end-to-end session and lastReceivedMessageTs being the
      *     timestamp in milliseconds at which the session last received
@@ -154,7 +163,7 @@ declare class IndexedDBCryptoStore {
     /**
      * Retrieve all end-to-end sessions
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(object)} func Called one for each session with
+     * @param {function (object)} func Called one for each session with
      *     an object with, deviceKey, lastReceivedMessageTs, sessionId
      *     and session keys.
      */
@@ -173,14 +182,14 @@ declare class IndexedDBCryptoStore {
      * @param {string} senderCurve25519Key The sender's curve 25519 key
      * @param {string} sessionId The ID of the session
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(object)} func Called with A map from sessionId
+     * @param {function (object)} func Called with A map from sessionId
      *     to Base64 end-to-end session.
      */
     getEndToEndInboundGroupSession(senderCurve25519Key: string, sessionId: string, txn: any, func: (arg0: any) => any): void;
     /**
      * Fetches all inbound group sessions in the store
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(object)} func Called once for each group session
+     * @param {function (object)} func Called once for each group session
      *     in the store with an object having keys {senderKey, sessionId,
      *     sessionData}, then once with null to indicate the end of the list.
      */
@@ -211,16 +220,14 @@ declare class IndexedDBCryptoStore {
      * and a sync token matching the point in time the snapshot represents.
      * These all need to be written out in full each time such that the snapshot
      * is always consistent, so they are stored in one object.
-     *
-     * @param {Object} deviceData
+     * @param {object} deviceData
      * @param {*} txn An active transaction. See doTxn().
      */
     storeEndToEndDeviceData(deviceData: any, txn: any): void;
     /**
      * Get the state of all tracked devices
-     *
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(Object)} func Function called with the
+     * @param {function (Object)} func Function called with the
      *     device data
      */
     getEndToEndDeviceData(txn: any, func: (arg0: any) => any): void;
@@ -234,34 +241,34 @@ declare class IndexedDBCryptoStore {
     /**
      * Get an object of roomId->roomInfo for all e2e rooms in the store
      * @param {*} txn An active transaction. See doTxn().
-     * @param {function(Object)} func Function called with the end to end encrypted rooms
+     * @param {function (Object)} func Function called with the end to end encrypted rooms
      */
     getEndToEndRooms(txn: any, func: (arg0: any) => any): void;
     /**
      * Get the inbound group sessions that need to be backed up.
-     * @param {integer} limit The maximum number of sessions to retrieve.  0
+     * @param {number} limit The maximum number of sessions to retrieve.  0
      * for no limit.
-     * @returns {Promise} resolves to an array of inbound group sessions
+     * @returns {Promise}  resolves to an array of inbound group sessions
      */
-    getSessionsNeedingBackup(limit: any): Promise<any>;
+    getSessionsNeedingBackup(limit: number): Promise<any>;
     /**
      * Count the inbound group sessions that need to be backed up.
      * @param {*} txn An active transaction. See doTxn(). (optional)
-     * @returns {Promise} resolves to the number of sessions
+     * @returns {Promise}  resolves to the number of sessions
      */
     countSessionsNeedingBackup(txn: any): Promise<any>;
     /**
      * Unmark sessions as needing to be backed up.
-     * @param {Array<object>} sessions The sessions that need to be backed up.
+     * @param {Array.<object>} sessions The sessions that need to be backed up.
      * @param {*} txn An active transaction. See doTxn(). (optional)
-     * @returns {Promise} resolves when the sessions are unmarked
+     * @returns {Promise}  resolves when the sessions are unmarked
      */
     unmarkSessionsNeedingBackup(sessions: any[], txn: any): Promise<any>;
     /**
      * Mark sessions as needing to be backed up.
-     * @param {Array<object>} sessions The sessions that need to be backed up.
+     * @param {Array.<object>} sessions The sessions that need to be backed up.
      * @param {*} txn An active transaction. See doTxn(). (optional)
-     * @returns {Promise} resolves when the sessions are marked
+     * @returns {Promise}  resolves when the sessions are marked
      */
     markSessionsNeedingBackup(sessions: any[], txn: any): Promise<any>;
     /**
@@ -269,16 +276,15 @@ declare class IndexedDBCryptoStore {
      * that require a transaction (txn) object to be passed in may
      * only be called within a callback of either this function or
      * one of the store functions operating on the same transaction.
-     *
      * @param {string} mode 'readwrite' if you need to call setter
      *     functions with this transaction. Otherwise, 'readonly'.
-     * @param {string[]} stores List IndexedDBCryptoStore.STORE_*
+     * @param {Array.<string>} stores List IndexedDBCryptoStore.STORE_*
      *     options representing all types of object that will be
      *     accessed or written to with this transaction.
-     * @param {function(*)} func Function called with the
+     * @param {function (*)} func Function called with the
      *     transaction object: an opaque object that should be passed
      *     to store functions.
-     * @return {Promise} Promise that resolves with the result of the `func`
+     * @return {Promise}  Promise that resolves with the result of the `func`
      *     when the transaction is complete. If the backend is
      *     async (ie. the indexeddb backend) any of the callback
      *     functions throwing an exception will cause this promise to
