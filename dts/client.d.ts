@@ -1,3 +1,5 @@
+export type Promise_<T = any> = Promise<T>;
+export const Promise_: typeof globalThis['Promise'];
 export const CRYPTO_ENABLED: any;
 export class MatrixClient {
     constructor(opts: any);
@@ -1501,20 +1503,11 @@ export namespace MatrixClient {
  * :client.callback
  */
 export type module = (err: any, data: any) => any;
-/**
- * {@link https://github.com/kriskowal/q|A promise implementation (Q)}. Functions
- * which return this will specify 2 return arguments. These arguments map to the
- * "onFulfilled" and "onRejected" values of the Promise_.
- */
-export type Promise_ = any;
 import ReEmitter from "./ReEmitter";
 import SyncApi from "./sync";
 import RoomList from "./crypto/RoomList";
 import PushProcessor from "./pushprocessor";
-type Promise_<T = any> = Promise<T>;
-declare const Promise_: typeof globalThis['Promise'];
 import { Promise_ } from "./client";
 import { MatrixEvent } from "./models/event";
 import Room from "./models/room";
-export {};
 //# sourceMappingURL=client.d.ts.map
