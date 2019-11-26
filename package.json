@@ -4,5 +4,8 @@
     "author": "Jack Works <jackworks@protonmail.com>",
     "license": "MIT",
     "private": true,
-    "typings": "./dts/matrix.d"
+    "typings": "./dts/matrix.d",
+    "dependencies": {
+        "@types/node": "^12.12.14"
+    }
 }
