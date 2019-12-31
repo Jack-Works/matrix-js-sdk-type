@@ -1,4 +1,4 @@
-export const CRYPTO_ENABLED: any;
+export const CRYPTO_ENABLED: boolean;
 export class MatrixClient {
     constructor(opts: any);
     olmVersion: any;
@@ -368,7 +368,7 @@ export class MatrixClient {
      * @returns {Promise.<object>}  Object that can be passed to createKeyBackupVersion and
      *     additionally has a 'recovery_key' member with the user-facing recovery key string.
      */
-    prepareKeyBackupVersion(password: string, { secureSecretStorage }?: boolean): Promise<any>;
+    prepareKeyBackupVersion(password: string, opts?: { secureSecretStorage: boolean }): Promise<any>;
     /**
      * Check whether the key backup private key is stored in secret storage.
      * @return {Promise.<boolean>}  Whether the backup key is stored.

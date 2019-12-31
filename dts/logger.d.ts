@@ -1,3 +1,3 @@
 export default logger;
-declare const logger: any;
+declare const logger: import("loglevel").Logger;
 //# sourceMappingURL=logger.d.ts.map

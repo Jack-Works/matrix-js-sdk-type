@@ -75,7 +75,7 @@ export const RoomState: typeof $_generated_16;
 export const User: typeof $_generated_17;
 export const MatrixScheduler: typeof $_generated_18;
 export const WebStorageSessionStore: typeof $_generated_19;
-export const CRYPTO_ENABLED: any;
+export const CRYPTO_ENABLED: boolean;
 export const ContentRepo: typeof $_generated_21;
 export const Filter: typeof $_generated_22;
 export const TimelineWindow: typeof $_generated_23.TimelineWindow;
