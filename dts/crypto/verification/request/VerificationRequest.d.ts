@@ -131,5 +131,5 @@ export default class VerificationRequest extends $_generated_2.EventEmitter {
     removeAllListeners(event?: string | symbol): VerificationRequest;
     setMaxListeners(n: number): VerificationRequest;
 }
-import * as $_generated_2 from "../../../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+import * as $_generated_2 from "events";
 //# sourceMappingURL=VerificationRequest.d.ts.map

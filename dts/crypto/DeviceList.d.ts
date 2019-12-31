@@ -208,7 +208,7 @@ export default class DeviceList extends $_generated_0.EventEmitter {
     removeAllListeners(event?: string | symbol): DeviceList;
     setMaxListeners(n: number): DeviceList;
 }
-import * as $_generated_0 from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+import * as $_generated_0 from "events";
 declare class DeviceListUpdateSerialiser {
     /**
      *

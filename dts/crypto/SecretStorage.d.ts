@@ -104,5 +104,5 @@ export default class SecretStorage extends $_generated_0.EventEmitter {
     removeAllListeners(event?: string | symbol): SecretStorage;
     setMaxListeners(n: number): SecretStorage;
 }
-import * as $_generated_0 from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+import * as $_generated_0 from "events";
 //# sourceMappingURL=SecretStorage.d.ts.map

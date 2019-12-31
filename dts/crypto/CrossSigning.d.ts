@@ -172,6 +172,6 @@ export class DeviceTrustLevel {
      */
     isTofu(): boolean;
 }
-import * as $_generated_1 from "../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+import * as $_generated_1 from "events";
 import DeviceInfo from "./deviceinfo";
 //# sourceMappingURL=CrossSigning.d.ts.map

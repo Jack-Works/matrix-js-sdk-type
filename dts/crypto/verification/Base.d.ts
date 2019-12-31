@@ -65,6 +65,6 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
     removeAllListeners(event?: string | symbol): VerificationBase;
     setMaxListeners(n: number): VerificationBase;
 }
-import * as $_generated_1 from "../../../../generate-matrix-js-sdk-type/node_modules/@types/node/events";
+import * as $_generated_1 from "events";
 import MatrixBaseApis from "../../base-apis";
 //# sourceMappingURL=Base.d.ts.map
