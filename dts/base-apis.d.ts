@@ -935,7 +935,7 @@ declare class MatrixBaseApis {
      *     an error response ({@link module:http-api.MatrixError}).
      */
     uploadKeysRequest(content: any, opts: any, callback: any): Promise<any>;
-    uploadKeySignatures(content: any): Promise<any>;
+    uploadKeySignatures(content: any): any;
     /**
      * Download device keys
      *
@@ -976,7 +976,7 @@ declare class MatrixBaseApis {
      *     an error response ({@link module:http-api.MatrixError}).
      */
     getKeyChanges(oldToken: string, newToken: string): Promise<any>;
-    uploadDeviceSigningKeys(auth: any, keys: any): Promise<any>;
+    uploadDeviceSigningKeys(auth: any, keys: any): any;
     /**
      * Register with an Identity Server using the OpenID token from the user's
      * Homeserver, which can be retrieved via
@@ -1176,7 +1176,7 @@ declare class MatrixBaseApis {
      */
     getThirdpartyUser(protocol: string, params: any): Promise<any>;
     getTerms(serviceType: any, baseUrl: any): any;
-    agreeToTerms(serviceType: any, baseUrl: any, accessToken: any, termsUrls: any): Promise<any>;
+    agreeToTerms(serviceType: any, baseUrl: any, accessToken: any, termsUrls: any): any;
     /**
      * Reports an event as inappropriate to the server, which may then notify the appropriate people.
      * @param {string} roomId The room in which the event being reported is located.

@@ -1,1 +1,1 @@
-{"version":3,"file":"randomstring.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["randomstring.js"],"names":[],"mappings":"AAAA,+CASC"}
+{"version":3,"file":"randomstring.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["randomstring.ts"],"names":[],"mappings":"AAiBA,wBAAgB,YAAY,CAAC,GAAG,EAAE,MAAM,GAAG,MAAM,CAShD"}

@@ -24,7 +24,6 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * Load the device tracking state from storage
      */
     load(): Promise<void>;
-    _ssks: any;
     stop(): void;
     /**
      * Save the device tracking state to storage, if any changes are
@@ -223,7 +222,11 @@ declare class DeviceListUpdateSerialiser {
     _deviceList: any;
     _downloadInProgress: boolean;
     _keyDownloadsQueuedByUser: {};
-    _queuedQueryDeferred: any;
+    _queuedQueryDeferred: {
+        resolve: undefined;
+        reject: undefined;
+        promise: Promise<any>;
+    };
     _syncToken: string;
     /**
      * Make a key query request for the given users
@@ -235,7 +238,7 @@ declare class DeviceListUpdateSerialiser {
      *     users.
      */
     updateDevicesForUsers(users: string[], syncToken: string): Promise<any>;
-    _doQueuedQueries(): any;
+    _doQueuedQueries(): Promise<any>;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }
 declare const DeviceInfo: typeof $_generated_2;

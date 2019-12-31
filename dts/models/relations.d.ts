@@ -38,7 +38,14 @@ export default class Relations {
      * @param {MatrixEvent} event The event whose status has changed
      * @param {EventStatus} status The new status
      */
-    _onEventStatus: (event: any, status: any) => void;
+    _onEventStatus: (event: any, status: {
+        NOT_SENT: string;
+        ENCRYPTING: string;
+        SENDING: string;
+        QUEUED: string;
+        SENT: string;
+        CANCELLED: string;
+    }) => void;
     /**
      * Get all relation events in this collection.
      *

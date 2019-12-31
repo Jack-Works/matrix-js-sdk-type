@@ -46,8 +46,7 @@ export function ensureOlmSessionsForDevices(olmDevice: OlmDevice, baseApis: Matr
  *
  * @param {any} olmDevice olm wrapper to use for verify op
  *
- * @param {Object} obj object to check signature on. Note that this will be
- * stripped of its 'signatures' and 'unsigned' properties.
+ * @param {Object} obj object to check signature on.
  *
  * @param {string} signingUserId  ID of the user whose signature should be checked
  *
@@ -61,8 +60,7 @@ export function ensureOlmSessionsForDevices(olmDevice: OlmDevice, baseApis: Matr
 /**
  * Verify the signature on an object
  * @param {OlmDevice} olmDevice olm wrapper to use for verify op
- * @param {object} obj object to check signature on. Note that this will be
- * stripped of its 'signatures' and 'unsigned' properties.
+ * @param {object} obj object to check signature on.
  * @param {string} signingUserId ID of the user whose signature should be checked
  * @param {string} signingDeviceId ID of the device whose signature should be checked
  * @param {string} signingKey base64-ed ed25519 public key
@@ -85,6 +83,18 @@ export function pkSign(obj: any, key: any, userId: any, pubkey: any): any;
  * @param {string} userId The user ID who signed the object
  */
 export function pkVerify(obj: any, pubkey: string, userId: string): void;
+/**
+ * Encode a typed array of uint8 as base64.
+ * @param {Uint8Array} uint8Array The data to encode.
+ * @return {string}  The base64.
+ */
+export function encodeBase64(uint8Array: Uint8Array): string;
+/**
+ * Decode a base64 string to a typed array of uint8.
+ * @param {string} base64 The base64 to decode.
+ * @return {Uint8Array}  The decoded data.
+ */
+export function decodeBase64(base64: string): Uint8Array;
 export const OLM_ALGORITHM: "m.olm.v1.curve25519-aes-sha2";
 export const MEGOLM_ALGORITHM: "m.megolm.v1.aes-sha2";
 export const MEGOLM_BACKUP_ALGORITHM: "m.megolm_backup.v1.curve25519-aes-sha2";

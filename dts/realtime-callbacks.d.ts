@@ -2,7 +2,7 @@
  * Replace the function used by this module to get the current time.
  *
  * Intended for use by the unit tests.
- * @param {((...args: any) => any)} f function which should return a millisecond counter
+ * @param {(((...args: any) => any) | undefined)} f function which should return a millisecond counter
  * @internal
  */
 export function setNow(f: (...args: any) => any): void;

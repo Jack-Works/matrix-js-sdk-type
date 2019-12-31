@@ -1,5 +1,9 @@
 export function newVerificationError(code: any, reason: any, extradata: any): $_generated_0.MatrixEvent;
 export function errorFactory(code: any, reason: any): (extradata: any) => $_generated_0.MatrixEvent;
+export function errorFromEvent(event: any): {
+    code: any;
+    reason: any;
+};
 export function newUserCancelledError(extradata: any): $_generated_0.MatrixEvent;
 export function newTimeoutError(extradata: any): $_generated_0.MatrixEvent;
 export function newUnknownTransactionError(extradata: any): $_generated_0.MatrixEvent;

@@ -8,7 +8,7 @@
  * @extends {VerificationBase}
  */
 export class ShowQRCode extends $_generated_0.default {
-    constructor(baseApis: import("../../base-apis").default, userId: string, deviceId: string, transactionId: string, roomId: string, startEvent: any, request: any);
+    constructor(channel: any, baseApis: import("../../base-apis").default, userId: string, deviceId: string, startEvent: any, request: any);
     _doVerification(): void;
     addListener(event: string | symbol, listener: (...args: any[]) => void): ShowQRCode;
     on(event: string | symbol, listener: (...args: any[]) => void): ShowQRCode;
@@ -33,7 +33,7 @@ export namespace ShowQRCode {
  * @extends {VerificationBase}
  */
 export class ScanQRCode extends $_generated_0.default {
-    constructor(baseApis: import("../../base-apis").default, userId: string, deviceId: string, transactionId: string, roomId: string, startEvent: any, request: any);
+    constructor(channel: any, baseApis: import("../../base-apis").default, userId: string, deviceId: string, startEvent: any, request: any);
     _doVerification(): Promise<void>;
     addListener(event: string | symbol, listener: (...args: any[]) => void): ScanQRCode;
     on(event: string | symbol, listener: (...args: any[]) => void): ScanQRCode;

@@ -150,4 +150,13 @@ export function removeHiddenChars(str: string): string;
 export function escapeRegExp(string: any): any;
 export function globToRegexp(glob: any, extended: any): any;
 export function ensureNoTrailingSlash(url: any): any;
+export function sleep(ms: any, value: any): Promise<any>;
+export function isNullOrUndefined(val: any): boolean;
+export function defer(): {
+    resolve: undefined;
+    reject: undefined;
+    promise: Promise<any>;
+};
+export function promiseMapSeries(promises: any, fn: any): Promise<void>;
+export function promiseTry(fn: any): Promise<any>;
 //# sourceMappingURL=utils.d.ts.map

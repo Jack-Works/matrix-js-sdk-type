@@ -1,6 +1,23 @@
 export class CrossSigningInfo extends $_generated_1.EventEmitter {
     static fromStorage(obj: any, userId: any): any;
     /**
+     * Store private keys in secret storage for use by other devices. This is
+     * typically called in conjunction with the creation of new cross-signing
+     * keys.
+     * @param {object} keys The keys to store
+     * @param {SecretStorage} secretStorage The secret store using account data
+     */
+    static storeInSecretStorage(keys: any, secretStorage: any): Promise<void>;
+    /**
+     * Get private keys from secret storage created by some other device. This
+     * also passes the private keys to the app-specific callback.
+     * @param {string} type The type of key to get.  One of "master",
+     * "self_signing", or "user_signing".
+     * @param {SecretStorage} secretStorage The secret store using account data
+     * @return {Uint8Array}  The private key
+     */
+    static getFromSecretStorage(type: string, secretStorage: any): Uint8Array;
+    /**
      * Information about a user's cross-signing keys
      * @class
      * @param {string} userId the user that the information is about
@@ -14,30 +31,50 @@ export class CrossSigningInfo extends $_generated_1.EventEmitter {
     /**
      * Calls the app callback to ask for a private key
      * @param {string} type The key type ("master", "self_signing", or "user_signing")
-     * @param {Uint8Array} expectedPubkey The matching public key or undefined to use
+     * @param {string} expectedPubkey The matching public key or undefined to use
      *     the stored public key for the given key type.
+     * @returns {Array}  An array with [ public key, Olm.PkSigning ]
      */
-    getCrossSigningKey(type: string, expectedPubkey: Uint8Array): Promise<any[]>;
+    getCrossSigningKey(type: string, expectedPubkey: string): any[];
     toStorage(): {
         keys: {};
         firstUse: boolean;
     };
     /**
-     * Get the ID used to identify the user
+     * Check whether the private keys exist in secret storage.
+     * XXX: This could be static, be we often seem to have an instance when we
+     * want to know this anyway...
      *
-     * @param {string} type The type of key to get the ID of.  One of "master",
-     * "self_signing", or "user_signing".  Defaults to "master".
-     *
-     * @return {string} the ID
+     * @param {SecretStorage} secretStorage The secret store using account data
+     * @returns {boolean} Whether all private keys were found in storage
      */
     /**
-     * Get the ID used to identify the user
+     * Check whether the private keys exist in secret storage.
+     * XXX: This could be static, be we often seem to have an instance when we
+     * want to know this anyway...
+     * @param {SecretStorage} secretStorage The secret store using account data
+     * @returns {boolean}  Whether all private keys were found in storage
+     */
+    isStoredInSecretStorage(secretStorage: any): boolean;
+    /**
+     * Get the ID used to identify the user. This can also be used to test for
+     * the existence of a given key type.
      * @param {string} type The type of key to get the ID of.  One of "master",
      * "self_signing", or "user_signing".  Defaults to "master".
      * @return {string}  the ID
      */
     getId(type: string): string;
-    resetKeys(level: any): Promise<void>;
+    /**
+     * Create new cross-signing keys for the given key types. The public keys
+     * will be held in this class, while the private keys are passed off to the
+     * `saveCrossSigningKeys` application callback.
+     * @param {CrossSigningLevel} level The key types to reset
+     */
+    resetKeys(level: {
+        MASTER: number;
+        USER_SIGNING: number;
+        SELF_SIGNING: number;
+    }): Promise<void>;
     setKeys(keys: any): void;
     signObject(data: any, type: any): Promise<any>;
     signUser(key: any): Promise<any>;
@@ -66,12 +103,6 @@ export class CrossSigningInfo extends $_generated_1.EventEmitter {
     addListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
     on(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
     once(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    /**
-     * Calls the app callback to ask for a private key
-     * @param {string} type The key type ("master", "self_signing", or "user_signing")
-     * @param {Uint8Array} expectedPubkey The matching public key or undefined to use
-     *     the stored public key for the given key type.
-     */
     prependListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
     prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
     removeListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;

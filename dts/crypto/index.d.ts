@@ -137,8 +137,9 @@ export class Crypto {
     _lazyLoadMembers: boolean;
     _roomDeviceTrackingState: {};
     _lastNewSessionForced: {};
-    _verificationTransactions: Map<any, any>;
-    _crossSigningInfo: $_generated_11.CrossSigningInfo;
+    _toDeviceVerificationRequests: Map<any, any>;
+    _inRoomVerificationRequests: Map<any, any>;
+    _crossSigningInfo: $_generated_10.CrossSigningInfo;
     _secretStorage: any;
     /**
      * Initialise the crypto module so that it is ready for use
@@ -146,39 +147,87 @@ export class Crypto {
      * Returns a promise which resolves once the crypto module is ready for use.
      */
     init(): Promise<void>;
-    addSecretKey(algorithm: any, opts: any, keyID: any): any;
+    /**
+     * Create a recovery key from a user-supplied passphrase.
+     * @param {string} password Passphrase string that can be entered by the user
+     *     when restoring the backup as an alternative to entering the recovery key.
+     *     Optional.
+     * @returns {Promise.<Array>}  Array with public key metadata, encoded private
+     *     recovery key which should be disposed of after displaying to the user,
+     *     and raw private key to avoid round tripping if needed.
+     */
+    createRecoveryKeyFromPassphrase(password: string): Promise<any[]>;
+    /**
+     * Bootstrap Secure Secret Storage if needed by creating a default key and
+     * signing it with the cross-signing master key. If everything is already set
+     * up, then no changes are made, so this is safe to run to ensure secret storage
+     * is ready for use.
+     * @param {(((...args: any) => any) | undefined)} opts.authUploadDeviceSigningKeys Optional. Function
+     * called to await an interactive auth flow when uploading device signing keys.
+     * Args:
+     *     {function} A function that makes the request requiring auth. Receives the
+     *     auth data as an object.
+     * @param {(((...args: any) => any) | undefined)} opts.createSecretStorageKey Optional. Function
+     * called to await a secret storage key creation flow.
+     * @param {(object | undefined)} opts.keyBackupInfo The current key backup object. If passed,
+     * the passphrase and recovery key from this backup will be used.
+     * Returns:
+     *     {Promise} A promise which resolves to key creation data for
+     *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
+     */
+    bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo }?: (...args: any) => any): Promise<void>;
+    addSecretStorageKey(algorithm: any, opts: any, keyID: any): any;
+    hasSecretStorageKey(keyID: any): any;
     storeSecret(name: any, secret: any, keys: any): any;
     getSecret(name: any): any;
     isSecretStored(name: any, checkKey: any): any;
     requestSecret(name: any, devices: any): any;
-    getDefaultKeyId(): any;
-    setDefaultKeyId(k: any): any;
+    getDefaultSecretStorageKeyId(): any;
+    setDefaultSecretStorageKeyId(k: any): any;
     /**
-     * Checks that a given private key matches a given public key
-     * This can be used by the getCrossSigningKey callback to verify that the
+     * Checks that a given secret storage private key matches a given public key.
+     * This can be used by the getSecretStorageKey callback to verify that the
      * private key it is about to supply is the one that was requested.
      *
      * @param {Uint8Array} privateKey The private key
-     * @param {Uint8Array} expectedPublicKey The public key supplied by the getCrossSigningKey callback
+     * @param {string} expectedPublicKey The public key
      * @returns {boolean} true if the key matches, otherwise false
      */
     /**
-     * Checks that a given private key matches a given public key
+     * Checks that a given secret storage private key matches a given public key.
+     * This can be used by the getSecretStorageKey callback to verify that the
+     * private key it is about to supply is the one that was requested.
+     * @param {Uint8Array} privateKey The private key
+     * @param {string} expectedPublicKey The public key
+     * @returns {boolean}  true if the key matches, otherwise false
+     */
+    checkSecretStoragePrivateKey(privateKey: Uint8Array, expectedPublicKey: string): boolean;
+    /**
+     * Checks that a given cross-signing private key matches a given public key.
      * This can be used by the getCrossSigningKey callback to verify that the
      * private key it is about to supply is the one that was requested.
      * @param {Uint8Array} privateKey The private key
-     * @param {Uint8Array} expectedPublicKey The public key supplied by the getCrossSigningKey callback
+     * @param {string} expectedPublicKey The public key
      * @returns {boolean}  true if the key matches, otherwise false
      */
-    checkPrivateKey(privateKey: Uint8Array, expectedPublicKey: Uint8Array): boolean;
+    checkCrossSigningPrivateKey(privateKey: Uint8Array, expectedPublicKey: string): boolean;
     /**
      * Generate new cross-signing keys.
-     * @param {object} authDict Auth data to supply for User-Interactive auth.
      * @param {(CrossSigningLevel | undefined)} level the level of cross-signing to reset.  New
      * keys will be created for the given level and below.  Defaults to
      * regenerating all keys.
+     * @param {(((...args: any) => any) | undefined)} opts.authUploadDeviceSigningKeys Optional. Function
+     * called to await an interactive auth flow when uploading device signing keys.
+     * Args:
+     *     {function} A function that makes the request requiring auth. Receives the
+     *     auth data as an object.
      */
-    resetCrossSigningKeys(authDict: any, level: any): Promise<void>;
+    resetCrossSigningKeys(level: {
+        MASTER: number;
+        USER_SIGNING: number;
+        SELF_SIGNING: number;
+    }, { authUploadDeviceSigningKeys }?: (...args: any) => any): Promise<void>;
+    _afterCrossSigningLocalKeyChange(): Promise<void>;
     /**
      * Check if a user's cross-signing key is a candidate for upgrading from device
      * verification.
@@ -209,20 +258,20 @@ export class Crypto {
      * @param {string} userId the user ID to get the cross-signing info for.
      * @returns {CrossSigningInfo}  the cross signing informmation for the user.
      */
-    getStoredCrossSigningForUser(userId: string): typeof $_generated_11.CrossSigningInfo;
+    getStoredCrossSigningForUser(userId: string): typeof $_generated_10.CrossSigningInfo;
     /**
      * Check whether a given user is trusted.
      * @param {string} userId The ID of the user to check.
      * @returns {UserTrustLevel}
      */
-    checkUserTrust(userId: string): typeof $_generated_11.UserTrustLevel;
+    checkUserTrust(userId: string): typeof $_generated_10.UserTrustLevel;
     /**
      * Check whether a given device is trusted.
      * @param {string} userId The ID of the user whose devices is to be checked.
      * @param {string} deviceId The ID of the device to check
      * @returns {DeviceTrustLevel}
      */
-    checkDeviceTrust(userId: string, deviceId: string): typeof $_generated_11.DeviceTrustLevel;
+    checkDeviceTrust(userId: string, deviceId: string): typeof $_generated_10.DeviceTrustLevel;
     checkOwnCrossSigningTrust(): Promise<void>;
     /**
      * Check if the master key is signed by a verified device, and if so, prompt
@@ -343,7 +392,8 @@ export class Crypto {
     /**
      * Update the blocked/verified state of the given device
      * @param {string} userId owner of the device
-     * @param {string} deviceId unique identifier for the device
+     * @param {string} deviceId unique identifier for the device or user's
+     * cross-signing public key ID.
      * @param {(boolean | null)} verified whether to mark the device as verified. Null to
      *     leave unchanged.
      * @param {(boolean | null)} blocked whether to mark the device as blocked. Null to
@@ -354,9 +404,10 @@ export class Crypto {
      */
     setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<DeviceInfo>;
     requestVerificationDM(userId: any, roomId: any, methods: any): Promise<any>;
-    acceptVerificationDM(event: any, Method: any): any;
+    acceptVerificationDM(event: any, method: any): any;
     requestVerification(userId: any, methods: any, devices: any): Promise<any>;
-    beginKeyVerification(method: any, userId: any, deviceId: any, transactionId: any): any;
+    _requestVerificationWithChannel(userId: any, methods: any, channel: any, requestsMap: any): Promise<any>;
+    beginKeyVerification(method: any, userId: any, deviceId: any, transactionId?: any): any;
     /**
      * Get information on the active olm sessions with a user
      * <p>
@@ -557,23 +608,24 @@ export class Crypto {
      */
     _onRoomKeyEvent(event: MatrixEvent): void;
     /**
-     * Handle a key verification request event.
-     * @private
-     * @param {MatrixEvent} event verification request event
-     */
-    _onKeyVerificationRequest(event: MatrixEvent): void;
-    /**
-     * Handle a key verification start event.
-     * @private
-     * @param {MatrixEvent} event verification start event
-     */
-    _onKeyVerificationStart(event: MatrixEvent): void;
-    /**
      * Handle a general key verification event.
      * @private
      * @param {MatrixEvent} event verification start event
      */
     _onKeyVerificationMessage(event: MatrixEvent): void;
+    /**
+     * Handle key verification requests sent as timeline events
+     * @private
+     * @param {MatrixEvent} event the timeline event
+     */
+    _onTimelineEvent(event: MatrixEvent): void;
+    _handleVerificationEvent(event: any, transactionId: any, requestsMap: any, createRequest: any): Promise<void>;
+    /**
+     * Handle a toDevice event that couldn't be decrypted
+     *
+     * @private
+     * @param {any} event undecryptable event
+     */
     /**
      * Handle a toDevice event that couldn't be decrypted
      * @private
@@ -637,31 +689,13 @@ export class Crypto {
  */
 export type RoomKeyRequestBody = any;
 import * as $_generated_9 from "./DeviceList";
-import * as $_generated_11 from "./CrossSigning";
+import * as $_generated_10 from "./CrossSigning";
 declare const DeviceInfo: typeof $_generated_8;
 import DeviceInfo from "./deviceinfo";
 import { MatrixEvent } from "../models/event";
 import MegolmSessionData from "./OlmDevice";
 import Room from "../models/room";
 import RoomMember from "../models/room-member";
-/**
- * The parameters of a room key request. The details of the request may
- * vary with the crypto algorithm, but the management and storage layers for
- * outgoing requests expect it to have 'room_id' and 'session_id' properties.
- *
- * @typedef {Object} RoomKeyRequestBody
- */
-/**
- * Represents a received m.room_key_request event
- *
- * @property {string} userId    user requesting the key
- * @property {string} deviceId  device requesting the key
- * @property {string} requestId unique id for the request
- * @property {any} requestBody
- * @property {function()} share  callback which, when called, will ask
- *    the relevant crypto algorithm implementation to share the keys for
- *    this request.
- */
 /**
  * The parameters of a room key request. The details of the request may
  * vary with the crypto algorithm, but the management and storage layers for

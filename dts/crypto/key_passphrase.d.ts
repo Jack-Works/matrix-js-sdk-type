@@ -4,4 +4,5 @@ export function keyFromPassphrase(password: any): Promise<{
     salt: string;
     iterations: number;
 }>;
+export function deriveKey(password: any, salt: any, iterations: any): Promise<Uint8Array>;
 //# sourceMappingURL=key_passphrase.d.ts.map

@@ -174,7 +174,8 @@ export class MatrixClient {
     /**
      * Mark the given device as verified
      * @param {string} userId owner of the device
-     * @param {string} deviceId unique identifier for the device
+     * @param {string} deviceId unique identifier for the device or user's
+     * cross-signing public key ID.
      * @param {(boolean | undefined)} verified whether to mark the device as verified. defaults
      *   to 'true'.
      * @returns {Promise}
@@ -184,7 +185,8 @@ export class MatrixClient {
     /**
      * Mark the given device as blocked/unblocked
      * @param {string} userId owner of the device
-     * @param {string} deviceId unique identifier for the device
+     * @param {string} deviceId unique identifier for the device or user's
+     * cross-signing public key ID.
      * @param {(boolean | undefined)} blocked whether to mark the device as blocked. defaults
      *   to 'true'.
      * @returns {Promise}
@@ -194,7 +196,8 @@ export class MatrixClient {
     /**
      * Mark the given device as known/unknown
      * @param {string} userId owner of the device
-     * @param {string} deviceId unique identifier for the device
+     * @param {string} deviceId unique identifier for the device or user's
+     * cross-signing public key ID.
      * @param {(boolean | undefined)} known whether to mark the device as known. defaults
      *   to 'true'.
      * @returns {Promise}
@@ -359,10 +362,18 @@ export class MatrixClient {
      * @param {string} password Passphrase string that can be entered by the user
      *     when restoring the backup as an alternative to entering the recovery key.
      *     Optional.
+     * @param {(boolean | undefined)} opts.secureSecretStorage Whether to use Secure
+     *     Secret Storage to store the key encrypting key backups.
+     *     Optional, defaults to false.
      * @returns {Promise.<object>}  Object that can be passed to createKeyBackupVersion and
      *     additionally has a 'recovery_key' member with the user-facing recovery key string.
      */
-    prepareKeyBackupVersion(password: string): Promise<any>;
+    prepareKeyBackupVersion(password: string, { secureSecretStorage }?: boolean): Promise<any>;
+    /**
+     * Check whether the key backup private key is stored in secret storage.
+     * @return {Promise.<boolean>}  Whether the backup key is stored.
+     */
+    isKeyBackupKeyStored(): Promise<boolean>;
     /**
      * Create a new key backup version and enable it, using the information return
      * from prepareKeyBackupVersion.
@@ -404,8 +415,54 @@ export class MatrixClient {
      */
     flagAllGroupSessionsForBackup(): Promise<number>;
     isValidRecoveryKey(recoveryKey: any): boolean;
-    restoreKeyBackupWithPassword(password: any, targetRoomId: any, targetSessionId: any, backupInfo: any): Promise<any>;
-    restoreKeyBackupWithRecoveryKey(recoveryKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any): any;
+    /**
+     * Restore from an existing key backup via a passphrase.
+     *
+     * @param {string} password Passphrase
+     * @param {string} [targetRoomId] Room ID to target a specific room.
+     * Restores all rooms if omitted.
+     * @param {string} [targetSessionId] Session ID to target a specific session.
+     * Restores all sessions if omitted.
+     * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @return {Promise<object>} Status of restoration with `total` and `imported`
+     * key counts.
+     */
+    /**
+     * Restore from an existing key backup via a passphrase.
+     * @param {string} password Passphrase
+     * @param {(string | undefined)} targetRoomId Room ID to target a specific room.
+     * Restores all rooms if omitted.
+     * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
+     * Restores all sessions if omitted.
+     * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @return {Promise.<object>}  Status of restoration with `total` and `imported`
+     * key counts.
+     */
+    restoreKeyBackupWithPassword(password: string, targetRoomId: string, targetSessionId: string, backupInfo: any): Promise<any>;
+    /**
+     * Restore from an existing key backup via a private key stored in secret
+     * storage.
+     * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @param {(string | undefined)} targetRoomId Room ID to target a specific room.
+     * Restores all rooms if omitted.
+     * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
+     * Restores all sessions if omitted.
+     * @return {Promise.<object>}  Status of restoration with `total` and `imported`
+     * key counts.
+     */
+    restoreKeyBackupWithSecretStorage(backupInfo: any, targetRoomId: string, targetSessionId: string): Promise<any>;
+    /**
+     * Restore from an existing key backup via an encoded recovery key.
+     * @param {string} recoveryKey Encoded recovery key
+     * @param {(string | undefined)} targetRoomId Room ID to target a specific room.
+     * Restores all rooms if omitted.
+     * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
+     * Restores all sessions if omitted.
+     * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @return {Promise.<object>}  Status of restoration with `total` and `imported`
+     * key counts.
+     */
+    restoreKeyBackupWithRecoveryKey(recoveryKey: string, targetRoomId: string, targetSessionId: string, backupInfo: any): Promise<any>;
     _restoreKeyBackup(privKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any): any;
     deleteKeysFromBackup(roomId: any, sessionId: any, version: any): any;
     /**
