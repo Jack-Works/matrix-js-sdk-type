@@ -17,5 +17,4 @@ export class MatrixError extends Error {
     message: any;
     data: any;
 }
-import { MatrixError } from "./http-api";
 //# sourceMappingURL=http-api.d.ts.map

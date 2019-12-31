@@ -112,5 +112,4 @@ export namespace EventStatus {
     export const SENT: string;
     export const CANCELLED: string;
 }
-import { MatrixEvent } from "./event.js";
 //# sourceMappingURL=event.d.ts.map

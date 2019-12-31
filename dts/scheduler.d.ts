@@ -111,5 +111,4 @@ declare class MatrixScheduler {
      */
     queueEvent(event: any): Promise<any>;
 }
-import { processFn } from "./scheduler";
 //# sourceMappingURL=scheduler.d.ts.map
