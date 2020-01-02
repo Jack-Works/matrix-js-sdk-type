@@ -14,14 +14,14 @@ export const ENCRYPTION_CLASSES: {};
  * map of registered encryption algorithm classes. Map from string to {@link
  * module:crypto/algorithms/base.DecryptionAlgorithm|DecryptionAlgorithm} class
  *
- * @type {Object.<string, function(new: module:crypto/algorithms/base.DecryptionAlgorithm)>}
+ * @type {Record<string, module:crypto/algorithms/base.DecryptionAlgorithm>}
  */
 /**
  * map of registered encryption algorithm classes. Map from string to {@link
  * module:crypto/algorithms/base.DecryptionAlgorithm|DecryptionAlgorithm} class
- * @type {object.<string, function (new: module:crypto/algorithms/base.DecryptionAlgorithm)>}
+ * @type {Record.<string, DecryptionAlgorithm>}
  */
-export const DECRYPTION_CLASSES: object<string, new () => >;
+export const DECRYPTION_CLASSES: Record<string, DecryptionAlgorithm>;
 /**
  * Exception thrown specifically when we want to warn the user to consider
  * the security of their conversation before continuing
@@ -33,64 +33,6 @@ export const DECRYPTION_CLASSES: object<string, new () => >;
 export class UnknownDeviceError extends Error {
     constructor(msg: any, devices: any);
     devices: any;
-}
-/**
- * base type for encryption implementations
- * @alias  module:crypto/algorithms/base.EncryptionAlgorithm
- * @param {object} params parameters
- * @param {string} params.userId The UserID for the local user
- * @param {string} params.deviceId The identifier for this device.
- * @param {} params.crypto crypto core
- * @param {OlmDevice} params.olmDevice olm.js wrapper
- * @param {MatrixBaseApis} baseApis base matrix api interface
- * @param {string} params.roomId The ID of the room we will be sending to
- * @param {object} params.config The body of the m.room.encryption event
- */
-export class EncryptionAlgorithm {
-    constructor(params: any);
-    _userId: any;
-    _deviceId: any;
-    _crypto: any;
-    _olmDevice: any;
-    _baseApis: any;
-    _roomId: any;
-    /**
-     * Encrypt a message event
-     *
-     * @method module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
-     * @abstract
-     *
-     * @param {any} room
-     * @param {string} eventType
-     * @param {object} plaintext event content
-     *
-     * @return {Promise} Promise which resolves to the new event body
-     */
-    /**
-     * Called when the membership of a member of the room changes.
-     *
-     * @param {any} event  event causing the change
-     * @param {any} member  user whose membership changed
-     * @param {string=} oldMembership  previous membership
-     * @public
-     */
-    /**
-     * Encrypt a message event
-     * @method  module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
-     * @abstract
-     * @param {Room} room
-     * @param {string} eventType
-     * @param {object} plaintext event content
-     * @return {Promise}  Promise which resolves to the new event body
-     */
-    /**
-     * Called when the membership of a member of the room changes.
-     * @param {MatrixEvent} event event causing the change
-     * @param {RoomMember} member user whose membership changed
-     * @param {(string | undefined)} oldMembership previous membership
-     * @public
-     */
-    onRoomMembership(event: MatrixEvent, member: RoomMember, oldMembership: string): void;
 }
 /**
  * base type for decryption implementations
@@ -187,6 +129,64 @@ export class DecryptionAlgorithm {
     shareKeysWithDevice(keyRequest: any): void;
 }
 /**
+ * base type for encryption implementations
+ * @alias  module:crypto/algorithms/base.EncryptionAlgorithm
+ * @param {object} params parameters
+ * @param {string} params.userId The UserID for the local user
+ * @param {string} params.deviceId The identifier for this device.
+ * @param {} params.crypto crypto core
+ * @param {OlmDevice} params.olmDevice olm.js wrapper
+ * @param {MatrixBaseApis} baseApis base matrix api interface
+ * @param {string} params.roomId The ID of the room we will be sending to
+ * @param {object} params.config The body of the m.room.encryption event
+ */
+export class EncryptionAlgorithm {
+    constructor(params: any);
+    _userId: any;
+    _deviceId: any;
+    _crypto: any;
+    _olmDevice: any;
+    _baseApis: any;
+    _roomId: any;
+    /**
+     * Encrypt a message event
+     *
+     * @method module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
+     * @abstract
+     *
+     * @param {any} room
+     * @param {string} eventType
+     * @param {object} plaintext event content
+     *
+     * @return {Promise} Promise which resolves to the new event body
+     */
+    /**
+     * Called when the membership of a member of the room changes.
+     *
+     * @param {any} event  event causing the change
+     * @param {any} member  user whose membership changed
+     * @param {string=} oldMembership  previous membership
+     * @public
+     */
+    /**
+     * Encrypt a message event
+     * @method  module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
+     * @abstract
+     * @param {Room} room
+     * @param {string} eventType
+     * @param {object} plaintext event content
+     * @return {Promise}  Promise which resolves to the new event body
+     */
+    /**
+     * Called when the membership of a member of the room changes.
+     * @param {MatrixEvent} event event causing the change
+     * @param {RoomMember} member user whose membership changed
+     * @param {(string | undefined)} oldMembership previous membership
+     * @public
+     */
+    onRoomMembership(event: MatrixEvent, member: RoomMember, oldMembership: string): void;
+}
+/**
  * Exception thrown when decryption fails
  *
  * @alias module:crypto/algorithms/base.DecryptionError
@@ -211,5 +211,5 @@ export class DecryptionError extends Error {
     detailedString: string;
 }
 import { MatrixEvent } from "../../models/event";
-import RoomMember from "../../models/room-member";
 import MegolmSessionData from "../OlmDevice";
+import RoomMember from "../../models/room-member";
