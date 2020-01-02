@@ -362,13 +362,16 @@ export class MatrixClient {
      * @param {string} password Passphrase string that can be entered by the user
      *     when restoring the backup as an alternative to entering the recovery key.
      *     Optional.
+     * @param {Object} opts __auto_generated__
      * @param {(boolean | undefined)} opts.secureSecretStorage Whether to use Secure
      *     Secret Storage to store the key encrypting key backups.
      *     Optional, defaults to false.
      * @returns {Promise.<object>}  Object that can be passed to createKeyBackupVersion and
      *     additionally has a 'recovery_key' member with the user-facing recovery key string.
      */
-    prepareKeyBackupVersion(password: string, opts?: { secureSecretStorage: boolean }): Promise<any>;
+    prepareKeyBackupVersion(password: string, { secureSecretStorage }?: {
+        secureSecretStorage: boolean;
+    }): Promise<any>;
     /**
      * Check whether the key backup private key is stored in secret storage.
      * @return {Promise.<boolean>}  Whether the backup key is stored.

@@ -62,11 +62,15 @@ export default class VerificationRequest extends $_generated_2.EventEmitter {
      * Start the key verification, creating a verifier and sending a .start event.
      * If no previous events have been sent, pass in `targetDevice` to set who to direct this request to.
      * @param {string} method the name of the verification method to use.
+     * @param {Object} targetDevice __auto_generated__
      * @param {(string | null)} targetDevice.userId the id of the user to direct this request to
      * @param {(string | null)} targetDevice.deviceId the id of the device to direct this request to
      * @returns {VerifierBase}  the verifier of the given method
      */
-    beginKeyVerification(method: string, targetDevice?: any): any;
+    beginKeyVerification(method: string, targetDevice?: {
+        userId: string;
+        deviceId: string;
+    }): any;
     _verifier: any;
     /**
      * sends the initial .request event.
@@ -75,11 +79,15 @@ export default class VerificationRequest extends $_generated_2.EventEmitter {
     sendRequest(): Promise<any>;
     /**
      * Cancels the request, sending a cancellation to the other party
+     * @param {Object} error __auto_generated__
      * @param {(string | null)} error.reason the error reason to send the cancellation with
      * @param {(string | null)} error.code the error code to send the cancellation with
      * @returns {Promise}  resolves when the event has been sent.
      */
-    cancel({ reason, code }?: string): Promise<any>;
+    cancel({ reason, code }?: {
+        reason: string;
+        code: string;
+    }): Promise<any>;
     /**
      *
      * @returns {Promise}  with the verifier once it becomes available. Can be used after calling `sendRequest`.

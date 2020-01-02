@@ -51,7 +51,7 @@ export class UnknownDeviceError extends Error {
  * @alias  module:crypto/algorithms/base.DecryptionAlgorithm
  * @param {object} params parameters
  * @param {string} params.userId The UserID for the local user
- * @param {} params.crypto crypto core
+ * @param  params.crypto crypto core
  * @param {OlmDevice} params.olmDevice olm.js wrapper
  * @param {MatrixBaseApis} baseApis base matrix api interface
  * @param {(string | undefined)} params.roomId The ID of the room we will be receiving
@@ -85,6 +85,7 @@ export class DecryptionAlgorithm {
      */
     /**
      * Decrypt an event
+     * @method {Object} module:crypto/algorithms/base __auto_generated__
      * @method  module:crypto/algorithms/base.DecryptionAlgorithm#decryptEvent
      * @abstract
      * @param {MatrixEvent} event undecrypted event
@@ -94,6 +95,7 @@ export class DecryptionAlgorithm {
      */
     /**
      * Handle a key event
+     * @method {Object} module:crypto/algorithms/base __auto_generated__
      * @method  module:crypto/algorithms/base.DecryptionAlgorithm#onRoomKeyEvent
      * @param {MatrixEvent} params event key event
      */
@@ -134,7 +136,7 @@ export class DecryptionAlgorithm {
  * @param {object} params parameters
  * @param {string} params.userId The UserID for the local user
  * @param {string} params.deviceId The identifier for this device.
- * @param {} params.crypto crypto core
+ * @param  params.crypto crypto core
  * @param {OlmDevice} params.olmDevice olm.js wrapper
  * @param {MatrixBaseApis} baseApis base matrix api interface
  * @param {string} params.roomId The ID of the room we will be sending to
@@ -170,6 +172,7 @@ export class EncryptionAlgorithm {
      */
     /**
      * Encrypt a message event
+     * @method {Object} module:crypto/algorithms/base __auto_generated__
      * @method  module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
      * @abstract
      * @param {Room} room

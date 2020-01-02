@@ -162,6 +162,7 @@ export class Crypto {
      * signing it with the cross-signing master key. If everything is already set
      * up, then no changes are made, so this is safe to run to ensure secret storage
      * is ready for use.
+     * @param {Object} opts __auto_generated__
      * @param {(((...args: any) => any) | undefined)} opts.authUploadDeviceSigningKeys Optional. Function
      * called to await an interactive auth flow when uploading device signing keys.
      * Args:
@@ -175,7 +176,11 @@ export class Crypto {
      *     {Promise} A promise which resolves to key creation data for
      *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
      */
-    bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo }?: (...args: any) => any): Promise<void>;
+    bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo }?: {
+        authUploadDeviceSigningKeys: (...args: any) => any;
+        createSecretStorageKey: (...args: any) => any;
+        keyBackupInfo: any;
+    }): Promise<void>;
     addSecretStorageKey(algorithm: any, opts: any, keyID: any): any;
     hasSecretStorageKey(keyID: any): any;
     storeSecret(name: any, secret: any, keys: any): any;
@@ -216,6 +221,7 @@ export class Crypto {
      * @param {(CrossSigningLevel | undefined)} level the level of cross-signing to reset.  New
      * keys will be created for the given level and below.  Defaults to
      * regenerating all keys.
+     * @param {Object} opts __auto_generated__
      * @param {(((...args: any) => any) | undefined)} opts.authUploadDeviceSigningKeys Optional. Function
      * called to await an interactive auth flow when uploading device signing keys.
      * Args:
@@ -226,7 +232,9 @@ export class Crypto {
         MASTER: number;
         USER_SIGNING: number;
         SELF_SIGNING: number;
-    }, { authUploadDeviceSigningKeys }?: (...args: any) => any): Promise<void>;
+    }, { authUploadDeviceSigningKeys }?: {
+        authUploadDeviceSigningKeys: (...args: any) => any;
+    }): Promise<void>;
     _afterCrossSigningLocalKeyChange(): Promise<void>;
     /**
      * Check if a user's cross-signing key is a candidate for upgrading from device
