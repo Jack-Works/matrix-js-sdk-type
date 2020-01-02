@@ -377,7 +377,7 @@ export class Crypto {
      * @return {(Array.<DeviceInfo> | null)}  list of devices, or null if we haven't
      * managed to get a list of devices for this user yet.
      */
-    getStoredDevicesForUser(userId: string): DeviceInfo[];
+    getStoredDevicesForUser(userId: string): (typeof $_generated_8)[];
     /**
      * Get the stored keys for a single device
      * @param {string} userId
@@ -385,7 +385,7 @@ export class Crypto {
      * @return {(DeviceInfo | null)}  device, or undefined
      * if we don't know about this device
      */
-    getStoredDevice(userId: string, deviceId: string): DeviceInfo;
+    getStoredDevice(userId: string, deviceId: string): typeof $_generated_8;
     /**
      * Save the device list, if necessary
      * @param {number} delay Time in ms before which the save actually happens.
@@ -410,7 +410,7 @@ export class Crypto {
      *      the existence of this device. Null to leave unchanged
      * @return {Promise.<DeviceInfo>}  updated DeviceInfo
      */
-    setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<DeviceInfo>;
+    setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<typeof $_generated_8>;
     requestVerificationDM(userId: any, roomId: any, methods: any): Promise<any>;
     acceptVerificationDM(event: any, method: any): any;
     requestVerification(userId: any, methods: any, devices: any): Promise<any>;
@@ -448,7 +448,7 @@ export class Crypto {
      * @param {MatrixEvent} event event to be checked
      * @return {(DeviceInfo | null)}
      */
-    getEventSenderDeviceInfo(event: MatrixEvent): DeviceInfo;
+    getEventSenderDeviceInfo(event: MatrixEvent): typeof $_generated_8;
     /**
      * Forces the current outbound group session to be discarded such
      * that another one will be created next time an event is sent.
@@ -698,8 +698,7 @@ export class Crypto {
 export type RoomKeyRequestBody = any;
 import * as $_generated_9 from "./DeviceList";
 import * as $_generated_10 from "./CrossSigning";
-declare const DeviceInfo: typeof $_generated_8;
-import DeviceInfo from "./deviceinfo";
+import * as $_generated_8 from "./deviceinfo";
 import { MatrixEvent } from "../models/event";
 import MegolmSessionData from "./OlmDevice";
 import Room from "../models/room";
@@ -740,5 +739,4 @@ declare class IncomingRoomKeyRequestCancellation {
     deviceId: any;
     requestId: any;
 }
-import * as $_generated_8 from "./deviceinfo";
 export {};
