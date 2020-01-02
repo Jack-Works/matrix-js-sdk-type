@@ -55,15 +55,6 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
     _resolve: (...args: any[]) => void;
     _started: boolean;
     _verifyKeys(userId: any, keys: any, verifier: any): Promise<void>;
-    addListener(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    on(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    once(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    prependListener(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    removeListener(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    off(event: string | symbol, listener: (...args: any[]) => void): VerificationBase;
-    removeAllListeners(event?: string | symbol): VerificationBase;
-    setMaxListeners(n: number): VerificationBase;
 }
 import * as $_generated_1 from "events";
 import MatrixBaseApis from "../../base-apis";

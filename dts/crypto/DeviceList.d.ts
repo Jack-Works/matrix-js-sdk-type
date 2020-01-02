@@ -198,15 +198,6 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      *     users.
      */
     _doKeyDownload(users: string[]): Promise<any>;
-    addListener(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    on(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    once(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    prependListener(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    removeListener(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    off(event: string | symbol, listener: (...args: any[]) => void): DeviceList;
-    removeAllListeners(event?: string | symbol): DeviceList;
-    setMaxListeners(n: number): DeviceList;
 }
 import * as $_generated_0 from "events";
 declare class DeviceListUpdateSerialiser {

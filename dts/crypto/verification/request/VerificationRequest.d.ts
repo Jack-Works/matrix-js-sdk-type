@@ -121,14 +121,5 @@ export default class VerificationRequest extends $_generated_2.EventEmitter {
     _createVerifier(method: any, startEvent?: any, targetDevice?: any): any;
     _getVerifierTarget(startEvent: any, targetDevice: any): any;
     _wasSentByMe(event: any): boolean;
-    addListener(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    on(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    once(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    prependListener(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    removeListener(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    off(event: string | symbol, listener: (...args: any[]) => void): VerificationRequest;
-    removeAllListeners(event?: string | symbol): VerificationRequest;
-    setMaxListeners(n: number): VerificationRequest;
 }
 import * as $_generated_2 from "events";

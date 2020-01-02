@@ -15,15 +15,6 @@ declare class SAS extends $_generated_0.default {
     _doRespondVerification(): Promise<void>;
     _sendMAC(olmSAS: any, method: any): void;
     _checkMAC(olmSAS: any, content: any, method: any): Promise<void>;
-    addListener(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    on(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    once(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    prependListener(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    removeListener(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    off(event: string | symbol, listener: (...args: any[]) => void): SAS;
-    removeAllListeners(event?: string | symbol): SAS;
-    setMaxListeners(n: number): SAS;
 }
 declare namespace SAS {
     export const NAME: string;

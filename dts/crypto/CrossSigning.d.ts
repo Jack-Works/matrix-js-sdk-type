@@ -100,15 +100,6 @@ export class CrossSigningInfo extends $_generated_1.EventEmitter {
      * @returns {DeviceTrustLevel}
      */
     checkDeviceTrust(userCrossSigning: CrossSigningInfo, device: DeviceInfo, localTrust: boolean): DeviceTrustLevel;
-    addListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    on(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    once(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    prependListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    removeListener(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    off(event: string | symbol, listener: (...args: any[]) => void): CrossSigningInfo;
-    removeAllListeners(event?: string | symbol): CrossSigningInfo;
-    setMaxListeners(n: number): CrossSigningInfo;
 }
 export namespace CrossSigningLevel {
     export const MASTER: number;

@@ -94,14 +94,5 @@ export default class SecretStorage extends $_generated_0.EventEmitter {
     _onRequestReceived(event: any): Promise<void>;
     _onSecretReceived(event: any): void;
     _getSecretStorageKey(keys: any): Promise<any[]>;
-    addListener(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    on(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    once(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    prependListener(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    removeListener(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    off(event: string | symbol, listener: (...args: any[]) => void): SecretStorage;
-    removeAllListeners(event?: string | symbol): SecretStorage;
-    setMaxListeners(n: number): SecretStorage;
 }
 import * as $_generated_0 from "events";
