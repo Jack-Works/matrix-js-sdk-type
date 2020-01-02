@@ -33,4 +33,3 @@ export function makeEmoteMessage(body: any): {
     msgtype: string;
     body: any;
 };
-//# sourceMappingURL=content-helpers.d.ts.map

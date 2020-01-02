@@ -152,4 +152,3 @@ declare class InteractiveAuth {
     _currentStage: any;
     _submitPromise: any;
 }
-//# sourceMappingURL=interactive-auth.d.ts.map

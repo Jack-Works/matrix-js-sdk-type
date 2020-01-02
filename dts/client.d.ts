@@ -1535,4 +1535,3 @@ import { MatrixEvent } from "./models/event";
 import Room from "./models/room";
 import { PushAction } from "./pushprocessor";
 import EventTimeline from "./models/event-timeline";
-//# sourceMappingURL=client.d.ts.map

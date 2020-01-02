@@ -91,4 +91,3 @@ declare namespace DeviceInfo {
     }
     export type DeviceVerification = any;
 }
-//# sourceMappingURL=deviceinfo.d.ts.map

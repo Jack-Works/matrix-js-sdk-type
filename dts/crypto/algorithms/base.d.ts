@@ -213,4 +213,3 @@ export class DecryptionError extends Error {
 import { MatrixEvent } from "../../models/event";
 import RoomMember from "../../models/room-member";
 import MegolmSessionData from "../OlmDevice";
-//# sourceMappingURL=base.d.ts.map

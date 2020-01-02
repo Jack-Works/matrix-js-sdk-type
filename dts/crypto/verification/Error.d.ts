@@ -13,4 +13,3 @@ export function newKeyMismatchError(extradata: any): $_generated_0.MatrixEvent;
 export function newUserMismatchError(extradata: any): $_generated_0.MatrixEvent;
 export function newInvalidMessageError(extradata: any): $_generated_0.MatrixEvent;
 import * as $_generated_0 from "../../models/event";
-//# sourceMappingURL=Error.d.ts.map

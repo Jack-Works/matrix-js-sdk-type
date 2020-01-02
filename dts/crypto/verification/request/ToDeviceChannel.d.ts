@@ -92,4 +92,3 @@ export default class ToDeviceChannel {
     _sendToDevices(type: any, content: any, devices: any): any;
 }
 import * as $_generated_2 from "./VerificationRequest";
-//# sourceMappingURL=ToDeviceChannel.d.ts.map

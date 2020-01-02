@@ -14,4 +14,3 @@ export default class RoomList {
     isRoomEncrypted(roomId: any): boolean;
     setRoomEncryption(roomId: any, roomInfo: any): Promise<void>;
 }
-//# sourceMappingURL=RoomList.d.ts.map

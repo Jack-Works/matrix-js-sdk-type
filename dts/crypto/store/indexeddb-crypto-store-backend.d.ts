@@ -112,4 +112,3 @@ export class Backend {
     markSessionsNeedingBackup(sessions: any, txn: any): Promise<[any, any, any, any, any, any, any, any, any, any]>;
     doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
-//# sourceMappingURL=indexeddb-crypto-store-backend.d.ts.map

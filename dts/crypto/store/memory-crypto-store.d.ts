@@ -124,4 +124,3 @@ export default class MemoryCryptoStore {
     markSessionsNeedingBackup(sessions: any): Promise<void>;
     doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
-//# sourceMappingURL=memory-crypto-store.d.ts.map

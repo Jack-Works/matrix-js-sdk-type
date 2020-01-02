@@ -86,4 +86,3 @@ declare class SyncAccumulator {
     getJSON(): any;
     getNextBatchToken(): any;
 }
-//# sourceMappingURL=sync-accumulator.d.ts.map

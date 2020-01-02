@@ -245,4 +245,3 @@ declare class SyncApi {
 }
 import Room from "./models/room";
 import Group from "./models/group";
-//# sourceMappingURL=sync.d.ts.map

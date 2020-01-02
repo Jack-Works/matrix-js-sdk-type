@@ -117,4 +117,3 @@ import * as $_generated_25 from "./autodiscovery";
 import * as $_generated_27 from "./crypto/store/memory-crypto-store";
 import * as $_generated_28 from "./crypto/store/indexeddb-crypto-store";
 import * as $_generated_29 from "./webrtc/call";
-//# sourceMappingURL=matrix.d.ts.map

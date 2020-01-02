@@ -5,4 +5,3 @@ export default class Reemitter {
     _handleEvent(eventName: any, ...args: any[]): void;
     reEmit(source: any, eventNames: any): void;
 }
-//# sourceMappingURL=ReEmitter.d.ts.map

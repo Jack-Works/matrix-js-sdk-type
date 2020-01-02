@@ -105,4 +105,3 @@ export default class SecretStorage extends $_generated_0.EventEmitter {
     setMaxListeners(n: number): SecretStorage;
 }
 import * as $_generated_0 from "events";
-//# sourceMappingURL=SecretStorage.d.ts.map

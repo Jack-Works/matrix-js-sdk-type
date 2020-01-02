@@ -10,4 +10,3 @@ export default class RequestCallbackChannel {
     send(type: any, uncompletedContent: any): Promise<any>;
     sendCompleted(type: any, content: any): Promise<any>;
 }
-//# sourceMappingURL=RequestCallbackChannel.d.ts.map

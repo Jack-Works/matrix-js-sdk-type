@@ -306,4 +306,3 @@ declare class RoomState {
     mayTriggerNotifOfType(notifLevelKey: string, userId: string): boolean;
 }
 import RoomMember from "./room-member";
-//# sourceMappingURL=room-state.d.ts.map

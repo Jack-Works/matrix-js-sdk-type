@@ -1,1 +1,0 @@
-{"version":3,"file":"indexeddb-remote-backend.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["store/indexeddb-remote-backend.js"],"names":[],"mappings":";AAMA;;;;;;;;;;;GAWG;AAEH;;;;;;;;;;;GAWG;AACH;IACE,4DAYC;IAXC,mBAAiC;IACjC,aAAqB;IACrB,gBAA2B;IAC3B,aAAmB;IACnB,iBAAiB;IAEjB,cACC;IAGD,mBAAyB;CAG5B"}

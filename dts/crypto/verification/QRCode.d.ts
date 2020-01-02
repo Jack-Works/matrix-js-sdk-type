@@ -50,4 +50,3 @@ export namespace ScanQRCode {
     export { NAME_1 as NAME };
 }
 import * as $_generated_0 from "./Base";
-//# sourceMappingURL=QRCode.d.ts.map

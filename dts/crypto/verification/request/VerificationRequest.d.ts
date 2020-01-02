@@ -132,4 +132,3 @@ export default class VerificationRequest extends $_generated_2.EventEmitter {
     setMaxListeners(n: number): VerificationRequest;
 }
 import * as $_generated_2 from "events";
-//# sourceMappingURL=VerificationRequest.d.ts.map

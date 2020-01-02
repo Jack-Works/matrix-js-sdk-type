@@ -73,4 +73,3 @@ declare class PushProcessor {
     getPushRuleById: (ruleId: string) => any;
 }
 import { MatrixEvent } from "./models/event";
-//# sourceMappingURL=pushprocessor.d.ts.map

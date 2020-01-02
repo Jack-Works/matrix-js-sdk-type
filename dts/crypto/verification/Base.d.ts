@@ -67,4 +67,3 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
 }
 import * as $_generated_1 from "events";
 import MatrixBaseApis from "../../base-apis";
-//# sourceMappingURL=Base.d.ts.map

@@ -79,4 +79,3 @@ export default class OutgoingRoomKeyRequestManager {
  * (deleted)  <---------------------------+
  */
 export type ROOM_KEY_REQUEST_STATES = number;
-//# sourceMappingURL=OutgoingRoomKeyRequestManager.d.ts.map

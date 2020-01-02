@@ -52,4 +52,3 @@ declare class FilterComponent {
      */
     limit(): number;
 }
-//# sourceMappingURL=filter-component.d.ts.map

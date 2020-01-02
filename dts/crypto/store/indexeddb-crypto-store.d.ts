@@ -302,4 +302,3 @@ declare namespace IndexedDBCryptoStore {
     export const STORE_BACKUP: string;
 }
 export default IndexedDBCryptoStore;
-//# sourceMappingURL=indexeddb-crypto-store.d.ts.map

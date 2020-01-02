@@ -449,4 +449,3 @@ declare class OlmDevice {
      */
     verifySignature(key: string, message: string, signature: string): void;
 }
-//# sourceMappingURL=OlmDevice.d.ts.map

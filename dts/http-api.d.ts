@@ -17,4 +17,3 @@ export class MatrixError extends Error {
     message: any;
     data: any;
 }
-//# sourceMappingURL=http-api.d.ts.map

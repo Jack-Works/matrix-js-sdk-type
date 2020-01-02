@@ -124,4 +124,3 @@ declare class User {
      */
     _unstable_updateStatusMessage(event: any): void;
 }
-//# sourceMappingURL=user.d.ts.map

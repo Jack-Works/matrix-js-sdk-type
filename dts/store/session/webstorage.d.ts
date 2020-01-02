@@ -12,4 +12,3 @@ declare class WebStorageSessionStore {
     constructor(webStore: any);
     store: any;
 }
-//# sourceMappingURL=webstorage.d.ts.map

@@ -1,1 +1,0 @@
-{"version":3,"file":"RequestCallbackChannel.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["crypto/verification/request/RequestCallbackChannel.js"],"names":[],"mappings":"AAAA;IACE,wCAGC;IAFC,cAAuB;IACvB,cAAuB;IAGzB,yBAEC;IAED,4BAEC;IAED,2CAEC;IAED,2CAEC;IAED,8CAEC;IAED,uDAKC;IAED,qDAKC;CAEF"}

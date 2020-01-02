@@ -101,4 +101,3 @@ export const MEGOLM_BACKUP_ALGORITHM: "m.megolm_backup.v1.curve25519-aes-sha2";
 import OlmDevice from "./OlmDevice";
 import DeviceInfo from "./deviceinfo";
 import MatrixBaseApis from "../base-apis";
-//# sourceMappingURL=olmlib.d.ts.map

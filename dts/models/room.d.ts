@@ -668,4 +668,3 @@ import EventTimelineSet from "./event-timeline-set";
 import { MatrixEvent } from "./event";
 import EventTimeline from "./event-timeline";
 import RoomMember from "./room-member";
-//# sourceMappingURL=room.d.ts.map

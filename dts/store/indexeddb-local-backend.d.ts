@@ -31,4 +31,3 @@ declare class LocalIndexedDBStoreBackend {
     _isNewlyCreated: boolean;
 }
 declare namespace LocalIndexedDBStoreBackend { }
-//# sourceMappingURL=indexeddb-local-backend.d.ts.map

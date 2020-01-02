@@ -70,4 +70,3 @@ declare namespace Filter {
     }
 }
 import FilterComponent from "./filter-component";
-//# sourceMappingURL=filter.d.ts.map

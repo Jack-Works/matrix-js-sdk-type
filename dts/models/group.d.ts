@@ -46,4 +46,3 @@ declare class Group {
      */
     setInviter(inviter: any): void;
 }
-//# sourceMappingURL=group.d.ts.map

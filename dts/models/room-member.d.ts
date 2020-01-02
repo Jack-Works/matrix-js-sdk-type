@@ -140,4 +140,3 @@ declare class RoomMember {
      */
     getMxcAvatarUrl(): string;
 }
-//# sourceMappingURL=room-member.d.ts.map

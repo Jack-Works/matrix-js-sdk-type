@@ -33,4 +33,3 @@ declare class RemoteIndexedDBStoreBackend {
     _inFlight: {};
     _startPromise: any;
 }
-//# sourceMappingURL=indexeddb-remote-backend.d.ts.map

@@ -31,4 +31,3 @@ declare class IndexedDBStoreWorker {
     onMessage(ev: any): void;
 }
 import LocalIndexedDBStoreBackend from "./indexeddb-local-backend.js";
-//# sourceMappingURL=indexeddb-store-worker.d.ts.map

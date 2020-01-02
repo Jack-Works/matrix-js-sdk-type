@@ -18,4 +18,3 @@ export default StubStore;
 declare class StubStore {
     fromToken: any;
 }
-//# sourceMappingURL=stub.d.ts.map

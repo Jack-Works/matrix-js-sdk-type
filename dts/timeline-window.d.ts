@@ -100,4 +100,3 @@ export class TimelineIndex {
      */
     retreat(delta: number): number;
 }
-//# sourceMappingURL=timeline-window.d.ts.map

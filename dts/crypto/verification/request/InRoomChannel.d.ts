@@ -94,4 +94,3 @@ export default class InRoomChannel {
     sendCompleted(type: string, content: any): Promise<any>;
 }
 import * as $_generated_0 from "./VerificationRequest";
-//# sourceMappingURL=InRoomChannel.d.ts.map

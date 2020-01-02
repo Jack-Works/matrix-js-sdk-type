@@ -35,4 +35,3 @@ declare class SearchResult {
     rank: any;
     context: any;
 }
-//# sourceMappingURL=search-result.d.ts.map

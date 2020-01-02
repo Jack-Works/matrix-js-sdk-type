@@ -245,4 +245,3 @@ declare const DeviceInfo: typeof $_generated_2;
 import DeviceInfo from "./deviceinfo";
 import * as $_generated_2 from "./deviceinfo";
 export {};
-//# sourceMappingURL=DeviceList.d.ts.map

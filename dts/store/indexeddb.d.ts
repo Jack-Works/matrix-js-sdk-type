@@ -89,4 +89,3 @@ export class IndexedDBStore {
 }
 import LocalIndexedDBStoreBackend from "./indexeddb-local-backend";
 import RemoteIndexedDBStoreBackend from "./indexeddb-remote-backend";
-//# sourceMappingURL=indexeddb.d.ts.map

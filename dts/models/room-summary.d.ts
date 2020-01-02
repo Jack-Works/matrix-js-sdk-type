@@ -37,4 +37,3 @@ declare class RoomSummary {
     roomId: any;
     info: any;
 }
-//# sourceMappingURL=room-summary.d.ts.map

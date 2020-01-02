@@ -174,4 +174,3 @@ export class DeviceTrustLevel {
 }
 import * as $_generated_1 from "events";
 import DeviceInfo from "./deviceinfo";
-//# sourceMappingURL=CrossSigning.d.ts.map

@@ -1,1 +1,0 @@
-{"version":3,"file":"indexeddb-local-backend.d.ts","sourceRoot":"node_modules/matrix-js-sdk/src/","sources":["store/indexeddb-local-backend.js"],"names":[],"mappings":";AAuHA;;;;;;;;;;GAUG;AAGH;;;;;;;;;;GAUG;AACH;IACE,kDAOC;IANC,eAAmC;IACnC,gBAAuD;IACvD,QAAc;IACd,uBAAyB;IACzB,sBAA6C;IAC7C,yBAA4B;CAQ/B"}

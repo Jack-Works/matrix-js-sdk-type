@@ -111,4 +111,3 @@ declare class MatrixScheduler {
      */
     queueEvent(event: any): Promise<any>;
 }
-//# sourceMappingURL=scheduler.d.ts.map

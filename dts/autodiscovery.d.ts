@@ -100,4 +100,3 @@ declare class DiscoveredClientConfig {
     };
 }
 export {};
-//# sourceMappingURL=autodiscovery.d.ts.map

@@ -1196,4 +1196,3 @@ declare class MatrixBaseApis {
     reportEvent(roomId: string, eventId: string, score: number, reason: string): Promise<any>;
 }
 import { MatrixHttpApi } from "./http-api";
-//# sourceMappingURL=base-apis.d.ts.map

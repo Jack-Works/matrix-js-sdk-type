@@ -165,4 +165,3 @@ declare namespace EventTimeline {
     export const FORWARDS: string;
 }
 import RoomState from "./room-state";
-//# sourceMappingURL=event-timeline.d.ts.map

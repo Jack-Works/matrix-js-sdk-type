@@ -112,4 +112,3 @@ export namespace EventStatus {
     export const SENT: string;
     export const CANCELLED: string;
 }
-//# sourceMappingURL=event.d.ts.map

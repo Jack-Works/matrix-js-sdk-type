@@ -329,4 +329,3 @@ export namespace MatrixCall {
     export const ERR_SEND_INVITE: string;
     export const ERR_SEND_ANSWER: string;
 }
-//# sourceMappingURL=call.d.ts.map

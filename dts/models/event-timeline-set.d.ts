@@ -233,4 +233,3 @@ declare class EventTimelineSet {
 import EventTimeline from "./event-timeline";
 import { MatrixEvent } from "./event";
 import Relations from "./relations";
-//# sourceMappingURL=event-timeline-set.d.ts.map

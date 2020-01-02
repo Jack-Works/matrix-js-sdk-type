@@ -109,4 +109,3 @@ export default class Relations {
      */
     setTargetEvent(event: any): void;
 }
-//# sourceMappingURL=relations.d.ts.map

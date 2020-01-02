@@ -43,4 +43,3 @@ export default class LocalStorageCryptoStore {
     storeCrossSigningKeys(txn: any, keys: any): void;
     doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
-//# sourceMappingURL=localStorage-crypto-store.d.ts.map
