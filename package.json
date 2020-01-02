@@ -6,6 +6,7 @@
     "private": true,
     "typings": "./dts/matrix.d",
     "dependencies": {
-        "@types/node": "^12.12.14"
+        "@types/node": "^12.12.14",
+        "loglevel": "^1.6.6"
     }
 }
