@@ -58,7 +58,7 @@ export default class ToDeviceChannel {
      * @param {VerificationRequest} request the request to forward handling to
      * @returns {Promise}  a promise that resolves when any requests as an anwser to the passed-in event are sent.
      */
-    handleEvent(event: any, request: typeof $_generated_2): Promise<any>;
+    handleEvent(event: any, request: $_generated_2): Promise<any>;
     /**
      * See {InRoomChannel.completedContentFromEvent} why this is needed.
      * @param {MatrixEvent} event the received event
@@ -91,4 +91,4 @@ export default class ToDeviceChannel {
     sendCompleted(type: string, content: any): Promise<any>;
     _sendToDevices(type: any, content: any, devices: any): any;
 }
-import * as $_generated_2 from "./VerificationRequest";
+import $_generated_2 from "./VerificationRequest";

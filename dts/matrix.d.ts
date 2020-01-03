@@ -46,7 +46,7 @@ export function setCryptoStoreFactory(fac: (...args: any) => any): void;
  * @see   {@link module:client~MatrixClient} for the full list of options for
  * <code>opts</code>.
  */
-export function createClient(opts: any): typeof $_generated_10.MatrixClient;
+export function createClient(opts: any): $_generated_10.MatrixClient;
 export const ContentHelpers: typeof $_generated_0;
 export const MatrixEvent: typeof $_generated_1.MatrixEvent;
 export const EventStatus: {

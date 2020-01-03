@@ -93,7 +93,7 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * @return {(Array.<DeviceInfo> | null)}  list of devices, or null if we haven't
      * managed to get a list of devices for this user yet.
      */
-    getStoredDevicesForUser(userId: string): (typeof $_generated_2)[];
+    getStoredDevicesForUser(userId: string): ($_generated_2)[];
     /**
      * Get the stored device data for a user, in raw object form
      * @param {string} userId the user to get data for
@@ -119,14 +119,14 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * @return {(DeviceInfo | null)}  device, or undefined
      * if we don't know about this device
      */
-    getStoredDevice(userId: string, deviceId: string): typeof $_generated_2;
+    getStoredDevice(userId: string, deviceId: string): $_generated_2;
     /**
      * Find a device by curve25519 identity key
      * @param {string} algorithm encryption algorithm
      * @param {string} senderKey curve25519 key to match
      * @return {(DeviceInfo | null)}
      */
-    getDeviceByIdentityKey(algorithm: string, senderKey: string): typeof $_generated_2;
+    getDeviceByIdentityKey(algorithm: string, senderKey: string): $_generated_2;
     /**
      * Replaces the list of devices for a user with the given device list
      * @param {string} u The user ID
@@ -232,5 +232,5 @@ declare class DeviceListUpdateSerialiser {
     _doQueuedQueries(): Promise<any>;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }
-import * as $_generated_2 from "./deviceinfo";
+import $_generated_2 from "./deviceinfo";
 export {};

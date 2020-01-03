@@ -266,20 +266,20 @@ export class Crypto {
      * @param {string} userId the user ID to get the cross-signing info for.
      * @returns {CrossSigningInfo}  the cross signing informmation for the user.
      */
-    getStoredCrossSigningForUser(userId: string): typeof $_generated_10.CrossSigningInfo;
+    getStoredCrossSigningForUser(userId: string): $_generated_10.CrossSigningInfo;
     /**
      * Check whether a given user is trusted.
      * @param {string} userId The ID of the user to check.
      * @returns {UserTrustLevel}
      */
-    checkUserTrust(userId: string): typeof $_generated_10.UserTrustLevel;
+    checkUserTrust(userId: string): $_generated_10.UserTrustLevel;
     /**
      * Check whether a given device is trusted.
      * @param {string} userId The ID of the user whose devices is to be checked.
      * @param {string} deviceId The ID of the device to check
      * @returns {DeviceTrustLevel}
      */
-    checkDeviceTrust(userId: string, deviceId: string): typeof $_generated_10.DeviceTrustLevel;
+    checkDeviceTrust(userId: string, deviceId: string): $_generated_10.DeviceTrustLevel;
     checkOwnCrossSigningTrust(): Promise<void>;
     /**
      * Check if the master key is signed by a verified device, and if so, prompt
@@ -377,7 +377,7 @@ export class Crypto {
      * @return {(Array.<DeviceInfo> | null)}  list of devices, or null if we haven't
      * managed to get a list of devices for this user yet.
      */
-    getStoredDevicesForUser(userId: string): (typeof $_generated_8)[];
+    getStoredDevicesForUser(userId: string): ($_generated_8)[];
     /**
      * Get the stored keys for a single device
      * @param {string} userId
@@ -385,7 +385,7 @@ export class Crypto {
      * @return {(DeviceInfo | null)}  device, or undefined
      * if we don't know about this device
      */
-    getStoredDevice(userId: string, deviceId: string): typeof $_generated_8;
+    getStoredDevice(userId: string, deviceId: string): $_generated_8;
     /**
      * Save the device list, if necessary
      * @param {number} delay Time in ms before which the save actually happens.
@@ -410,7 +410,7 @@ export class Crypto {
      *      the existence of this device. Null to leave unchanged
      * @return {Promise.<DeviceInfo>}  updated DeviceInfo
      */
-    setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<typeof $_generated_8>;
+    setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<$_generated_8>;
     requestVerificationDM(userId: any, roomId: any, methods: any): Promise<any>;
     acceptVerificationDM(event: any, method: any): any;
     requestVerification(userId: any, methods: any, devices: any): Promise<any>;
@@ -448,7 +448,7 @@ export class Crypto {
      * @param {MatrixEvent} event event to be checked
      * @return {(DeviceInfo | null)}
      */
-    getEventSenderDeviceInfo(event: MatrixEvent): typeof $_generated_8;
+    getEventSenderDeviceInfo(event: MatrixEvent): $_generated_8;
     /**
      * Forces the current outbound group session to be discarded such
      * that another one will be created next time an event is sent.
@@ -698,7 +698,7 @@ export class Crypto {
 export type RoomKeyRequestBody = any;
 import * as $_generated_9 from "./DeviceList";
 import * as $_generated_10 from "./CrossSigning";
-import * as $_generated_8 from "./deviceinfo";
+import $_generated_8 from "./deviceinfo";
 import { MatrixEvent } from "../models/event";
 import MegolmSessionData from "./OlmDevice";
 import Room from "../models/room";

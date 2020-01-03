@@ -58,7 +58,7 @@ export default class InRoomChannel {
      * @param {VerificationRequest} request the request to forward handling to
      * @returns {Promise}  a promise that resolves when any requests as an anwser to the passed-in event are sent.
      */
-    handleEvent(event: any, request: typeof $_generated_0): Promise<any>;
+    handleEvent(event: any, request: $_generated_0): Promise<any>;
     /**
      * Adds the transaction id (relation) back to a received event
      * so it has the same format as returned by `completeContent` before sending.
@@ -93,4 +93,4 @@ export default class InRoomChannel {
      */
     sendCompleted(type: string, content: any): Promise<any>;
 }
-import * as $_generated_0 from "./VerificationRequest";
+import $_generated_0 from "./VerificationRequest";
