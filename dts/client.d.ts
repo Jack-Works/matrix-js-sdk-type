@@ -1,5 +1,6 @@
 export const CRYPTO_ENABLED: boolean;
-export class MatrixClient {
+import {EventEmitter} from "events";
+export class MatrixClient extends EventEmitter {
     constructor(opts: any);
     olmVersion: any;
     reEmitter: ReEmitter;
