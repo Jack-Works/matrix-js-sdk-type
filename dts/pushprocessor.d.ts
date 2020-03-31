@@ -1,31 +1,14 @@
-export default PushProcessor;
-export type PushAction = {
-    /**
-     * Whether this event should notify the user or not.
-     */
-    notify: boolean;
-    /**
-     * How this event should be notified.
-     */
-    tweaks: {
-        /**
-         * Whether this event should be highlighted
-         * on the UI.
-         */
-        highlight: boolean;
-        /**
-         * Whether this notification should produce a
-         * noise.
-         */
-        sound: boolean;
-    };
-};
 /**
  * Construct a Push Processor.
  * @constructor
  * @param {object} client The Matrix client object to use
  */
-declare class PushProcessor {
+/**
+ * Construct a Push Processor.
+ * @constructor
+ * @param {object} client The Matrix client object to use
+ */
+export class PushProcessor {
     /**
      * Convert a list of actions into a object with the actions as keys and their values
      * eg. [ 'notify', { set_tweak: 'sound', value: 'default' } ]
@@ -64,7 +47,7 @@ declare class PushProcessor {
      * @param {MatrixEvent} ev
      * @return {PushAction}
      */
-    actionsForEvent: (ev: MatrixEvent) => PushAction;
+    actionsForEvent: (ev: MatrixEvent) => any;
     /**
      * Get one of the users push rules by its ID
      * @param {string} ruleId The ID of the rule to search for

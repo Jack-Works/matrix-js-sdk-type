@@ -6,3 +6,7 @@ export function InvalidCryptoStoreError(reason: any): any;
 export namespace InvalidCryptoStoreError {
     export const TOO_NEW: string;
 }
+export class KeySignatureUploadError extends Error {
+    constructor(message: any, value: any);
+    value: any;
+}

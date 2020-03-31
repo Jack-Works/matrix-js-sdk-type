@@ -1,5 +1,5 @@
 export function upgradeDatabase(db: any, oldVersion: any): void;
-export const VERSION: 7;
+export const VERSION: 9;
 /**
  * Implementation of a CryptoStore which is backed by an existing
  * IndexedDB connection. Generally you want IndexedDBCryptoStore
@@ -47,7 +47,7 @@ export class Backend {
      *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
      *    not found.
      */
-    _getOutgoingRoomKeyRequest(txn: IDBTransaction, requestBody: any, callback: (...args: any) => any): void;
+    private _getOutgoingRoomKeyRequest;
     /**
      * Look for room key requests by state
      * @param {Array.<number>} wantedStates list of acceptable states
@@ -92,16 +92,22 @@ export class Backend {
     getAccount(txn: any, func: any): void;
     storeAccount(txn: any, newData: any): void;
     getCrossSigningKeys(txn: any, func: any): void;
+    getSecretStorePrivateKey(txn: any, func: any, type: any): void;
     storeCrossSigningKeys(txn: any, keys: any): void;
+    storeSecretStorePrivateKey(txn: any, type: any, key: any): void;
     countEndToEndSessions(txn: any, func: any): void;
     getEndToEndSessions(deviceKey: any, txn: any, func: any): void;
     getEndToEndSession(deviceKey: any, sessionId: any, txn: any, func: any): void;
     getAllEndToEndSessions(txn: any, func: any): void;
     storeEndToEndSession(deviceKey: any, sessionId: any, sessionInfo: any, txn: any): void;
+    storeEndToEndSessionProblem(deviceKey: any, type: any, fixed: any): Promise<any>;
+    getEndToEndSessionProblem(deviceKey: any, timestamp: any): Promise<undefined>;
+    filterOutNotifiedErrorDevices(devices: any): Promise<any[]>;
     getEndToEndInboundGroupSession(senderCurve25519Key: any, sessionId: any, txn: any, func: any): void;
     getAllEndToEndInboundGroupSessions(txn: any, func: any): void;
     addEndToEndInboundGroupSession(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
     storeEndToEndInboundGroupSession(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
+    storeEndToEndInboundGroupSessionWithheld(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
     getEndToEndDeviceData(txn: any, func: any): void;
     storeEndToEndDeviceData(deviceData: any, txn: any): void;
     storeEndToEndRoom(roomId: any, roomInfo: any, txn: any): void;

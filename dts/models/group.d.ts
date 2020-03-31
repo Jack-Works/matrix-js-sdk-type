@@ -1,4 +1,16 @@
-export default Group;
+/**
+ * Construct a new Group.
+ *
+ * @param {string} groupId The ID of this group.
+ *
+ * @prop {string} groupId The ID of this group.
+ * @prop {string} name The human-readable display name for this group.
+ * @prop {string} avatarUrl The mxc URL for this group's avatar.
+ * @prop {string} myMembership The logged in user's membership of this group
+ * @prop {Object} inviter Infomation about the user who invited the logged in user
+ *       to the group, if myMembership is 'invite'.
+ * @prop {string} inviter.userId The user ID of the inviter
+ */
 /**
  * Construct a new Group.
  *
@@ -23,7 +35,18 @@ export default Group;
  *       to the group, if myMembership is 'invite'.
  * @prop {string} inviter.userId The user ID of the inviter
  */
-declare class Group {
+/**
+ * Construct a new Group.
+ * @param {string} groupId The ID of this group.
+ * @prop {string} groupId The ID of this group.
+ * @prop {string} name The human-readable display name for this group.
+ * @prop {string} avatarUrl The mxc URL for this group's avatar.
+ * @prop {string} myMembership The logged in user's membership of this group
+ * @prop {object} inviter Infomation about the user who invited the logged in user
+ *       to the group, if myMembership is 'invite'.
+ * @prop {string} inviter.userId The user ID of the inviter
+ */
+export class Group {
     constructor(groupId: any);
     groupId: any;
     name: any;

@@ -1,8 +1,7 @@
 export function isCryptoAvailable(): boolean;
 export namespace verificationMethods {
-    export const QR_CODE_SCAN: string;
-    export const QR_CODE_SHOW: string;
-    export const SAS: any;
+    export const RECIPROCATE_QR_CODE: string;
+    export const SAS: string;
 }
 /**
  * Cryptography bits
@@ -108,7 +107,8 @@ export class Crypto {
     static getOlmVersion(): string;
     constructor(baseApis: any, sessionStore: any, userId: any, deviceId: any, clientStore: any, cryptoStore: any, roomList: any, verificationMethods: any);
     _onDeviceListUserCrossSigningUpdated(userId: any): Promise<void>;
-    _reEmitter: any;
+    _trustCrossSignedDevices: boolean;
+    _reEmitter: ReEmitter;
     _baseApis: any;
     _sessionStore: any;
     _userId: any;
@@ -116,13 +116,17 @@ export class Crypto {
     _clientStore: any;
     _cryptoStore: any;
     _roomList: any;
-    _verificationMethods: Map<any, any>;
+    _verificationMethods: Map<any, any> | {
+        [x: string]: SAS | IllegalMethod;
+        "m.qr_code.show.v1": IllegalMethod;
+        "m.qr_code.scan.v1": IllegalMethod;
+    };
     backupInfo: any;
     backupKey: any;
     _checkedForBackup: boolean;
     _sendingBackups: boolean;
-    _olmDevice: any;
-    _deviceList: $_generated_9.default;
+    _olmDevice: OlmDevice;
+    _deviceList: DeviceList;
     _lastOneTimeKeyCheck: any;
     _oneTimeKeyCheckInProgress: boolean;
     _roomEncryptors: {};
@@ -130,23 +134,54 @@ export class Crypto {
     _supportedAlgorithms: string[];
     _deviceKeys: {};
     _globalBlacklistUnverifiedDevices: boolean;
-    _outgoingRoomKeyRequestManager: any;
+    _globalErrorOnUnknownDevices: boolean;
+    _outgoingRoomKeyRequestManager: OutgoingRoomKeyRequestManager;
     _receivedRoomKeyRequests: any[];
     _receivedRoomKeyRequestCancellations: any[];
     _processingRoomKeyRequests: boolean;
     _lazyLoadMembers: boolean;
     _roomDeviceTrackingState: {};
     _lastNewSessionForced: {};
-    _toDeviceVerificationRequests: Map<any, any>;
-    _inRoomVerificationRequests: Map<any, any>;
-    _crossSigningInfo: $_generated_10.CrossSigningInfo;
-    _secretStorage: any;
+    _toDeviceVerificationRequests: ToDeviceRequests;
+    _inRoomVerificationRequests: InRoomRequests;
+    _crossSigningInfo: CrossSigningInfo;
+    _secretStorage: SecretStorage;
     /**
      * Initialise the crypto module so that it is ready for use
      *
      * Returns a promise which resolves once the crypto module is ready for use.
+     *
+     * @param {Object} opts keyword arguments.
+     * @param {string} opts.exportedOlmDevice (Optional) data from exported device
+     *     that must be re-created.
      */
-    init(): Promise<void>;
+    /**
+     * Initialise the crypto module so that it is ready for use
+     *
+     * Returns a promise which resolves once the crypto module is ready for use.
+     * @param {object} opts keyword arguments.
+     * @param {string} opts.exportedOlmDevice (Optional) data from exported device
+     *     that must be re-created.
+     */
+    init(opts: {
+        exportedOlmDevice: string;
+    }): Promise<void>;
+    /**
+     * Whether to trust a others users signatures of their devices.
+     * If false, devices will only be considered 'verified' if we have
+     * verified that device individually (effectively disabling cross-signing).
+     *
+     * Default: true
+     * @return {boolean}  True if trusting cross-signed devices
+     */
+    getCryptoTrustCrossSignedDevices(): boolean;
+    /**
+     * See getCryptoTrustCrossSignedDevices
+     *
+     * This may be set before initCrypto() is called to ensure no races occur.
+     * @param {boolean} val True to trust cross-signed devices
+     */
+    setCryptoTrustCrossSignedDevices(val: boolean): void;
     /**
      * Create a recovery key from a user-supplied passphrase.
      * @param {string} password Passphrase string that can be entered by the user
@@ -157,6 +192,22 @@ export class Crypto {
      *     and raw private key to avoid round tripping if needed.
      */
     createRecoveryKeyFromPassphrase(password: string): Promise<any[]>;
+    /**
+     * Checks whether cross signing:
+     * - is enabled on this account
+     * - is trusted by this device
+     * - has private keys stored in secret storage
+     * and that the account has a secret storage key
+     *
+     * If this function returns false, bootstrapSecretStorage() can be used
+     * to fix things such that it returns true. That is to say, after
+     * bootstrapSecretStorage() completes sucessfully, this function should
+     * return true.
+     *
+     * The cross-signing API is currently UNSTABLE and may change without notice.
+     * @return {boolean}  True if cross-signing is ready to be used on this device
+     */
+    isCrossSigningReady(): boolean;
     /**
      * Bootstrap Secure Secret Storage if needed by creating a default key and
      * signing it with the cross-signing master key. If everything is already set
@@ -172,23 +223,35 @@ export class Crypto {
      * called to await a secret storage key creation flow.
      * @param {(object | undefined)} opts.keyBackupInfo The current key backup object. If passed,
      * the passphrase and recovery key from this backup will be used.
+     * @param {(boolean | undefined)} opts.setupNewKeyBackup If true, a new key backup version will be
+     * created and the private key stored in the new SSSS store. Ignored if keyBackupInfo
+     * is supplied.
+     * @param {(boolean | undefined)} opts.setupNewSecretStorage Optional. Reset even if keys already exist.
+     * @param {(func | undefined)} opts.getKeyBackupPassphrase Optional. Function called to get the user's
+     *     current key backup passphrase. Should return a promise that resolves with a Buffer
+     *     containing the key, or rejects if the key cannot be obtained.
      * Returns:
      *     {Promise} A promise which resolves to key creation data for
      *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
      */
-    bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo }?: {
+    bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo, setupNewKeyBackup, setupNewSecretStorage, getKeyBackupPassphrase }?: {
         authUploadDeviceSigningKeys: (...args: any) => any;
         createSecretStorageKey: (...args: any) => any;
         keyBackupInfo: any;
+        setupNewKeyBackup: boolean;
+        setupNewSecretStorage: boolean;
+        getKeyBackupPassphrase: any;
     }): Promise<void>;
-    addSecretStorageKey(algorithm: any, opts: any, keyID: any): any;
-    hasSecretStorageKey(keyID: any): any;
-    storeSecret(name: any, secret: any, keys: any): any;
-    getSecret(name: any): any;
+    addSecretStorageKey(algorithm: any, opts: any, keyID: any): string;
+    hasSecretStorageKey(keyID: any): boolean;
+    secretStorageKeyNeedsUpgrade(keyID: any): Promise<boolean>;
+    getSecretStorageKey(keyID: any): any[];
+    storeSecret(name: any, secret: any, keys: any): Promise<void>;
+    getSecret(name: any): string;
     isSecretStored(name: any, checkKey: any): any;
-    requestSecret(name: any, devices: any): any;
-    getDefaultSecretStorageKeyId(): any;
-    setDefaultSecretStorageKeyId(k: any): any;
+    requestSecret(name: any, devices: any): string;
+    getDefaultSecretStorageKeyId(): Promise<any>;
+    setDefaultSecretStorageKeyId(k: any): Promise<any>;
     /**
      * Checks that a given secret storage private key matches a given public key.
      * This can be used by the getSecretStorageKey callback to verify that the
@@ -207,6 +270,17 @@ export class Crypto {
      * @returns {boolean}  true if the key matches, otherwise false
      */
     checkSecretStoragePrivateKey(privateKey: Uint8Array, expectedPublicKey: string): boolean;
+    /**
+     * Fetches the backup private key, if cached
+     * @returns {Promise}  the key, if any, or null
+     */
+    getSessionBackupPrivateKey(): Promise<any>;
+    /**
+     * Stores the session backup key to the cache
+     * @param {Uint8Array} key the private key
+     * @returns {Promise}  so you can catch failures
+     */
+    storeSessionBackupPrivateKey(key: Uint8Array): Promise<any>;
     /**
      * Checks that a given cross-signing private key matches a given public key.
      * This can be used by the getCrossSigningKey callback to verify that the
@@ -243,7 +317,7 @@ export class Crypto {
      * @param {object} crossSigningInfo the cross-signing information to check
      */
     _checkForDeviceVerificationUpgrade(userId: string, crossSigningInfo: any): Promise<{
-        devices: any[];
+        devices: DeviceInfo[];
         crossSigningInfo: any;
     }>;
     /**
@@ -266,21 +340,33 @@ export class Crypto {
      * @param {string} userId the user ID to get the cross-signing info for.
      * @returns {CrossSigningInfo}  the cross signing informmation for the user.
      */
-    getStoredCrossSigningForUser(userId: string): $_generated_10.CrossSigningInfo;
+    getStoredCrossSigningForUser(userId: string): CrossSigningInfo;
     /**
      * Check whether a given user is trusted.
      * @param {string} userId The ID of the user to check.
      * @returns {UserTrustLevel}
      */
-    checkUserTrust(userId: string): $_generated_10.UserTrustLevel;
+    checkUserTrust(userId: string): UserTrustLevel;
     /**
      * Check whether a given device is trusted.
      * @param {string} userId The ID of the user whose devices is to be checked.
      * @param {string} deviceId The ID of the device to check
      * @returns {DeviceTrustLevel}
      */
-    checkDeviceTrust(userId: string, deviceId: string): $_generated_10.DeviceTrustLevel;
+    checkDeviceTrust(userId: string, deviceId: string): DeviceTrustLevel;
+    /**
+     * Check whether a given deviceinfo is trusted.
+     * @param {string} userId The ID of the user whose devices is to be checked.
+     * @param {( | null)} device The device info object to check
+     * @returns {DeviceTrustLevel}
+     */
+    _checkDeviceInfoTrust(userId: string, device: null): DeviceTrustLevel;
     checkOwnCrossSigningTrust(): Promise<void>;
+    /**
+     * Store a set of keys as our own, trusted, cross-signing keys.
+     * @param {object} keys The new trusted set of keys
+     */
+    _storeTrustedSelfKeys(keys: any): Promise<void>;
     /**
      * Check if the master key is signed by a verified device, and if so, prompt
      * the application to mark it as verified.
@@ -339,6 +425,11 @@ export class Crypto {
      */
     getDeviceEd25519Key(): string;
     /**
+     * Get the Curve25519 key for this device
+     * @return {string}  base64-encoded curve25519 key.
+     */
+    getDeviceCurve25519Key(): string;
+    /**
      * Set the global override for whether the client should ever send encrypted
      * messages to unverified devices.  This provides the default for rooms which
      * do not specify a value.
@@ -350,6 +441,23 @@ export class Crypto {
      * @return {boolean}  whether to blacklist all unverified devices by default
      */
     getGlobalBlacklistUnverifiedDevices(): boolean;
+    /**
+     * Set whether sendMessage in a room with unknown and unverified devices
+     * should throw an error and not send them message. This has 'Global' for
+     * symmertry with setGlobalBlacklistUnverifiedDevices but there is currently
+     * no room-level equivalent for this setting.
+     *
+     * This API is currently UNSTABLE and may change or be removed without notice.
+     * @param {boolean} value whether error on unknown devices
+     */
+    setGlobalErrorOnUnknownDevices(value: boolean): void;
+    /**
+     *
+     * @return {boolean}  whether to error on unknown devices
+     *
+     * This API is currently UNSTABLE and may change or be removed without notice.
+     */
+    getGlobalErrorOnUnknownDevices(): boolean;
     /**
      * Upload the device keys to the homeserver.
      * @return {object}  A promise that will resolve when the keys are uploaded.
@@ -374,18 +482,18 @@ export class Crypto {
     /**
      * Get the stored device keys for a user id
      * @param {string} userId the user to list keys for.
-     * @return {(Array.<DeviceInfo> | null)}  list of devices, or null if we haven't
+     * @return {(Array.<> | null)}  list of devices, or null if we haven't
      * managed to get a list of devices for this user yet.
      */
-    getStoredDevicesForUser(userId: string): ($_generated_8)[];
+    getStoredDevicesForUser(userId: string): any[];
     /**
      * Get the stored keys for a single device
      * @param {string} userId
      * @param {string} deviceId
-     * @return {(DeviceInfo | null)}  device, or undefined
+     * @return {( | null)}  device, or undefined
      * if we don't know about this device
      */
-    getStoredDevice(userId: string, deviceId: string): $_generated_8;
+    getStoredDevice(userId: string, deviceId: string): null;
     /**
      * Save the device list, if necessary
      * @param {number} delay Time in ms before which the save actually happens.
@@ -408,14 +516,15 @@ export class Crypto {
      *      leave unchanged.
      * @param {(boolean | null)} known whether to mark that the user has been made aware of
      *      the existence of this device. Null to leave unchanged
-     * @return {Promise.<DeviceInfo>}  updated DeviceInfo
+     * @return {Promise.<>}  updated DeviceInfo
      */
-    setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<$_generated_8>;
-    requestVerificationDM(userId: any, roomId: any, methods: any): Promise<any>;
-    acceptVerificationDM(event: any, method: any): any;
-    requestVerification(userId: any, methods: any, devices: any): Promise<any>;
-    _requestVerificationWithChannel(userId: any, methods: any, channel: any, requestsMap: any): Promise<any>;
+    setDeviceVerification(userId: string, deviceId: string, verified: boolean, blocked: boolean, known: boolean): Promise<any>;
+    findVerificationRequestDMInProgress(roomId: any): any;
+    requestVerificationDM(userId: any, roomId: any): Promise<any>;
+    requestVerification(userId: any, devices: any): Promise<any>;
+    _requestVerificationWithChannel(userId: any, channel: any, requestsMap: any): Promise<VerificationRequest>;
     beginKeyVerification(method: any, userId: any, deviceId: any, transactionId?: any): any;
+    legacyDeviceVerification(userId: any, deviceId: any, method: any): Promise<VerificationRequest>;
     /**
      * Get information on the active olm sessions with a user
      * <p>
@@ -446,9 +555,9 @@ export class Crypto {
     /**
      * Get the device which sent an event
      * @param {MatrixEvent} event event to be checked
-     * @return {(DeviceInfo | null)}
+     * @return {( | null)}
      */
-    getEventSenderDeviceInfo(event: MatrixEvent): $_generated_8;
+    getEventSenderDeviceInfo(event: MatrixEvent): null;
     /**
      * Forces the current outbound group session to be discarded such
      * that another one will be created next time an event is sent.
@@ -475,7 +584,7 @@ export class Crypto {
     /**
      *
      * @typedef {object} module:crypto~OlmSessionResult
-     * @property {DeviceInfo} device device info
+     * @property  device device info
      * @property {(string | null)} sessionId base64 olm session id; null if no session
      *    could be established
      */
@@ -492,7 +601,7 @@ export class Crypto {
      * Get a list containing all of the room keys
      * @return {Array.<MegolmSessionData>}  a list of session export objects
      */
-    exportRoomKeys(): MegolmSessionData[];
+    exportRoomKeys(): any[];
     /**
      * Import a list of room keys previously exported by exportRoomKeys
      * @param {Array.<object>} keys a list of session export objects
@@ -525,13 +634,19 @@ export class Crypto {
      */
     flagAllGroupSessionsForBackup(): Promise<number>;
     /**
+     * Perform any background tasks that can be done before a message is ready to
+     * send, in order to speed up sending of the message.
+     * @param  room the room the event is in
+     */
+    prepareToEncrypt(room: any): void;
+    /**
      * Encrypt an event according to the configuration of the room.
      * @param {MatrixEvent} event event to be sent
-     * @param {Room} room destination room.
+     * @param  room destination room.
      * @return {(Promise | null)}  Promise which resolves when the event has been
      *     encrypted, or null if nothing was needed
      */
-    encryptEvent(event: MatrixEvent, room: Room): Promise<any>;
+    encryptEvent(event: MatrixEvent, room: any): Promise<any>;
     /**
      * Decrypt a received event
      * @param {MatrixEvent} event
@@ -601,7 +716,7 @@ export class Crypto {
      * and for which we are already tracking the devices
      * @returns {Array.<Room>}
      */
-    _getTrackedE2eRooms(): Room[];
+    _getTrackedE2eRooms(): any[];
     _onToDeviceEvent(event: any): void;
     /**
      * Handle a key event
@@ -614,20 +729,31 @@ export class Crypto {
      * @private
      * @param {MatrixEvent} event key event
      */
-    _onRoomKeyEvent(event: MatrixEvent): void;
+    private _onRoomKeyEvent;
+    /**
+     * Handle a key withheld event
+     * @private
+     * @param {MatrixEvent} event key withheld event
+     */
+    private _onRoomKeyWithheldEvent;
     /**
      * Handle a general key verification event.
      * @private
      * @param {MatrixEvent} event verification start event
      */
-    _onKeyVerificationMessage(event: MatrixEvent): void;
+    private _onKeyVerificationMessage;
     /**
      * Handle key verification requests sent as timeline events
      * @private
      * @param {MatrixEvent} event the timeline event
+     * @param  room not used
+     * @param {boolean} atStart not used
+     * @param {boolean} removed not used
+     * @param {Object} data __auto_generated__
+     * @param {boolean} data.liveEvent whether this is a live event
      */
-    _onTimelineEvent(event: MatrixEvent): void;
-    _handleVerificationEvent(event: any, transactionId: any, requestsMap: any, createRequest: any): Promise<void>;
+    private _onTimelineEvent;
+    _handleVerificationEvent(event: any, requestsMap: any, createRequest: any, isLiveEvent?: boolean): Promise<void>;
     /**
      * Handle a toDevice event that couldn't be decrypted
      *
@@ -639,27 +765,27 @@ export class Crypto {
      * @private
      * @param {MatrixEvent} event undecryptable event
      */
-    _onToDeviceBadEncrypted(event: MatrixEvent): Promise<void>;
+    private _onToDeviceBadEncrypted;
     /**
      * Handle a change in the membership state of a member of a room
      * @private
      * @param {MatrixEvent} event event causing the change
-     * @param {RoomMember} member user whose membership changed
+     * @param  member user whose membership changed
      * @param {(string | undefined)} oldMembership previous membership
      */
-    _onRoomMembership(event: MatrixEvent, member: RoomMember, oldMembership: string): void;
+    private _onRoomMembership;
     /**
      * Called when we get an m.room_key_request event.
      * @private
      * @param {MatrixEvent} event key request event
      */
-    _onRoomKeyRequestEvent(event: MatrixEvent): void;
+    private _onRoomKeyRequestEvent;
     /**
      * Process any m.room_key_request events which were queued up during the
      * current sync.
      * @private
      */
-    _processReceivedRoomKeyRequests(): Promise<void>;
+    private _processReceivedRoomKeyRequests;
     /**
      * Helper for processReceivedRoomKeyRequests
      * @param {IncomingRoomKeyRequest} req
@@ -683,7 +809,13 @@ export class Crypto {
      * @raises   {any} if the algorithm is
      * unknown
      */
-    _getRoomDecryptor(roomId: string, algorithm: string): any;
+    private _getRoomDecryptor;
+    /**
+     * Get all the room decryptors for a given encryption algorithm.
+     * @param {string} algorithm The encryption algorithm
+     * @return {Array}  An array of room decryptors
+     */
+    _getRoomDecryptors(algorithm: string): any[];
     /**
      * sign the given object with our ed25519 key
      * @param {object} obj Object to which we will add a 'signatures' property
@@ -696,13 +828,23 @@ export class Crypto {
  * outgoing requests expect it to have 'room_id' and 'session_id' properties.
  */
 export type RoomKeyRequestBody = any;
-import * as $_generated_9 from "./DeviceList";
-import * as $_generated_10 from "./CrossSigning";
-import $_generated_8 from "./deviceinfo";
+import { ReEmitter } from "../ReEmitter";
+import { SAS as SAS_1 } from "./verification/SAS";
+import { IllegalMethod } from "./verification/IllegalMethod";
+import { SHOW_QR_CODE_METHOD } from "./verification/QRCode";
+import { SCAN_QR_CODE_METHOD } from "./verification/QRCode";
+import { OlmDevice } from "./OlmDevice";
+import { DeviceList } from "./DeviceList";
+import { OutgoingRoomKeyRequestManager } from "./OutgoingRoomKeyRequestManager";
+import { ToDeviceRequests } from "./verification/request/ToDeviceChannel";
+import { InRoomRequests } from "./verification/request/InRoomChannel";
+import { CrossSigningInfo } from "./CrossSigning";
+import { SecretStorage } from "./SecretStorage";
+import { DeviceInfo } from "./deviceinfo";
+import { UserTrustLevel } from "./CrossSigning";
+import { DeviceTrustLevel } from "./CrossSigning";
+import { VerificationRequest } from "./verification/request/VerificationRequest";
 import { MatrixEvent } from "../models/event";
-import MegolmSessionData from "./OlmDevice";
-import Room from "../models/room";
-import RoomMember from "../models/room-member";
 /**
  * The parameters of a room key request. The details of the request may
  * vary with the crypto algorithm, but the management and storage layers for

@@ -1,5 +1,87 @@
+/**
+ * Construct a new Indexed Database store, which extends MemoryStore.
+ *
+ * This store functions like a MemoryStore except it periodically persists
+ * the contents of the store to an IndexedDB backend.
+ *
+ * All data is still kept in-memory but can be loaded from disk by calling
+ * <code>startup()</code>. This can make startup times quicker as a complete
+ * sync from the server is not required. This does not reduce memory usage as all
+ * the data is eagerly fetched when <code>startup()</code> is called.
+ * <pre>
+ * let opts = { localStorage: window.localStorage };
+ * let store = new IndexedDBStore();
+ * await store.startup(); // load from indexed db
+ * let client = sdk.createClient({
+ *     store: store,
+ * });
+ * client.startClient();
+ * client.on("sync", function(state, prevState, data) {
+ *     if (state === "PREPARED") {
+ *         console.log("Started up, now with go faster stripes!");
+ *     }
+ * });
+ * </pre>
+ * @constructor
+ * @extends  MemoryStore
+ * @param {object} opts Options object.
+ * @param {object} opts.indexedDB The Indexed DB interface e.g.
+ * <code>window.indexedDB</code>
+ * @param {(string | undefined)} opts.dbName Optional database name. The same name must be used
+ * to open the same database.
+ * @param {(string | undefined)} opts.workerScript Optional URL to a script to invoke a web
+ * worker with to run IndexedDB queries on the web worker. The IndexedDbStoreWorker
+ * class is provided for this purpose and requires the application to provide a
+ * trivial wrapper script around it.
+ * @param {(object | undefined)} opts.workerApi The webWorker API object. If omitted, the global Worker
+ * object will be used if it exists.
+ * @prop {IndexedDBStoreBackend} backend The backend instance. Call through to
+ * this API if you need to perform specific indexeddb actions like deleting the
+ * database.
+ */
+/**
+ * Construct a new Indexed Database store, which extends MemoryStore.
+ *
+ * This store functions like a MemoryStore except it periodically persists
+ * the contents of the store to an IndexedDB backend.
+ *
+ * All data is still kept in-memory but can be loaded from disk by calling
+ * <code>startup()</code>. This can make startup times quicker as a complete
+ * sync from the server is not required. This does not reduce memory usage as all
+ * the data is eagerly fetched when <code>startup()</code> is called.
+ * <pre>
+ * let opts = { localStorage: window.localStorage };
+ * let store = new IndexedDBStore();
+ * await store.startup(); // load from indexed db
+ * let client = sdk.createClient({
+ *     store: store,
+ * });
+ * client.startClient();
+ * client.on("sync", function(state, prevState, data) {
+ *     if (state === "PREPARED") {
+ *         console.log("Started up, now with go faster stripes!");
+ *     }
+ * });
+ * </pre>
+ * @constructor
+ * @extends  MemoryStore
+ * @param {object} opts Options object.
+ * @param {object} opts.indexedDB The Indexed DB interface e.g.
+ * <code>window.indexedDB</code>
+ * @param {(string | undefined)} opts.dbName Optional database name. The same name must be used
+ * to open the same database.
+ * @param {(string | undefined)} opts.workerScript Optional URL to a script to invoke a web
+ * worker with to run IndexedDB queries on the web worker. The IndexedDbStoreWorker
+ * class is provided for this purpose and requires the application to provide a
+ * trivial wrapper script around it.
+ * @param {(object | undefined)} opts.workerApi The webWorker API object. If omitted, the global Worker
+ * object will be used if it exists.
+ * @prop {IndexedDBStoreBackend} backend The backend instance. Call through to
+ * this API if you need to perform specific indexeddb actions like deleting the
+ * database.
+ */
 export class IndexedDBStore {
-    static exists(indexedDB: any, dbName: any): any;
+    static exists(indexedDB: any, dbName: any): Promise<any>;
     constructor(opts: any);
     backend: LocalIndexedDBStoreBackend | RemoteIndexedDBStoreBackend;
     startedUp: boolean;
@@ -87,5 +169,5 @@ export class IndexedDBStore {
     getClientOptions: (...args: any) => any;
     storeClientOptions: (...args: any) => any;
 }
-import LocalIndexedDBStoreBackend from "./indexeddb-local-backend";
-import RemoteIndexedDBStoreBackend from "./indexeddb-remote-backend";
+import { LocalIndexedDBStoreBackend } from "./indexeddb-local-backend";
+import { RemoteIndexedDBStoreBackend } from "./indexeddb-remote-backend";

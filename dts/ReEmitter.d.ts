@@ -1,4 +1,4 @@
-export default class Reemitter {
+export class ReEmitter {
     constructor(target: any);
     target: any;
     boundHandlers: {};

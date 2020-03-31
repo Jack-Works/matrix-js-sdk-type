@@ -5,7 +5,7 @@
  *
  * @alias  module:crypto/RoomList
  */
-export default class RoomList {
+export class RoomList {
     constructor(cryptoStore: any);
     _cryptoStore: any;
     _roomEncryption: {};

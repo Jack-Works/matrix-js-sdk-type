@@ -1,4 +1,43 @@
-export default MatrixBaseApis;
+/**
+ * Low-level wrappers for the Matrix APIs
+ *
+ * @constructor
+ *
+ * @param {Object} opts Configuration options
+ *
+ * @param {string} opts.baseUrl Required. The base URL to the client-server
+ * HTTP API.
+ *
+ * @param {string} opts.idBaseUrl Optional. The base identity server URL for
+ * identity server requests.
+ *
+ * @param {Function} opts.request Required. The function to invoke for HTTP
+ * requests. The value of this property is typically <code>require("request")
+ * </code> as it returns a function which meets the required interface. See
+ * {@link requestFunction} for more information.
+ *
+ * @param {string} opts.accessToken The access_token for this user.
+ *
+ * @param {IdentityServerProvider} [opts.identityServer]
+ * Optional. A provider object with one function `getAccessToken`, which is a
+ * callback that returns a Promise<String> of an identity access token to supply
+ * with identity requests. If the object is unset, no access token will be
+ * supplied.
+ * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * replace the previous approach of manual access tokens params with this
+ * callback throughout the SDK.
+ *
+ * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
+ * time to wait before timing out HTTP requests. If not specified, there is no
+ * timeout.
+ *
+ * @param {Object} opts.queryParams Optional. Extra query parameters to append
+ * to all requests with this client. Useful for application services which require
+ * <code>?user_id=</code>.
+ *
+ * @param {boolean} [opts.useAuthorizationHeader = false] Set to true to use
+ * Authorization header instead of query param to send the access token to the server.
+ */
 /**
  * Low-level wrappers for the Matrix APIs
  *
@@ -68,7 +107,36 @@ export default MatrixBaseApis;
  * @param {(boolean | undefined)} opts.useAuthorizationHeader Set to true to use
  * Authorization header instead of query param to send the access token to the server.
  */
-declare class MatrixBaseApis {
+/**
+ * Low-level wrappers for the Matrix APIs
+ * @constructor
+ * @param {object} opts Configuration options
+ * @param {string} opts.baseUrl Required. The base URL to the client-server
+ * HTTP API.
+ * @param {string} opts.idBaseUrl Optional. The base identity server URL for
+ * identity server requests.
+ * @param {((...args: any) => any)} opts.request Required. The function to invoke for HTTP
+ * requests. The value of this property is typically <code>require("request")
+ * </code> as it returns a function which meets the required interface. See
+ * {@link requestFunction} for more information.
+ * @param {string} opts.accessToken The access_token for this user.
+ * @param {(IdentityServerProvider | undefined)} opts.identityServer Optional. A provider object with one function `getAccessToken`, which is a
+ * callback that returns a Promise<String> of an identity access token to supply
+ * with identity requests. If the object is unset, no access token will be
+ * supplied.
+ * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * replace the previous approach of manual access tokens params with this
+ * callback throughout the SDK.
+ * @param {(number | undefined)} opts.localTimeoutMs Optional. The default maximum amount of
+ * time to wait before timing out HTTP requests. If not specified, there is no
+ * timeout.
+ * @param {object} opts.queryParams Optional. Extra query parameters to append
+ * to all requests with this client. Useful for application services which require
+ * <code>?user_id=</code>.
+ * @param {(boolean | undefined)} opts.useAuthorizationHeader Set to true to use
+ * Authorization header instead of query param to send the access token to the server.
+ */
+export class MatrixBaseApis {
     constructor(opts: any);
     baseUrl: any;
     idBaseUrl: any;
@@ -616,6 +684,14 @@ declare class MatrixBaseApis {
      */
     deleteAlias(alias: string, callback: any): Promise<any>;
     /**
+     *
+     * @param {string} roomId
+     * @param {callback} callback Optional.
+     * @return {Promise}  Resolves: an object with an `aliases` property, containing an array of local aliases
+     * @return {MatrixError}  Rejects: with an error response.
+     */
+    unstableGetLocalAliases(roomId: string, callback: any): Promise<any>;
+    /**
      * Get room info for the given alias.
      * @param {string} alias The room alias to resolve.
      * @param {callback} callback Optional.
@@ -927,9 +1003,8 @@ declare class MatrixBaseApis {
     /**
      * Upload keys
      * @param {object} content body of upload request
-     * @param {(object | undefined)} opts
-     * @param {(string | undefined)} opts.device_id explicit device_id to use for upload
-     *    (default is to use the same as that used during auth).
+     * @param {(object | undefined)} opts this method no longer takes any opts,
+     *  used to take opts.device_id but this was not removed from the spec as a redundant parameter
      * @param {(callback | undefined)} callback
      * @return {Promise}  Resolves: result object. Rejects: with
      *     an error response ({@link module:http-api.MatrixError}).
@@ -963,10 +1038,12 @@ declare class MatrixBaseApis {
      * Claim one-time keys
      * @param {Array.<string>} devices a list of [userId, deviceId] pairs
      * @param {(string | undefined)} key_algorithm desired key type
+     * @param {(number | undefined)} timeout the time (in milliseconds) to wait for keys from remote
+     *     servers
      * @return {Promise}  Resolves: result object. Rejects: with
      *     an error response ({@link module:http-api.MatrixError}).
      */
-    claimOneTimeKeys(devices: string[], key_algorithm: string): Promise<any>;
+    claimOneTimeKeys(devices: string[], key_algorithm: string, timeout: number): Promise<any>;
     /**
      * Ask the server for a list of users who have changed their device lists
      * between a pair of sync tokens

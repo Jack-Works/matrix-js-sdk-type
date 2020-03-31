@@ -52,7 +52,7 @@ export class AutoDiscovery {
      * @return {(string | boolean)}  The sanitized URL or a falsey value if the URL is invalid.
      * @private
      */
-    static _sanitizeWellKnownUrl(url: string): string | boolean;
+    private static _sanitizeWellKnownUrl;
     /**
      * Fetches a JSON object from a given URL, as expected by all .well-known
      * related lookups. If the server gives a 404 then the `action` will be
@@ -69,7 +69,7 @@ export class AutoDiscovery {
      * @return {Promise.<object>}  Resolves to the returned state.
      * @private
      */
-    static _fetchWellKnownObject(url: string): Promise<any>;
+    private static _fetchWellKnownObject;
 }
 /**
  * Description for what an automatically discovered client configuration

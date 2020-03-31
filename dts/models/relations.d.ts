@@ -6,7 +6,7 @@
  * The typical way to get one of these containers is via
  * EventTimelineSet#getRelationsForEvent.
  */
-export default class Relations {
+export class Relations extends EventEmitter {
     /**
      *
      * @param {string} relationType The type of relation involved, such as "m.annotation", "m.reference",
@@ -38,14 +38,7 @@ export default class Relations {
      * @param {MatrixEvent} event The event whose status has changed
      * @param {EventStatus} status The new status
      */
-    _onEventStatus: (event: any, status: {
-        NOT_SENT: string;
-        ENCRYPTING: string;
-        SENDING: string;
-        QUEUED: string;
-        SENT: string;
-        CANCELLED: string;
-    }) => void;
+    _onEventStatus: (event: any, status: string) => void;
     /**
      * Get all relation events in this collection.
      *
@@ -109,3 +102,4 @@ export default class Relations {
      */
     setTargetEvent(event: any): void;
 }
+import { EventEmitter } from "events";

@@ -1,4 +1,4 @@
-export default class OutgoingRoomKeyRequestManager {
+export class OutgoingRoomKeyRequestManager {
     constructor(baseApis: any, deviceId: any, cryptoStore: any);
     _baseApis: any;
     _deviceId: any;

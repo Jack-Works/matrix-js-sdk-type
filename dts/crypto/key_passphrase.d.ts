@@ -4,4 +4,4 @@ export function keyFromPassphrase(password: any): Promise<{
     salt: string;
     iterations: number;
 }>;
-export function deriveKey(password: any, salt: any, iterations: any): Promise<Uint8Array>;
+export function deriveKey(password: any, salt: any, iterations: any, numBits?: number): Promise<Uint8Array>;

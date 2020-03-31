@@ -18,7 +18,7 @@
  * but with fallback to MemoryCryptoStore.
  * @implements {CryptoStore}
  */
-declare class IndexedDBCryptoStore {
+export class IndexedDBCryptoStore {
     /**
      * Create a new IndexedDBCryptoStore
      * @param {IDBFactory} indexedDB global indexedDB instance
@@ -27,10 +27,13 @@ declare class IndexedDBCryptoStore {
     constructor(indexedDB: IDBFactory, dbName: string);
     _indexedDB: IDBFactory;
     _dbName: string;
-    _backendPromise: Promise<any>;
+    _backendPromise: Promise<void>;
+    _backend: any;
     /**
      * Ensure the database exists and is up-to-date, or fall back to
      * a local storage or in-memory store.
+     *
+     * This must be called before the store can be used.
      *
      * @return {Promise} resolves to either an IndexedDBCryptoStoreBackend.Backend,
      * or a MemoryCryptoStore
@@ -38,10 +41,12 @@ declare class IndexedDBCryptoStore {
     /**
      * Ensure the database exists and is up-to-date, or fall back to
      * a local storage or in-memory store.
+     *
+     * This must be called before the store can be used.
      * @return {Promise}  resolves to either an IndexedDBCryptoStoreBackend.Backend,
      * or a MemoryCryptoStore
      */
-    _connect(): Promise<any>;
+    startup(): Promise<any>;
     /**
      * Delete all data from this store.
      * @returns {Promise}  resolves when the store has been cleared.
@@ -124,11 +129,25 @@ declare class IndexedDBCryptoStore {
      */
     getCrossSigningKeys(txn: any, func: (arg0: string) => any): void;
     /**
+     *
+     * @param {*} txn An active transaction. See doTxn().
+     * @param {function (string)} func Called with the private key
+     * @param {string} type A key type
+     */
+    getSecretStorePrivateKey(txn: any, func: (arg0: string) => any, type: string): void;
+    /**
      * Write the cross-signing keys back to the store
      * @param {*} txn An active transaction. See doTxn().
      * @param {string} keys keys object as getCrossSigningKeys()
      */
     storeCrossSigningKeys(txn: any, keys: string): void;
+    /**
+     * Write the cross-signing private keys back to the store
+     * @param {*} txn An active transaction. See doTxn().
+     * @param {string} type The type of cross-signing private key to store
+     * @param {string} key keys object as getCrossSigningKeys()
+     */
+    storeSecretStorePrivateKey(txn: any, type: string, key: string): void;
     /**
      * Returns the number of end-to-end sessions in the store
      * @param {*} txn An active transaction. See doTxn().
@@ -176,6 +195,18 @@ declare class IndexedDBCryptoStore {
      * @param {*} txn An active transaction. See doTxn().
      */
     storeEndToEndSession(deviceKey: string, sessionId: string, sessionInfo: string, txn: any): void;
+    storeEndToEndSessionProblem(deviceKey: any, type: any, fixed: any): any;
+    getEndToEndSessionProblem(deviceKey: any, timestamp: any): any;
+    filterOutNotifiedErrorDevices(devices: any): any;
+    /**
+     * Retrieve the end-to-end inbound group session for a given
+     * server key and session ID
+     * @param {string} senderCurve25519Key The sender's curve 25519 key
+     * @param {string} sessionId The ID of the session
+     * @param {*} txn An active transaction. See doTxn().
+     * @param {function(object)} func Called with A map from sessionId
+     *     to Base64 end-to-end session.
+     */
     /**
      * Retrieve the end-to-end inbound group session for a given
      * server key and session ID
@@ -214,6 +245,17 @@ declare class IndexedDBCryptoStore {
      * @param {*} txn An active transaction. See doTxn().
      */
     storeEndToEndInboundGroupSession(senderCurve25519Key: string, sessionId: string, sessionData: any, txn: any): void;
+    storeEndToEndInboundGroupSessionWithheld(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
+    /**
+     * Store the state of all tracked devices
+     * This contains devices for each user, a tracking state for each user
+     * and a sync token matching the point in time the snapshot represents.
+     * These all need to be written out in full each time such that the snapshot
+     * is always consistent, so they are stored in one object.
+     *
+     * @param {Object} deviceData
+     * @param {*} txn An active transaction. See doTxn().
+     */
     /**
      * Store the state of all tracked devices
      * This contains devices for each user, a tracking state for each user
@@ -293,12 +335,13 @@ declare class IndexedDBCryptoStore {
      */
     doTxn(mode: string, stores: string[], func: (arg0: any) => any): Promise<any>;
 }
-declare namespace IndexedDBCryptoStore {
+export namespace IndexedDBCryptoStore {
+    export function exists(indexedDB: any, dbName: any): Promise<any>;
     export const STORE_ACCOUNT: string;
     export const STORE_SESSIONS: string;
     export const STORE_INBOUND_GROUP_SESSIONS: string;
+    export const STORE_INBOUND_GROUP_SESSIONS_WITHHELD: string;
     export const STORE_DEVICE_DATA: string;
     export const STORE_ROOMS: string;
     export const STORE_BACKUP: string;
 }
-export default IndexedDBCryptoStore;

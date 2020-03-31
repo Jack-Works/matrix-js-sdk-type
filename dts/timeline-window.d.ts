@@ -1,3 +1,51 @@
+/**
+ * Construct a TimelineWindow.
+ *
+ * <p>This abstracts the separate timelines in a Matrix {@link
+ * module:models/room|Room} into a single iterable thing. It keeps track of
+ * the start and endpoints of the window, which can be advanced with the help
+ * of pagination requests.
+ *
+ * <p>Before the window is useful, it must be initialised by calling {@link
+ * module:timeline-window~TimelineWindow#load|load}.
+ *
+ * <p>Note that the window will not automatically extend itself when new events
+ * are received from /sync; you should arrange to call {@link
+ * module:timeline-window~TimelineWindow#paginate|paginate} on {@link
+ * module:client~MatrixClient.event:"Room.timeline"|Room.timeline} events.
+ * @param {MatrixClient} client MatrixClient to be used for context/pagination
+ *   requests.
+ * @param {EventTimelineSet} timelineSet The timelineSet to track
+ * @param {(object | undefined)} opts Configuration options for this window
+ * @param {(number | undefined)} opts.windowLimit maximum number of events to keep
+ *    in the window. If more events are retrieved via pagination requests,
+ *    excess events will be dropped from the other end of the window.
+ * @constructor
+ */
+/**
+ * Construct a TimelineWindow.
+ *
+ * <p>This abstracts the separate timelines in a Matrix {@link
+ * module:models/room|Room} into a single iterable thing. It keeps track of
+ * the start and endpoints of the window, which can be advanced with the help
+ * of pagination requests.
+ *
+ * <p>Before the window is useful, it must be initialised by calling {@link
+ * module:timeline-window~TimelineWindow#load|load}.
+ *
+ * <p>Note that the window will not automatically extend itself when new events
+ * are received from /sync; you should arrange to call {@link
+ * module:timeline-window~TimelineWindow#paginate|paginate} on {@link
+ * module:client~MatrixClient.event:"Room.timeline"|Room.timeline} events.
+ * @param {MatrixClient} client MatrixClient to be used for context/pagination
+ *   requests.
+ * @param {EventTimelineSet} timelineSet The timelineSet to track
+ * @param {(object | undefined)} opts Configuration options for this window
+ * @param {(number | undefined)} opts.windowLimit maximum number of events to keep
+ *    in the window. If more events are retrieved via pagination requests,
+ *    excess events will be dropped from the other end of the window.
+ * @constructor
+ */
 export class TimelineWindow {
     constructor(client: any, timelineSet: any, opts: any);
     _client: any;
@@ -23,6 +71,24 @@ export class TimelineWindow {
      * @return {Promise}
      */
     load(initialEventId: string, initialWindowSize: number): Promise<any>;
+    /**
+     * Get the TimelineIndex of the window in the given direction.
+     * @param {string} direction EventTimeline.BACKWARDS to get the TimelineIndex
+     * at the start of the window; EventTimeline.FORWARDS to get the TimelineIndex at
+     * the end.
+     * @return {TimelineIndex}  The requested timeline index if one exists, null
+     * otherwise.
+     */
+    getTimelineIndex(direction: string): TimelineIndex;
+    /**
+     * Try to extend the window using events that are already in the underlying
+     * TimelineIndex.
+     * @param {string} direction EventTimeline.BACKWARDS to try extending it
+     *   backwards; EventTimeline.FORWARDS to try extending it forwards.
+     * @param {number} size number of events to try to extend by.
+     * @return {boolean}  true if the window was extended, false otherwise.
+     */
+    extend(direction: string, size: number): boolean;
     /**
      * Check if this window can be extended
      *
@@ -66,6 +132,20 @@ export class TimelineWindow {
      */
     getEvents(): any[];
 }
+/**
+ * a thing which contains a timeline reference, and an index into it.
+ * @constructor
+ * @param {EventTimeline} timeline
+ * @param {number} index
+ * @private
+ */
+/**
+ * a thing which contains a timeline reference, and an index into it.
+ * @constructor
+ * @param {EventTimeline} timeline
+ * @param {number} index
+ * @private
+ */
 export class TimelineIndex {
     constructor(timeline: any, index: any);
     timeline: any;

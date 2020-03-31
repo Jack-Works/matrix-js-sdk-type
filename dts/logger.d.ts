@@ -1,2 +1,1 @@
-export default logger;
-declare const logger: import("loglevel").Logger;
+export const logger: any;

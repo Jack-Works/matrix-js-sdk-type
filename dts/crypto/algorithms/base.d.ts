@@ -23,36 +23,63 @@ export const ENCRYPTION_CLASSES: {};
  */
 export const DECRYPTION_CLASSES: Record<string, DecryptionAlgorithm>;
 /**
- * Exception thrown specifically when we want to warn the user to consider
- * the security of their conversation before continuing
- * @param {string} msg message describing the problem
- * @param {object} devices userId -> {deviceId -> object}
- *      set of unknown devices per user we're warning about
- * @extends  Error
- */
-export class UnknownDeviceError extends Error {
-    constructor(msg: any, devices: any);
-    devices: any;
-}
-/**
- * base type for decryption implementations
- *
- * @alias module:crypto/algorithms/base.DecryptionAlgorithm
+ * base type for encryption implementations
+ * @alias  module:crypto/algorithms/base.EncryptionAlgorithm
  * @param {object} params parameters
- * @param {string} params.userId  The UserID for the local user
- * @param {any} params.crypto crypto core
- * @param {any} params.olmDevice olm.js wrapper
- * @param {any} baseApis base matrix api interface
- * @param {string=} params.roomId The ID of the room we will be receiving
- *     from. Null for to-device events.
+ * @param {string} params.userId The UserID for the local user
+ * @param {string} params.deviceId The identifier for this device.
+ * @param  params.crypto crypto core
+ * @param  params.olmDevice olm.js wrapper
+ * @param {MatrixBaseApis} baseApis base matrix api interface
+ * @param {string} params.roomId The ID of the room we will be sending to
+ * @param {object} params.config The body of the m.room.encryption event
  */
+export class EncryptionAlgorithm {
+    constructor(params: any);
+    _userId: any;
+    _deviceId: any;
+    _crypto: any;
+    _olmDevice: any;
+    _baseApis: any;
+    _roomId: any;
+    /**
+     * Perform any background tasks that can be done before a message is ready to
+     * send, in order to speed up sending of the message.
+     *
+     * @param {any} room the room the event is in
+     */
+    /**
+     * Perform any background tasks that can be done before a message is ready to
+     * send, in order to speed up sending of the message.
+     * @param  room the room the event is in
+     */
+    prepareToEncrypt(room: any): void;
+    /**
+     * Encrypt a message event
+     * @method {Object} module:crypto/algorithms/base __auto_generated__
+     * @method  module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
+     * @abstract
+     * @param  room
+     * @param {string} eventType
+     * @param {object} plaintext event content
+     * @return {Promise}  Promise which resolves to the new event body
+     */
+    /**
+     * Called when the membership of a member of the room changes.
+     * @param {MatrixEvent} event event causing the change
+     * @param  member user whose membership changed
+     * @param {(string | undefined)} oldMembership previous membership
+     * @public
+     */
+    public onRoomMembership(event: MatrixEvent, member: any, oldMembership: string): void;
+}
 /**
  * base type for decryption implementations
  * @alias  module:crypto/algorithms/base.DecryptionAlgorithm
  * @param {object} params parameters
  * @param {string} params.userId The UserID for the local user
  * @param  params.crypto crypto core
- * @param {OlmDevice} params.olmDevice olm.js wrapper
+ * @param  params.olmDevice olm.js wrapper
  * @param {MatrixBaseApis} baseApis base matrix api interface
  * @param {(string | undefined)} params.roomId The ID of the room we will be receiving
  *     from. Null for to-device events.
@@ -109,7 +136,7 @@ export class DecryptionAlgorithm {
      * Import a room key
      * @param {MegolmSessionData} session
      */
-    importRoomKey(session: MegolmSessionData): void;
+    importRoomKey(session: any): void;
     /**
      * Determine if we have the keys necessary to respond to a room key request
      *
@@ -129,77 +156,13 @@ export class DecryptionAlgorithm {
      * @param {IncomingRoomKeyRequest} keyRequest
      */
     shareKeysWithDevice(keyRequest: any): void;
+    /**
+     * Retry decrypting all the events from a sender that haven't been
+     * decrypted yet.
+     * @param {string} senderKey the sender's key
+     */
+    retryDecryptionFromSender(senderKey: string): Promise<void>;
 }
-/**
- * base type for encryption implementations
- * @alias  module:crypto/algorithms/base.EncryptionAlgorithm
- * @param {object} params parameters
- * @param {string} params.userId The UserID for the local user
- * @param {string} params.deviceId The identifier for this device.
- * @param  params.crypto crypto core
- * @param {OlmDevice} params.olmDevice olm.js wrapper
- * @param {MatrixBaseApis} baseApis base matrix api interface
- * @param {string} params.roomId The ID of the room we will be sending to
- * @param {object} params.config The body of the m.room.encryption event
- */
-export class EncryptionAlgorithm {
-    constructor(params: any);
-    _userId: any;
-    _deviceId: any;
-    _crypto: any;
-    _olmDevice: any;
-    _baseApis: any;
-    _roomId: any;
-    /**
-     * Encrypt a message event
-     *
-     * @method module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
-     * @abstract
-     *
-     * @param {any} room
-     * @param {string} eventType
-     * @param {object} plaintext event content
-     *
-     * @return {Promise} Promise which resolves to the new event body
-     */
-    /**
-     * Called when the membership of a member of the room changes.
-     *
-     * @param {any} event  event causing the change
-     * @param {any} member  user whose membership changed
-     * @param {string=} oldMembership  previous membership
-     * @public
-     */
-    /**
-     * Encrypt a message event
-     * @method {Object} module:crypto/algorithms/base __auto_generated__
-     * @method  module:crypto/algorithms/base.EncryptionAlgorithm.encryptMessage
-     * @abstract
-     * @param {Room} room
-     * @param {string} eventType
-     * @param {object} plaintext event content
-     * @return {Promise}  Promise which resolves to the new event body
-     */
-    /**
-     * Called when the membership of a member of the room changes.
-     * @param {MatrixEvent} event event causing the change
-     * @param {RoomMember} member user whose membership changed
-     * @param {(string | undefined)} oldMembership previous membership
-     * @public
-     */
-    onRoomMembership(event: MatrixEvent, member: RoomMember, oldMembership: string): void;
-}
-/**
- * Exception thrown when decryption fails
- *
- * @alias module:crypto/algorithms/base.DecryptionError
- * @param {string} msg user-visible message describing the problem
- *
- * @param {Object=} details key/value pairs reported in the logs but not shown
- *   to the user.
- *
- * @extends Error
- */
 /**
  * Exception thrown when decryption fails
  * @alias  module:crypto/algorithms/base.DecryptionError
@@ -213,6 +176,25 @@ export class DecryptionError extends Error {
     code: any;
     detailedString: string;
 }
+/**
+ * Exception thrown specifically when we want to warn the user to consider
+ * the security of their conversation before continuing
+ *
+ * @param {string} msg message describing the problem
+ * @param {Object} devices userId -> {deviceId -> object}
+ *      set of unknown devices per user we're warning about
+ * @extends Error
+ */
+/**
+ * Exception thrown specifically when we want to warn the user to consider
+ * the security of their conversation before continuing
+ * @param {string} msg message describing the problem
+ * @param {object} devices userId -> {deviceId -> object}
+ *      set of unknown devices per user we're warning about
+ * @extends  Error
+ */
+export class UnknownDeviceError extends Error {
+    constructor(msg: any, devices: any);
+    devices: any;
+}
 import { MatrixEvent } from "../../models/event";
-import MegolmSessionData from "../OlmDevice";
-import RoomMember from "../../models/room-member";

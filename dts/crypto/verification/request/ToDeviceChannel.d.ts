@@ -2,7 +2,7 @@
  * A key verification channel that sends verification events over to_device messages.
  * Generates its own transaction ids.
  */
-export default class ToDeviceChannel {
+export class ToDeviceChannel {
     static getEventType(event: any): any;
     /**
      * Extract the transaction id used by a given key verification event, if any
@@ -14,7 +14,7 @@ export default class ToDeviceChannel {
      * @param {MatrixEvent} event the event
      * @returns {string}  the transaction id
      */
-    static getTransactionId(event: any): string;
+    static getTransactionId(event: MatrixEvent): string;
     /**
      * Checks whether the given event type should be allowed to initiate a new VerificationRequest over this channel
      * @param {string} type the event type to check
@@ -30,13 +30,7 @@ export default class ToDeviceChannel {
      * @param {MatrixClient} client the client to get the current user and device id from
      * @returns {boolean}  whether the event is valid and should be passed to handleEvent
      */
-    static validateEvent(event: any, client: any): boolean;
-    /**
-     *
-     * @param {MatrixEvent} event the event to get the timestamp of
-     * @return {number}  the timestamp when the event was sent
-     */
-    static getTimestamp(event: any): number;
+    static validateEvent(event: MatrixEvent, client: any): boolean;
     /**
      * Allow Crypto module to create and know the transaction id before the .start event gets sent.
      * @returns {string} the transaction id
@@ -48,23 +42,32 @@ export default class ToDeviceChannel {
     static makeTransactionId(): string;
     constructor(client: any, userId: any, devices: any, transactionId?: any, deviceId?: any);
     _client: any;
-    _userId: any;
+    userId: any;
     _devices: any;
     transactionId: any;
     _deviceId: any;
+    isToDevices(devices: any): boolean;
+    get deviceId(): any;
+    /**
+     *
+     * @param {MatrixEvent} event the event to get the timestamp of
+     * @return {number}  the timestamp when the event was sent
+     */
+    getTimestamp(event: MatrixEvent): number;
     /**
      * Changes the state of the channel, request, and verifier in response to a key verification event.
      * @param {MatrixEvent} event to handle
      * @param {VerificationRequest} request the request to forward handling to
+     * @param {boolean} isLiveEvent whether this is an even received through sync or not
      * @returns {Promise}  a promise that resolves when any requests as an anwser to the passed-in event are sent.
      */
-    handleEvent(event: any, request: $_generated_2): Promise<any>;
+    handleEvent(event: MatrixEvent, request: VerificationRequest, isLiveEvent: boolean): Promise<any>;
     /**
      * See {InRoomChannel.completedContentFromEvent} why this is needed.
      * @param {MatrixEvent} event the received event
      * @returns {object}  the content object
      */
-    completedContentFromEvent(event: any): any;
+    completedContentFromEvent(event: MatrixEvent): any;
     /**
      * Add all the fields to content needed for sending it over this channel.
      * This is public so verification methods (SAS uses this) can get the exact
@@ -91,4 +94,16 @@ export default class ToDeviceChannel {
     sendCompleted(type: string, content: any): Promise<any>;
     _sendToDevices(type: any, content: any, devices: any): any;
 }
-import $_generated_2 from "./VerificationRequest";
+export class ToDeviceRequests {
+    _requestsByUserId: Map<any, any>;
+    getRequest(event: any): any;
+    getRequestByChannel(channel: any): any;
+    getRequestBySenderAndTxnId(sender: any, txnId: any): any;
+    setRequest(event: any, request: any): void;
+    setRequestByChannel(channel: any, request: any): void;
+    setRequestBySenderAndTxnId(sender: any, txnId: any, request: any): void;
+    removeRequest(event: any): void;
+    findRequestInProgress(userId: any, devices: any): any;
+}
+import { MatrixEvent } from "../../../models/event";
+import { VerificationRequest } from "./VerificationRequest";

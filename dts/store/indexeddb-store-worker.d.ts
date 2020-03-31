@@ -1,4 +1,3 @@
-export default IndexedDBStoreWorker;
 /**
  * This class lives in the webworker and drives a LocalIndexedDBStoreBackend
  * controlled by messages from the main process.
@@ -14,7 +13,7 @@ export default IndexedDBStoreWorker;
  * avoid a dependency on the whole js-sdk.
  *
  */
-declare class IndexedDBStoreWorker {
+export class IndexedDBStoreWorker {
     /**
      *
      * @param {((...args: any) => any)} postMessage The web worker postMessage function that
@@ -30,4 +29,4 @@ declare class IndexedDBStoreWorker {
      */
     onMessage(ev: any): void;
 }
-import LocalIndexedDBStoreBackend from "./indexeddb-local-backend.js";
+import { LocalIndexedDBStoreBackend } from "./indexeddb-local-backend.js";

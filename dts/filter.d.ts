@@ -1,4 +1,3 @@
-export default Filter;
 /**
  * Construct a new Filter.
  * @constructor
@@ -7,7 +6,15 @@ export default Filter;
  * @prop {string} userId The user ID of the filter
  * @prop {(string | null)} filterId The filter ID
  */
-declare class Filter {
+/**
+ * Construct a new Filter.
+ * @constructor
+ * @param {string} userId The user ID for this filter.
+ * @param {(string | undefined)} filterId The filter ID if known.
+ * @prop {string} userId The user ID of the filter
+ * @prop {(string | null)} filterId The filter ID
+ */
+export class Filter {
     constructor(userId: any, filterId: any);
     userId: any;
     filterId: any;
@@ -58,7 +65,16 @@ declare class Filter {
      */
     setIncludeLeaveRooms(includeLeave: boolean): void;
 }
-declare namespace Filter {
+export namespace Filter {
+    /**
+     * Create a filter from existing data.
+     * @static
+     * @param {string} userId
+     * @param {string} filterId
+     * @param {object} jsonObj
+     * @return {Filter}
+     */
+    export function fromJson(userId: string, filterId: string, jsonObj: any): Filter;
     export namespace LAZY_LOADING_MESSAGES_FILTER {
         export const lazy_load_members: boolean;
     }
@@ -69,4 +85,4 @@ declare namespace Filter {
         }
     }
 }
-import FilterComponent from "./filter-component";
+import { FilterComponent } from "./filter-component";

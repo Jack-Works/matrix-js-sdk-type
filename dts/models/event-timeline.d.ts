@@ -1,4 +1,43 @@
-export default EventTimeline;
+/**
+ * Construct a new EventTimeline
+ *
+ * <p>An EventTimeline represents a contiguous sequence of events in a room.
+ *
+ * <p>As well as keeping track of the events themselves, it stores the state of
+ * the room at the beginning and end of the timeline, and pagination tokens for
+ * going backwards and forwards in the timeline.
+ *
+ * <p>In order that clients can meaningfully maintain an index into a timeline,
+ * the EventTimeline object tracks a 'baseIndex'. This starts at zero, but is
+ * incremented when events are prepended to the timeline. The index of an event
+ * relative to baseIndex therefore remains constant.
+ *
+ * <p>Once a timeline joins up with its neighbour, they are linked together into a
+ * doubly-linked list.
+ *
+ * @param {EventTimelineSet} eventTimelineSet the set of timelines this is part of
+ * @constructor
+ */
+/**
+ * Construct a new EventTimeline
+ *
+ * <p>An EventTimeline represents a contiguous sequence of events in a room.
+ *
+ * <p>As well as keeping track of the events themselves, it stores the state of
+ * the room at the beginning and end of the timeline, and pagination tokens for
+ * going backwards and forwards in the timeline.
+ *
+ * <p>In order that clients can meaningfully maintain an index into a timeline,
+ * the EventTimeline object tracks a 'baseIndex'. This starts at zero, but is
+ * incremented when events are prepended to the timeline. The index of an event
+ * relative to baseIndex therefore remains constant.
+ *
+ * <p>Once a timeline joins up with its neighbour, they are linked together into a
+ * doubly-linked list.
+ *
+ * @param {EventTimelineSet} eventTimelineSet the set of timelines this is part of
+ * @constructor
+ */
 /**
  * Construct a new EventTimeline
  *
@@ -18,7 +57,26 @@ export default EventTimeline;
  * @param {EventTimelineSet} eventTimelineSet the set of timelines this is part of
  * @constructor
  */
-declare class EventTimeline {
+/**
+ * Construct a new EventTimeline
+ *
+ * <p>An EventTimeline represents a contiguous sequence of events in a room.
+ *
+ * <p>As well as keeping track of the events themselves, it stores the state of
+ * the room at the beginning and end of the timeline, and pagination tokens for
+ * going backwards and forwards in the timeline.
+ *
+ * <p>In order that clients can meaningfully maintain an index into a timeline,
+ * the EventTimeline object tracks a 'baseIndex'. This starts at zero, but is
+ * incremented when events are prepended to the timeline. The index of an event
+ * relative to baseIndex therefore remains constant.
+ *
+ * <p>Once a timeline joins up with its neighbour, they are linked together into a
+ * doubly-linked list.
+ * @param {EventTimelineSet} eventTimelineSet the set of timelines this is part of
+ * @constructor
+ */
+export class EventTimeline {
     constructor(eventTimelineSet: any);
     _eventTimelineSet: any;
     _roomId: any;
@@ -160,8 +218,15 @@ declare class EventTimeline {
      */
     toString(): string;
 }
-declare namespace EventTimeline {
+export namespace EventTimeline {
+    /**
+     * Static helper method to set sender and target properties
+     * @param {MatrixEvent} event the event whose metadata is to be set
+     * @param {RoomState} stateContext the room state to be queried
+     * @param {boolean} toStartOfTimeline if true the event's forwardLooking flag is set false
+     */
+    export function setEventMetadata(event: any, stateContext: RoomState, toStartOfTimeline: boolean): void;
     export const BACKWARDS: string;
     export const FORWARDS: string;
 }
-import RoomState from "./room-state";
+import { RoomState } from "./room-state";

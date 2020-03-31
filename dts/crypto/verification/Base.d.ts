@@ -1,4 +1,9 @@
-export default class VerificationBase extends $_generated_1.EventEmitter {
+export class SwitchStartEventError extends Error {
+    constructor(startEvent: any);
+    startEvent: any;
+}
+export class VerificationBase extends EventEmitter {
+    static keyRequestTimeoutMs: number;
     /**
      * Base class for verification methods.
      *
@@ -29,6 +34,7 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
     _done: boolean;
     _promise: Promise<any>;
     _transactionTimeoutTimer: NodeJS.Timeout;
+    get initiatedByMe(): boolean;
     _resetTimer(): void;
     _endTimer(): void;
     _send(type: any, uncompletedContent: any): any;
@@ -36,9 +42,11 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
     _expectedEvent: any;
     _resolveEvent: (value?: any) => void;
     _rejectEvent: (reason?: any) => void;
+    canSwitchStartEvent(): boolean;
+    switchStartEvent(event: any): void;
     handleEvent(e: any): void;
     _reject: (...args: any[]) => void;
-    done(): void;
+    done(): Promise<any>;
     cancel(e: any): void;
     /**
      * Begin the key verification
@@ -56,5 +64,5 @@ export default class VerificationBase extends $_generated_1.EventEmitter {
     _started: boolean;
     _verifyKeys(userId: any, keys: any, verifier: any): Promise<void>;
 }
-import * as $_generated_1 from "events";
-import MatrixBaseApis from "../../base-apis";
+import { EventEmitter } from "events";
+import { MatrixBaseApis } from "../../base-apis";

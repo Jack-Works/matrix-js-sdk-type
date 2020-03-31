@@ -1,34 +1,17 @@
+export const SHOW_QR_CODE_METHOD: "m.qr_code.show.v1";
+export const SCAN_QR_CODE_METHOD: "m.qr_code.scan.v1";
 /**
- * @class crypto/verification/QRCode/ShowQRCode
+ * @class crypto/verification/QRCode/ReciprocateQRCode
  * @extends {any}
  */
 /**
  *
- * @class  crypto/verification/QRCode/ShowQRCode
- * @extends {VerificationBase}
+ * @class  crypto/verification/QRCode/ReciprocateQRCode
+ * @extends
  */
-export class ShowQRCode extends $_generated_0.default {
-    constructor(channel: any, baseApis: import("../../base-apis").default, userId: string, deviceId: string, startEvent: any, request: any);
-    _doVerification(): void;
-}
-export namespace ShowQRCode {
-    export const NAME: string;
-}
-/**
- * @class crypto/verification/QRCode/ScanQRCode
- * @extends {any}
- */
-/**
- *
- * @class  crypto/verification/QRCode/ScanQRCode
- * @extends {VerificationBase}
- */
-export class ScanQRCode extends $_generated_0.default {
-    constructor(channel: any, baseApis: import("../../base-apis").default, userId: string, deviceId: string, startEvent: any, request: any);
+export class ReciprocateQRCode {
+    static factory(...args: any[]): any;
+    static get NAME(): string;
     _doVerification(): Promise<void>;
+    userId: any;
 }
-export namespace ScanQRCode {
-    const NAME_1: string;
-    export { NAME_1 as NAME };
-}
-import * as $_generated_0 from "./Base";

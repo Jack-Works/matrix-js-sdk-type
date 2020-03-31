@@ -1,4 +1,63 @@
-export default Room;
+/**
+ * Construct a new Room.
+ *
+ * <p>For a room, we store an ordered sequence of timelines, which may or may not
+ * be continuous. Each timeline lists a series of events, as well as tracking
+ * the room state at the start and the end of the timeline. It also tracks
+ * forward and backward pagination tokens, as well as containing links to the
+ * next timeline in the sequence.
+ *
+ * <p>There is one special timeline - the 'live' timeline, which represents the
+ * timeline to which events are being added in real-time as they are received
+ * from the /sync API. Note that you should not retain references to this
+ * timeline - even if it is the current timeline right now, it may not remain
+ * so if the server gives us a timeline gap in /sync.
+ *
+ * <p>In order that we can find events from their ids later, we also maintain a
+ * map from event_id to timeline and index.
+ *
+ * @constructor
+ * @alias module:models/room
+ * @param {string} roomId Required. The ID of this room.
+ * @param {MatrixClient} client Required. The client, used to lazy load members.
+ * @param {string} myUserId Required. The ID of the syncing user.
+ * @param {Object=} opts Configuration options
+ * @param {*} opts.storageToken Optional. The token which a data store can use
+ * to remember the state of the room. What this means is dependent on the store
+ * implementation.
+ *
+ * @param {String=} opts.pendingEventOrdering Controls where pending messages
+ * appear in a room's timeline. If "<b>chronological</b>", messages will appear
+ * in the timeline when the call to <code>sendEvent</code> was made. If
+ * "<b>detached</b>", pending messages will appear in a separate list,
+ * accessbile via {@link module:models/room#getPendingEvents}. Default:
+ * "chronological".
+ * @param {boolean} [opts.timelineSupport = false] Set to true to enable improved
+ * timeline support.
+ * @param {boolean} [opts.unstableClientRelationAggregation = false]
+ * Optional. Set to true to enable client-side aggregation of event relations
+ * via `EventTimelineSet#getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ *
+ * @prop {string} roomId The ID of this room.
+ * @prop {string} name The human-readable display name for this room.
+ * @prop {Array<MatrixEvent>} timeline The live event timeline for this room,
+ * with the oldest event at index 0. Present for backwards compatibility -
+ * prefer getLiveTimeline().getEvents().
+ * @prop {object} tags Dict of room tags; the keys are the tag name and the values
+ * are any metadata associated with the tag - e.g. { "fav" : { order: 1 } }
+ * @prop {object} accountData Dict of per-room account_data events; the keys are the
+ * event type and the values are the events.
+ * @prop {RoomState} oldState The state of the room at the time of the oldest
+ * event in the live timeline. Present for backwards compatibility -
+ * prefer getLiveTimeline().getState(EventTimeline.BACKWARDS).
+ * @prop {RoomState} currentState The state of the room at the time of the
+ * newest event in the timeline. Present for backwards compatibility -
+ * prefer getLiveTimeline().getState(EventTimeline.FORWARDS).
+ * @prop {RoomSummary} summary The room summary.
+ * @prop {*} storageToken A token which a data store can use to remember
+ * the state of the room.
+ */
 /**
  * Construct a new Room.
  *
@@ -115,7 +174,63 @@ export default Room;
  * @prop {*} storageToken A token which a data store can use to remember
  * the state of the room.
  */
-declare class Room {
+/**
+ * Construct a new Room.
+ *
+ * <p>For a room, we store an ordered sequence of timelines, which may or may not
+ * be continuous. Each timeline lists a series of events, as well as tracking
+ * the room state at the start and the end of the timeline. It also tracks
+ * forward and backward pagination tokens, as well as containing links to the
+ * next timeline in the sequence.
+ *
+ * <p>There is one special timeline - the 'live' timeline, which represents the
+ * timeline to which events are being added in real-time as they are received
+ * from the /sync API. Note that you should not retain references to this
+ * timeline - even if it is the current timeline right now, it may not remain
+ * so if the server gives us a timeline gap in /sync.
+ *
+ * <p>In order that we can find events from their ids later, we also maintain a
+ * map from event_id to timeline and index.
+ * @constructor
+ * @alias  module:models/room
+ * @param {string} roomId Required. The ID of this room.
+ * @param {MatrixClient} client Required. The client, used to lazy load members.
+ * @param {string} myUserId Required. The ID of the syncing user.
+ * @param {(object | undefined)} opts Configuration options
+ * @param {*} opts.storageToken Optional. The token which a data store can use
+ * to remember the state of the room. What this means is dependent on the store
+ * implementation.
+ * @param {(string | undefined)} opts.pendingEventOrdering Controls where pending messages
+ * appear in a room's timeline. If "<b>chronological</b>", messages will appear
+ * in the timeline when the call to <code>sendEvent</code> was made. If
+ * "<b>detached</b>", pending messages will appear in a separate list,
+ * accessbile via {@link module:models/room#getPendingEvents}. Default:
+ * "chronological".
+ * @param {(boolean | undefined)} opts.timelineSupport Set to true to enable improved
+ * timeline support.
+ * @param {(boolean | undefined)} opts.unstableClientRelationAggregation Optional. Set to true to enable client-side aggregation of event relations
+ * via `EventTimelineSet#getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ * @prop {string} roomId The ID of this room.
+ * @prop {string} name The human-readable display name for this room.
+ * @prop {Array.<MatrixEvent>} timeline The live event timeline for this room,
+ * with the oldest event at index 0. Present for backwards compatibility -
+ * prefer getLiveTimeline().getEvents().
+ * @prop {object} tags Dict of room tags; the keys are the tag name and the values
+ * are any metadata associated with the tag - e.g. { "fav" : { order: 1 } }
+ * @prop {object} accountData Dict of per-room account_data events; the keys are the
+ * event type and the values are the events.
+ * @prop {RoomState} oldState The state of the room at the time of the oldest
+ * event in the live timeline. Present for backwards compatibility -
+ * prefer getLiveTimeline().getState(EventTimeline.BACKWARDS).
+ * @prop {RoomState} currentState The state of the room at the time of the
+ * newest event in the timeline. Present for backwards compatibility -
+ * prefer getLiveTimeline().getState(EventTimeline.FORWARDS).
+ * @prop {RoomSummary} summary The room summary.
+ * @prop {*} storageToken A token which a data store can use to remember
+ * the state of the room.
+ */
+export class Room {
     constructor(roomId: any, client: any, myUserId: any, opts: any);
     reEmitter: ReEmitter;
     myUserId: any;
@@ -276,10 +391,10 @@ declare class Room {
      * Fix up this.timeline, this.oldState and this.currentState
      * @private
      */
-    _fixUpLegacyTimelineFields(): void;
+    private _fixUpLegacyTimelineFields;
     timeline: any[];
-    oldState: import("./room-state").default;
-    currentState: import("./room-state").default;
+    oldState: import("./room-state").RoomState;
+    currentState: import("./room-state").RoomState;
     /**
      * Returns whether there are any devices in the room that are unverified
      *
@@ -376,6 +491,11 @@ declare class Room {
      */
     getCanonicalAlias(): string;
     /**
+     * Get this room's alternative aliases
+     * @return {Array}  The room's alternative aliases, or an empty array
+     */
+    getAltAliases(): any[];
+    /**
      * Add events to a timeline
      *
      * <p>Will fire "Room.timeline" for each event added.
@@ -466,10 +586,11 @@ declare class Room {
      * "Room.timeline".
      * @param {MatrixEvent} event Event to be added
      * @param {(string | null)} duplicateStrategy 'ignore' or 'replace'
+     * @param {boolean} fromCache whether the sync response came from cache
      * @fires   module:client~MatrixClient#event:"Room.timeline"
      * @private
      */
-    _addLiveEvent(event: MatrixEvent, duplicateStrategy: string): void;
+    private _addLiveEvent;
     /**
      * Add a pending outgoing event to this room.
      *
@@ -507,7 +628,7 @@ declare class Room {
      * @fires   module:client~MatrixClient#event:"Room.localEchoUpdated"
      * @private
      */
-    _handleRemoteEcho(remoteEvent: MatrixEvent, localEvent: MatrixEvent): void;
+    private _handleRemoteEcho;
     /**
      * Update the status / event id on a pending event, to reflect its transmission
      * progress.
@@ -519,14 +640,7 @@ declare class Room {
      *    newStatus == EventStatus.SENT.
      * @fires   module:client~MatrixClient#event:"Room.localEchoUpdated"
      */
-    updatePendingEvent(event: MatrixEvent, newStatus: {
-        NOT_SENT: string;
-        ENCRYPTING: string;
-        SENDING: string;
-        QUEUED: string;
-        SENT: string;
-        CANCELLED: string;
-    }, newEventId: string): void;
+    updatePendingEvent(event: MatrixEvent, newStatus: string, newEventId: string): void;
     _revertRedactionLocalEcho(redactionEvent: any): void;
     /**
      * Add some events to this room. This can include state events, message
@@ -542,6 +656,7 @@ declare class Room {
      * this function will be ignored entirely, preserving the existing event in the
      * timeline. Events are identical based on their event ID <b>only</b>.
      *
+     * @param {boolean} fromCache whether the sync response came from cache
      * @throws If <code>duplicateStrategy</code> is not falsey, 'replace' or 'ignore'.
      */
     /**
@@ -555,9 +670,10 @@ declare class Room {
      * timeline. If this is not specified, or is 'ignore', then the event passed to
      * this function will be ignored entirely, preserving the existing event in the
      * timeline. Events are identical based on their event ID <b>only</b>.
+     * @param {boolean} fromCache whether the sync response came from cache
      * @throws   If <code>duplicateStrategy</code> is not falsey, 'replace' or 'ignore'.
      */
-    addLiveEvents(events: MatrixEvent[], duplicateStrategy: string): void;
+    addLiveEvents(events: MatrixEvent[], duplicateStrategy: string, fromCache: boolean): void;
     /**
      * Adds/handles ephemeral events such as typing notifications and read receipts.
      * @param {Array.<MatrixEvent>} events A list of events to process
@@ -662,9 +778,9 @@ declare class Room {
      */
     maySendMessage(): boolean;
 }
-import ReEmitter from "../ReEmitter";
-import RoomSummary from "./room-summary";
-import EventTimelineSet from "./event-timeline-set";
+import { ReEmitter } from "../ReEmitter";
+import { RoomSummary } from "./room-summary";
+import { EventTimelineSet } from "./event-timeline-set";
 import { MatrixEvent } from "./event";
-import EventTimeline from "./event-timeline";
-import RoomMember from "./room-member";
+import { EventTimeline } from "./event-timeline";
+import { RoomMember } from "./room-member";

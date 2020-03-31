@@ -1,14 +1,591 @@
 export const CRYPTO_ENABLED: boolean;
+/**
+ * Construct a Matrix Client. Only directly construct this if you want to use
+ * custom modules. Normally, {@link createClient} should be used
+ * as it specifies 'sensible' defaults for these modules.
+ * @constructor
+ * @extends {external:EventEmitter}
+ * @extends {any}
+ *
+ * @param {Object} opts The configuration options for this client.
+ * @param {string} opts.baseUrl Required. The base URL to the client-server
+ * HTTP API.
+ * @param {string} opts.idBaseUrl Optional. The base identity server URL for
+ * identity server requests.
+ * @param {Function} opts.request Required. The function to invoke for HTTP
+ * requests. The value of this property is typically <code>require("request")
+ * </code> as it returns a function which meets the required interface. See
+ * {@link requestFunction} for more information.
+ *
+ * @param {string} opts.accessToken The access_token for this user.
+ *
+ * @param {string} opts.userId The user ID for this user.
+ *
+ * @param {Object} opts.deviceToImport Device data exported with
+ *     "exportDevice" method that must be imported to recreate this device.
+ *     Should only be useful for devices with end-to-end crypto enabled.
+ *     If provided, opts.deviceId and opts.userId should **NOT** be provided
+ *     (they are present in the exported data).
+ *
+ * @param {IdentityServerProvider} [opts.identityServer]
+ * Optional. A provider object with one function `getAccessToken`, which is a
+ * callback that returns a Promise<String> of an identity access token to supply
+ * with identity requests. If the object is unset, no access token will be
+ * supplied.
+ * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * replace the previous approach of manual access tokens params with this
+ * callback throughout the SDK.
+ *
+ * @param {Object=} opts.store
+ *    The data store used for sync data from the homeserver. If not specified,
+ *    this client will not store any HTTP responses. The `createClient` helper
+ *    will create a default store if needed.
+ *
+ * @param {any} opts.sessionStore
+ *    A store to be used for end-to-end crypto session data. Most data has been
+ *    migrated out of here to `cryptoStore` instead. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper
+ *    _will not_ create this store at the moment.
+ *
+ * @param {any} opts.cryptoStore
+ *    A store to be used for end-to-end crypto session data. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper will create
+ *    a default store if needed.
+ *
+ * @param {string=} opts.deviceId A unique identifier for this device; used for
+ *    tracking things like crypto keys and access tokens.  If not specified,
+ *    end-to-end crypto will be disabled.
+ *
+ * @param {Object} opts.scheduler Optional. The scheduler to use. If not
+ * specified, this client will not retry requests on failure. This client
+ * will supply its own processing function to
+ * {@link module:scheduler~MatrixScheduler#setProcessFunction}.
+ *
+ * @param {Object} opts.queryParams Optional. Extra query parameters to append
+ * to all requests with this client. Useful for application services which require
+ * <code>?user_id=</code>.
+ *
+ * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
+ * time to wait before timing out HTTP requests. If not specified, there is no timeout.
+ *
+ * @param {boolean} [opts.useAuthorizationHeader = false] Set to true to use
+ * Authorization header instead of query param to send the access token to the server.
+ *
+ * @param {boolean} [opts.timelineSupport = false] Set to true to enable
+ * improved timeline support ({@link
+ * module:client~MatrixClient#getEventTimeline getEventTimeline}). It is
+ * disabled by default for compatibility with older clients - in particular to
+ * maintain support for back-paginating the live timeline after a '/sync'
+ * result with a gap.
+ *
+ * @param {boolean} [opts.unstableClientRelationAggregation = false]
+ * Optional. Set to true to enable client-side aggregation of event relations
+ * via `EventTimelineSet#getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ *
+ * @param {Array} [opts.verificationMethods] Optional. The verification method
+ * that the application can handle.  Each element should be an item from {@link
+ * module:crypto~verificationMethods verificationMethods}, or a class that
+ * implements the {$link module:crypto/verification/Base verifier interface}.
+ *
+ * @param {boolean} [opts.forceTURN]
+ * Optional. Whether relaying calls through a TURN server should be forced.
+ *
+ * @param {boolean} [opts.fallbackICEServerAllowed]
+ * Optional. Whether to allow a fallback ICE server should be used for negotiating a
+ * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
+ *
+ * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
+ *     The cross-signing API is currently UNSTABLE and may change without notice.
+ *
+ * @param {function} [opts.cryptoCallbacks.getCrossSigningKey]
+ * Optional. Function to call when a cross-signing private key is needed.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *    {string} type The type of key needed.  Will be one of "master",
+ *      "self_signing", or "user_signing"
+ *    {Uint8Array} publicKey The public key matching the expected private key.
+ *        This can be passed to checkPrivateKey() along with the private key
+ *        in order to check that a given private key matches what is being
+ *        requested.
+ *   Should return a promise that resolves with the private key as a
+ *   UInt8Array or rejects with an error.
+ *
+ * @param {function} [opts.cryptoCallbacks.saveCrossSigningKeys]
+ * Optional. Called when new private keys for cross-signing need to be saved.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *   {object} keys the private keys to save. Map of key name to private key
+ *       as a UInt8Array. The getPrivateKey callback above will be called
+ *       with the corresponding key name when the keys are required again.
+ *
+ * @param {function} [opts.cryptoCallbacks.shouldUpgradeDeviceVerifications]
+ * Optional. Called when there are device-to-device verifications that can be
+ * upgraded into cross-signing verifications.
+ * Args:
+ *   {object} users The users whose device verifications can be
+ *     upgraded to cross-signing verifications.  This will be a map of user IDs
+ *     to objects with the properties `devices` (array of the user's devices
+ *     that verified their cross-signing key), and `crossSigningInfo` (the
+ *     user's cross-signing information)
+ * Should return a promise which resolves with an array of the user IDs who
+ * should be cross-signed.
+ *
+ * @param {function} [opts.cryptoCallbacks.getSecretStorageKey]
+ * Optional. Function called when an encryption key for secret storage
+ *     is required. One or more keys will be described in the keys object.
+ *     The callback function should return a promise with an array of:
+ *     [<key name>, <UInt8Array private key>] or null if it cannot provide
+ *     any of the keys.
+ * Args:
+ *   {object} keys Information about the keys:
+ *       {
+ *           keys: {
+ *               <key name>: {
+ *                   pubkey: {UInt8Array}
+ *               }, ...
+ *           }
+ *       }
+ *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
+ *
+ * @param {function} [opts.cryptoCallbacks.onSecretRequested]
+ * Optional. Function called when a request for a secret is received from another
+ * device.
+ * Args:
+ *   {string} name The name of the secret being requested.
+ *   {string} user_id (string) The user ID of the client requesting
+ *   {string} device_id The device ID of the client requesting the secret.
+ *   {string} request_id The ID of the request. Used to match a
+ *     corresponding `crypto.secrets.request_cancelled`. The request ID will be
+ *     unique per sender, device pair.
+ *   {DeviceTrustLevel} device_trust: The trust status of the device requesting
+ *     the secret as returned by {@link module:client~MatrixClient#checkDeviceTrust}.
+ */
+/**
+ * Construct a Matrix Client. Only directly construct this if you want to use
+ * custom modules. Normally, {@link createClient} should be used
+ * as it specifies 'sensible' defaults for these modules.
+ * @constructor
+ * @extends {external:EventEmitter}
+ * @extends {any}
+ *
+ * @param {Object} opts The configuration options for this client.
+ * @param {string} opts.baseUrl Required. The base URL to the client-server
+ * HTTP API.
+ * @param {string} opts.idBaseUrl Optional. The base identity server URL for
+ * identity server requests.
+ * @param {Function} opts.request Required. The function to invoke for HTTP
+ * requests. The value of this property is typically <code>require("request")
+ * </code> as it returns a function which meets the required interface. See
+ * {@link requestFunction} for more information.
+ *
+ * @param {string} opts.accessToken The access_token for this user.
+ *
+ * @param {string} opts.userId The user ID for this user.
+ *
+ * @param {Object} opts.deviceToImport Device data exported with
+ *     "exportDevice" method that must be imported to recreate this device.
+ *     Should only be useful for devices with end-to-end crypto enabled.
+ *     If provided, opts.deviceId and opts.userId should **NOT** be provided
+ *     (they are present in the exported data).
+ *
+ * @param {IdentityServerProvider} [opts.identityServer]
+ * Optional. A provider object with one function `getAccessToken`, which is a
+ * callback that returns a Promise<String> of an identity access token to supply
+ * with identity requests. If the object is unset, no access token will be
+ * supplied.
+ * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * replace the previous approach of manual access tokens params with this
+ * callback throughout the SDK.
+ *
+ * @param {Object=} opts.store
+ *    The data store used for sync data from the homeserver. If not specified,
+ *    this client will not store any HTTP responses. The `createClient` helper
+ *    will create a default store if needed.
+ *
+ * @param {any} opts.sessionStore
+ *    A store to be used for end-to-end crypto session data. Most data has been
+ *    migrated out of here to `cryptoStore` instead. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper
+ *    _will not_ create this store at the moment.
+ *
+ * @param {any} opts.cryptoStore
+ *    A store to be used for end-to-end crypto session data. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper will create
+ *    a default store if needed.
+ *
+ * @param {string=} opts.deviceId A unique identifier for this device; used for
+ *    tracking things like crypto keys and access tokens.  If not specified,
+ *    end-to-end crypto will be disabled.
+ *
+ * @param {Object} opts.scheduler Optional. The scheduler to use. If not
+ * specified, this client will not retry requests on failure. This client
+ * will supply its own processing function to
+ * {@link module:scheduler~MatrixScheduler#setProcessFunction}.
+ *
+ * @param {Object} opts.queryParams Optional. Extra query parameters to append
+ * to all requests with this client. Useful for application services which require
+ * <code>?user_id=</code>.
+ *
+ * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
+ * time to wait before timing out HTTP requests. If not specified, there is no timeout.
+ *
+ * @param {boolean} [opts.useAuthorizationHeader = false] Set to true to use
+ * Authorization header instead of query param to send the access token to the server.
+ *
+ * @param {boolean} [opts.timelineSupport = false] Set to true to enable
+ * improved timeline support ({@link
+ * module:client~MatrixClient#getEventTimeline getEventTimeline}). It is
+ * disabled by default for compatibility with older clients - in particular to
+ * maintain support for back-paginating the live timeline after a '/sync'
+ * result with a gap.
+ *
+ * @param {boolean} [opts.unstableClientRelationAggregation = false]
+ * Optional. Set to true to enable client-side aggregation of event relations
+ * via `EventTimelineSet#getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ *
+ * @param {Array} [opts.verificationMethods] Optional. The verification method
+ * that the application can handle.  Each element should be an item from {@link
+ * module:crypto~verificationMethods verificationMethods}, or a class that
+ * implements the {$link module:crypto/verification/Base verifier interface}.
+ *
+ * @param {boolean} [opts.forceTURN]
+ * Optional. Whether relaying calls through a TURN server should be forced.
+ *
+ * @param {boolean} [opts.fallbackICEServerAllowed]
+ * Optional. Whether to allow a fallback ICE server should be used for negotiating a
+ * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
+ *
+ * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
+ *     The cross-signing API is currently UNSTABLE and may change without notice.
+ *
+ * @param {function} [opts.cryptoCallbacks.getCrossSigningKey]
+ * Optional. Function to call when a cross-signing private key is needed.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *    {string} type The type of key needed.  Will be one of "master",
+ *      "self_signing", or "user_signing"
+ *    {Uint8Array} publicKey The public key matching the expected private key.
+ *        This can be passed to checkPrivateKey() along with the private key
+ *        in order to check that a given private key matches what is being
+ *        requested.
+ *   Should return a promise that resolves with the private key as a
+ *   UInt8Array or rejects with an error.
+ *
+ * @param {function} [opts.cryptoCallbacks.saveCrossSigningKeys]
+ * Optional. Called when new private keys for cross-signing need to be saved.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *   {object} keys the private keys to save. Map of key name to private key
+ *       as a UInt8Array. The getPrivateKey callback above will be called
+ *       with the corresponding key name when the keys are required again.
+ *
+ * @param {function} [opts.cryptoCallbacks.shouldUpgradeDeviceVerifications]
+ * Optional. Called when there are device-to-device verifications that can be
+ * upgraded into cross-signing verifications.
+ * Args:
+ *   {object} users The users whose device verifications can be
+ *     upgraded to cross-signing verifications.  This will be a map of user IDs
+ *     to objects with the properties `devices` (array of the user's devices
+ *     that verified their cross-signing key), and `crossSigningInfo` (the
+ *     user's cross-signing information)
+ * Should return a promise which resolves with an array of the user IDs who
+ * should be cross-signed.
+ *
+ * @param {function} [opts.cryptoCallbacks.getSecretStorageKey]
+ * Optional. Function called when an encryption key for secret storage
+ *     is required. One or more keys will be described in the keys object.
+ *     The callback function should return a promise with an array of:
+ *     [<key name>, <UInt8Array private key>] or null if it cannot provide
+ *     any of the keys.
+ * Args:
+ *   {object} keys Information about the keys:
+ *       {
+ *           keys: {
+ *               <key name>: {
+ *                   pubkey: {UInt8Array}
+ *               }, ...
+ *           }
+ *       }
+ *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
+ *
+ * @param {function} [opts.cryptoCallbacks.onSecretRequested]
+ * Optional. Function called when a request for a secret is received from another
+ * device.
+ * Args:
+ *   {string} name The name of the secret being requested.
+ *   {string} user_id (string) The user ID of the client requesting
+ *   {string} device_id The device ID of the client requesting the secret.
+ *   {string} request_id The ID of the request. Used to match a
+ *     corresponding `crypto.secrets.request_cancelled`. The request ID will be
+ *     unique per sender, device pair.
+ *   {DeviceTrustLevel} device_trust: The trust status of the device requesting
+ *     the secret as returned by {@link module:client~MatrixClient#checkDeviceTrust}.
+ */
+/**
+ * Construct a Matrix Client. Only directly construct this if you want to use
+ * custom modules. Normally, {@link createClient} should be used
+ * as it specifies 'sensible' defaults for these modules.
+ * @constructor
+ * @extends {external:EventEmitter}
+ * @extends {MatrixBaseApis}
+ * @param {object} opts The configuration options for this client.
+ * @param {string} opts.baseUrl Required. The base URL to the client-server
+ * HTTP API.
+ * @param {string} opts.idBaseUrl Optional. The base identity server URL for
+ * identity server requests.
+ * @param {((...args: any) => any)} opts.request Required. The function to invoke for HTTP
+ * requests. The value of this property is typically <code>require("request")
+ * </code> as it returns a function which meets the required interface. See
+ * {@link requestFunction} for more information.
+ * @param {string} opts.accessToken The access_token for this user.
+ * @param {string} opts.userId The user ID for this user.
+ * @param {object} opts.deviceToImport Device data exported with
+ *     "exportDevice" method that must be imported to recreate this device.
+ *     Should only be useful for devices with end-to-end crypto enabled.
+ *     If provided, opts.deviceId and opts.userId should **NOT** be provided
+ *     (they are present in the exported data).
+ * @param {(IdentityServerProvider | undefined)} opts.identityServer Optional. A provider object with one function `getAccessToken`, which is a
+ * callback that returns a Promise<String> of an identity access token to supply
+ * with identity requests. If the object is unset, no access token will be
+ * supplied.
+ * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * replace the previous approach of manual access tokens params with this
+ * callback throughout the SDK.
+ * @param {(object | undefined)} opts.store The data store used for sync data from the homeserver. If not specified,
+ *    this client will not store any HTTP responses. The `createClient` helper
+ *    will create a default store if needed.
+ * @param {WebStorageSessionStore} opts.sessionStore A store to be used for end-to-end crypto session data. Most data has been
+ *    migrated out of here to `cryptoStore` instead. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper
+ *    _will not_ create this store at the moment.
+ * @param {store.base.CryptoStore} opts.cryptoStore A store to be used for end-to-end crypto session data. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper will create
+ *    a default store if needed.
+ * @param {(string | undefined)} opts.deviceId A unique identifier for this device; used for
+ *    tracking things like crypto keys and access tokens.  If not specified,
+ *    end-to-end crypto will be disabled.
+ * @param {object} opts.scheduler Optional. The scheduler to use. If not
+ * specified, this client will not retry requests on failure. This client
+ * will supply its own processing function to
+ * {@link module:scheduler~MatrixScheduler#setProcessFunction}.
+ * @param {object} opts.queryParams Optional. Extra query parameters to append
+ * to all requests with this client. Useful for application services which require
+ * <code>?user_id=</code>.
+ * @param {(number | undefined)} opts.localTimeoutMs Optional. The default maximum amount of
+ * time to wait before timing out HTTP requests. If not specified, there is no timeout.
+ * @param {(boolean | undefined)} opts.useAuthorizationHeader Set to true to use
+ * Authorization header instead of query param to send the access token to the server.
+ * @param {(boolean | undefined)} opts.timelineSupport Set to true to enable
+ * improved timeline support ({@link
+ * module:client~MatrixClient#getEventTimeline getEventTimeline}). It is
+ * disabled by default for compatibility with older clients - in particular to
+ * maintain support for back-paginating the live timeline after a '/sync'
+ * result with a gap.
+ * @param {(boolean | undefined)} opts.unstableClientRelationAggregation Optional. Set to true to enable client-side aggregation of event relations
+ * via `EventTimelineSet#getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ * @param {(Array | undefined)} opts.verificationMethods Optional. The verification method
+ * that the application can handle.  Each element should be an item from {@link
+ * module:crypto~verificationMethods verificationMethods}, or a class that
+ * implements the {$link module:crypto/verification/Base verifier interface}.
+ * @param {(boolean | undefined)} opts.forceTURN Optional. Whether relaying calls through a TURN server should be forced.
+ * @param {(boolean | undefined)} opts.fallbackICEServerAllowed Optional. Whether to allow a fallback ICE server should be used for negotiating a
+ * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
+ * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
+ *     The cross-signing API is currently UNSTABLE and may change without notice.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *    {string} type The type of key needed.  Will be one of "master",
+ *      "self_signing", or "user_signing"
+ *    {Uint8Array} publicKey The public key matching the expected private key.
+ *        This can be passed to checkPrivateKey() along with the private key
+ *        in order to check that a given private key matches what is being
+ *        requested.
+ *   Should return a promise that resolves with the private key as a
+ *   UInt8Array or rejects with an error.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.saveCrossSigningKeys Optional. Called when new private keys for cross-signing need to be saved.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *   {object} keys the private keys to save. Map of key name to private key
+ *       as a UInt8Array. The getPrivateKey callback above will be called
+ *       with the corresponding key name when the keys are required again.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.shouldUpgradeDeviceVerifications Optional. Called when there are device-to-device verifications that can be
+ * upgraded into cross-signing verifications.
+ * Args:
+ *   {object} users The users whose device verifications can be
+ *     upgraded to cross-signing verifications.  This will be a map of user IDs
+ *     to objects with the properties `devices` (array of the user's devices
+ *     that verified their cross-signing key), and `crossSigningInfo` (the
+ *     user's cross-signing information)
+ * Should return a promise which resolves with an array of the user IDs who
+ * should be cross-signed.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.getSecretStorageKey Optional. Function called when an encryption key for secret storage
+ *     is required. One or more keys will be described in the keys object.
+ *     The callback function should return a promise with an array of:
+ *     [<key name>, <UInt8Array private key>] or null if it cannot provide
+ *     any of the keys.
+ * Args:
+ *   {object} keys Information about the keys:
+ *       {
+ *           keys: {
+ *               <key name>: {
+ *                   pubkey: {UInt8Array}
+ *               }, ...
+ *           }
+ *       }
+ *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
+ * device.
+ * Args:
+ *   {string} name The name of the secret being requested.
+ *   {string} user_id (string) The user ID of the client requesting
+ *   {string} device_id The device ID of the client requesting the secret.
+ *   {string} request_id The ID of the request. Used to match a
+ *     corresponding `crypto.secrets.request_cancelled`. The request ID will be
+ *     unique per sender, device pair.
+ *   {DeviceTrustLevel} device_trust: The trust status of the device requesting
+ *     the secret as returned by {@link module:client~MatrixClient#checkDeviceTrust}.
+ */
+/**
+ * Construct a Matrix Client. Only directly construct this if you want to use
+ * custom modules. Normally, {@link createClient} should be used
+ * as it specifies 'sensible' defaults for these modules.
+ * @constructor
+ * @extends {external:EventEmitter}
+ * @extends {MatrixBaseApis}
+ * @param {object} opts The configuration options for this client.
+ * @param {string} opts.baseUrl Required. The base URL to the client-server
+ * HTTP API.
+ * @param {string} opts.idBaseUrl Optional. The base identity server URL for
+ * identity server requests.
+ * @param {((...args: any) => any)} opts.request Required. The function to invoke for HTTP
+ * requests. The value of this property is typically <code>require("request")
+ * </code> as it returns a function which meets the required interface. See
+ * {@link requestFunction} for more information.
+ * @param {string} opts.accessToken The access_token for this user.
+ * @param {string} opts.userId The user ID for this user.
+ * @param {object} opts.deviceToImport Device data exported with
+ *     "exportDevice" method that must be imported to recreate this device.
+ *     Should only be useful for devices with end-to-end crypto enabled.
+ *     If provided, opts.deviceId and opts.userId should **NOT** be provided
+ *     (they are present in the exported data).
+ * @param {(IdentityServerProvider | undefined)} opts.identityServer Optional. A provider object with one function `getAccessToken`, which is a
+ * callback that returns a Promise<String> of an identity access token to supply
+ * with identity requests. If the object is unset, no access token will be
+ * supplied.
+ * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * replace the previous approach of manual access tokens params with this
+ * callback throughout the SDK.
+ * @param {(object | undefined)} opts.store The data store used for sync data from the homeserver. If not specified,
+ *    this client will not store any HTTP responses. The `createClient` helper
+ *    will create a default store if needed.
+ * @param {WebStorageSessionStore} opts.sessionStore A store to be used for end-to-end crypto session data. Most data has been
+ *    migrated out of here to `cryptoStore` instead. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper
+ *    _will not_ create this store at the moment.
+ * @param {store.base.CryptoStore} opts.cryptoStore A store to be used for end-to-end crypto session data. If not specified,
+ *    end-to-end crypto will be disabled. The `createClient` helper will create
+ *    a default store if needed.
+ * @param {(string | undefined)} opts.deviceId A unique identifier for this device; used for
+ *    tracking things like crypto keys and access tokens.  If not specified,
+ *    end-to-end crypto will be disabled.
+ * @param {object} opts.scheduler Optional. The scheduler to use. If not
+ * specified, this client will not retry requests on failure. This client
+ * will supply its own processing function to
+ * {@link module:scheduler~MatrixScheduler#setProcessFunction}.
+ * @param {object} opts.queryParams Optional. Extra query parameters to append
+ * to all requests with this client. Useful for application services which require
+ * <code>?user_id=</code>.
+ * @param {(number | undefined)} opts.localTimeoutMs Optional. The default maximum amount of
+ * time to wait before timing out HTTP requests. If not specified, there is no timeout.
+ * @param {(boolean | undefined)} opts.useAuthorizationHeader Set to true to use
+ * Authorization header instead of query param to send the access token to the server.
+ * @param {(boolean | undefined)} opts.timelineSupport Set to true to enable
+ * improved timeline support ({@link
+ * module:client~MatrixClient#getEventTimeline getEventTimeline}). It is
+ * disabled by default for compatibility with older clients - in particular to
+ * maintain support for back-paginating the live timeline after a '/sync'
+ * result with a gap.
+ * @param {(boolean | undefined)} opts.unstableClientRelationAggregation Optional. Set to true to enable client-side aggregation of event relations
+ * via `EventTimelineSet#getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ * @param {(Array | undefined)} opts.verificationMethods Optional. The verification method
+ * that the application can handle.  Each element should be an item from {@link
+ * module:crypto~verificationMethods verificationMethods}, or a class that
+ * implements the {$link module:crypto/verification/Base verifier interface}.
+ * @param {(boolean | undefined)} opts.forceTURN Optional. Whether relaying calls through a TURN server should be forced.
+ * @param {(boolean | undefined)} opts.fallbackICEServerAllowed Optional. Whether to allow a fallback ICE server should be used for negotiating a
+ * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
+ * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
+ *     The cross-signing API is currently UNSTABLE and may change without notice.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *    {string} type The type of key needed.  Will be one of "master",
+ *      "self_signing", or "user_signing"
+ *    {Uint8Array} publicKey The public key matching the expected private key.
+ *        This can be passed to checkPrivateKey() along with the private key
+ *        in order to check that a given private key matches what is being
+ *        requested.
+ *   Should return a promise that resolves with the private key as a
+ *   UInt8Array or rejects with an error.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.saveCrossSigningKeys Optional. Called when new private keys for cross-signing need to be saved.
+ * Secure Secret Storage will be used by default if this is unset.
+ * Args:
+ *   {object} keys the private keys to save. Map of key name to private key
+ *       as a UInt8Array. The getPrivateKey callback above will be called
+ *       with the corresponding key name when the keys are required again.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.shouldUpgradeDeviceVerifications Optional. Called when there are device-to-device verifications that can be
+ * upgraded into cross-signing verifications.
+ * Args:
+ *   {object} users The users whose device verifications can be
+ *     upgraded to cross-signing verifications.  This will be a map of user IDs
+ *     to objects with the properties `devices` (array of the user's devices
+ *     that verified their cross-signing key), and `crossSigningInfo` (the
+ *     user's cross-signing information)
+ * Should return a promise which resolves with an array of the user IDs who
+ * should be cross-signed.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.getSecretStorageKey Optional. Function called when an encryption key for secret storage
+ *     is required. One or more keys will be described in the keys object.
+ *     The callback function should return a promise with an array of:
+ *     [<key name>, <UInt8Array private key>] or null if it cannot provide
+ *     any of the keys.
+ * Args:
+ *   {object} keys Information about the keys:
+ *       {
+ *           keys: {
+ *               <key name>: {
+ *                   pubkey: {UInt8Array}
+ *               }, ...
+ *           }
+ *       }
+ *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
+ * @param {(((...args: any) => any) | undefined)} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
+ * device.
+ * Args:
+ *   {string} name The name of the secret being requested.
+ *   {string} user_id (string) The user ID of the client requesting
+ *   {string} device_id The device ID of the client requesting the secret.
+ *   {string} request_id The ID of the request. Used to match a
+ *     corresponding `crypto.secrets.request_cancelled`. The request ID will be
+ *     unique per sender, device pair.
+ *   {DeviceTrustLevel} device_trust: The trust status of the device requesting
+ *     the secret as returned by {@link module:client~MatrixClient#checkDeviceTrust}.
+ */
 import {EventEmitter} from "events";
 export class MatrixClient extends EventEmitter {
     constructor(opts: any);
-    olmVersion: any;
+    olmVersion: string;
     reEmitter: ReEmitter;
     store: any;
     deviceId: any;
     credentials: {
         userId: any;
     };
+    _exportedOlmDeviceToImport: any;
     scheduler: any;
     clientRunning: boolean;
     callList: {};
@@ -22,7 +599,7 @@ export class MatrixClient extends EventEmitter {
     urlPreviewCache: {};
     _notifTimelineSet: any;
     unstableClientRelationAggregation: boolean;
-    _crypto: any;
+    _crypto: Crypto;
     _cryptoStore: any;
     _sessionStore: any;
     _verificationMethods: any;
@@ -36,6 +613,11 @@ export class MatrixClient extends EventEmitter {
         capabilities: any;
         expiration: number;
     };
+    exportDevice(): Promise<{
+        userId: any;
+        deviceId: any;
+        olmDevice: any;
+    }>;
     /**
      * Clear any data out of the persistent stores used by the client.
      *
@@ -94,6 +676,11 @@ export class MatrixClient extends EventEmitter {
      */
     getSyncStateData(): any;
     /**
+     * Whether the initial sync has completed.
+     * @return {boolean}  True if at least on sync has happened.
+     */
+    isInitialSyncComplete(): boolean;
+    /**
      * Return whether the client is configured for a guest account.
      * @return {boolean}  True if this is a guest access_token (or no token is supplied).
      */
@@ -146,6 +733,12 @@ export class MatrixClient extends EventEmitter {
      */
     getDeviceEd25519Key(): string;
     /**
+     * Get the Curve25519 key for this device
+     * @return {(string | null)}  base64-encoded curve25519 key. Null if crypto is
+     *    disabled.
+     */
+    getDeviceCurve25519Key(): string;
+    /**
      * Upload the device keys to the homeserver.
      * @return {object}  A promise that will resolve when the keys are uploaded.
      */
@@ -162,16 +755,16 @@ export class MatrixClient extends EventEmitter {
     /**
      * Get the stored device keys for a user id
      * @param {string} userId the user to list keys for.
-     * @return {Promise.<Array.<DeviceInfo>>}  list of devices
+     * @return {Promise.<Array.<>>}  list of devices
      */
-    getStoredDevicesForUser(userId: string): Promise<DeviceInfo[]>;
+    getStoredDevicesForUser(userId: string): Promise<any[]>;
     /**
      * Get the stored device key for a user id and device id
      * @param {string} userId the user to list keys for.
      * @param {string} deviceId unique identifier for the device
-     * @return {Promise.<(DeviceInfo | null)>}  device or null
+     * @return {Promise.<( | null)>}  device or null
      */
-    getStoredDevice(userId: string, deviceId: string): Promise<DeviceInfo>;
+    getStoredDevice(userId: string, deviceId: string): Promise<null>;
     /**
      * Mark the given device as verified
      * @param {string} userId owner of the device
@@ -209,39 +802,33 @@ export class MatrixClient extends EventEmitter {
      * Request a key verification from another user, using a DM.
      * @param {string} userId the user to request verification with
      * @param {string} roomId the room to use for verification
-     * @param {Array} methods array of verification methods to use.  Defaults to
-     *    all known methods
-     * @returns {Promise.<VerificationBase>}  resolves to a verifier
-     *    when the request is accepted by the other user
+     * @returns {Promise.<>}  resolves to a VerificationRequest
+     *    when the request has been sent to the other party.
      */
-    requestVerificationDM(userId: string, roomId: string, methods: any[]): Promise<VerificationBase>;
+    requestVerificationDM(userId: string, roomId: string): Promise<any>;
     /**
-     * Accept a key verification request from a DM.
-     * @param {MatrixEvent} event the verification request
-     * that is accepted
-     * @param {string} method the verification mmethod to use
-     * @returns {VerificationBase}  a verifier
+     * Finds a DM verification request that is already in progress for the given room id
+     * @param {string} roomId the room to use for verification
+     * @returns {( | null)}  the VerificationRequest that is in progress, if any
      */
-    acceptVerificationDM(event: MatrixEvent, method: string): VerificationBase;
+    findVerificationRequestDMInProgress(roomId: string): null;
     /**
      * Request a key verification from another user.
      * @param {string} userId the user to request verification with
-     * @param {Array} methods array of verification methods to use.  Defaults to
-     *    all known methods
      * @param {Array} devices array of device IDs to send requests to.  Defaults to
      *    all devices owned by the user
-     * @returns {Promise.<VerificationBase>}  resolves to a verifier
-     *    when the request is accepted by the other user
+     * @returns {Promise.<>}  resolves to a VerificationRequest
+     *    when the request has been sent to the other party.
      */
-    requestVerification(userId: string, methods: any[], devices: any[]): Promise<VerificationBase>;
+    requestVerification(userId: string, devices: any[]): Promise<any>;
     /**
      * Begin a key verification.
      * @param {string} method the verification method to use
      * @param {string} userId the user to verify keys with
      * @param {string} deviceId the device to verify
-     * @returns {VerificationBase}  a verification object
+     * @returns   a verification object
      */
-    beginKeyVerification(method: string, userId: string, deviceId: string): VerificationBase;
+    beginKeyVerification(method: string, userId: string, deviceId: string): any;
     /**
      * Set the global override for whether the client should ever send encrypted
      * messages to unverified devices.  This provides the default for rooms which
@@ -255,6 +842,23 @@ export class MatrixClient extends EventEmitter {
      */
     getGlobalBlacklistUnverifiedDevices(): boolean;
     /**
+     * Set whether sendMessage in a room with unknown and unverified devices
+     * should throw an error and not send them message. This has 'Global' for
+     * symmetry with setGlobalBlacklistUnverifiedDevices but there is currently
+     * no room-level equivalent for this setting.
+     *
+     * This API is currently UNSTABLE and may change or be removed without notice.
+     * @param {boolean} value whether error on unknown devices
+     */
+    setGlobalErrorOnUnknownDevices(value: boolean): void;
+    /**
+     *
+     * @return {boolean}  whether to error on unknown devices
+     *
+     * This API is currently UNSTABLE and may change or be removed without notice.
+     */
+    getGlobalErrorOnUnknownDevices(): boolean;
+    /**
      * Check if the sender of an event is verified
      * The cross-signing API is currently UNSTABLE and may change without notice.
      * @param {MatrixEvent} event event to be checked
@@ -264,9 +868,9 @@ export class MatrixClient extends EventEmitter {
     /**
      * Get e2e information on the device that sent an event
      * @param {MatrixEvent} event event to be checked
-     * @return {Promise.<(DeviceInfo | null)>}
+     * @return {Promise.<( | null)>}
      */
-    getEventSenderDeviceInfo(event: MatrixEvent): Promise<DeviceInfo>;
+    getEventSenderDeviceInfo(event: MatrixEvent): Promise<null>;
     /**
      * Check if the sender of an event is verified
      * @param {MatrixEvent} event event to be checked
@@ -375,9 +979,11 @@ export class MatrixClient extends EventEmitter {
     }): Promise<any>;
     /**
      * Check whether the key backup private key is stored in secret storage.
-     * @return {Promise.<boolean>}  Whether the backup key is stored.
+     * @return {Promise.<(object | null)>}  map of key name to key info the secret is
+     *     encrypted with, or null if it is not present or not encrypted with a
+     *     trusted key
      */
-    isKeyBackupKeyStored(): Promise<boolean>;
+    isKeyBackupKeyStored(): Promise<any>;
     /**
      * Create a new key backup version and enable it, using the information return
      * from prepareKeyBackupVersion.
@@ -420,17 +1026,34 @@ export class MatrixClient extends EventEmitter {
     flagAllGroupSessionsForBackup(): Promise<number>;
     isValidRecoveryKey(recoveryKey: any): boolean;
     /**
-     * Restore from an existing key backup via a passphrase.
+     * Get the raw key for a key backup from the password
+     * Used when migrating key backups into SSSS
+     *
+     * The cross-signing API is currently UNSTABLE and may change without notice.
      *
      * @param {string} password Passphrase
-     * @param {string} [targetRoomId] Room ID to target a specific room.
-     * Restores all rooms if omitted.
-     * @param {string} [targetSessionId] Session ID to target a specific session.
-     * Restores all sessions if omitted.
      * @param {object} backupInfo Backup metadata from `checkKeyBackup`
-     * @return {Promise<object>} Status of restoration with `total` and `imported`
-     * key counts.
+     * @return {Promise<Buffer>} key backup key
      */
+    /**
+     * Get the raw key for a key backup from the password
+     * Used when migrating key backups into SSSS
+     *
+     * The cross-signing API is currently UNSTABLE and may change without notice.
+     * @param {string} password Passphrase
+     * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @return {Promise.<Buffer>}  key backup key
+     */
+    keyBackupKeyFromPassword(password: string, backupInfo: any): Promise<Buffer>;
+    /**
+     * Get the raw key for a key backup from the recovery key
+     * Used when migrating key backups into SSSS
+     *
+     * The cross-signing API is currently UNSTABLE and may change without notice.
+     * @param {string} recoveryKey The recovery key
+     * @return {Buffer}  key backup key
+     */
+    keyBackupKeyFromRecoveryKey(recoveryKey: string): Buffer;
     /**
      * Restore from an existing key backup via a passphrase.
      * @param {string} password Passphrase
@@ -439,10 +1062,11 @@ export class MatrixClient extends EventEmitter {
      * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
      * Restores all sessions if omitted.
      * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @param {object} opts Optional params such as callbacks
      * @return {Promise.<object>}  Status of restoration with `total` and `imported`
      * key counts.
      */
-    restoreKeyBackupWithPassword(password: string, targetRoomId: string, targetSessionId: string, backupInfo: any): Promise<any>;
+    restoreKeyBackupWithPassword(password: string, targetRoomId: string, targetSessionId: string, backupInfo: any, opts: any): Promise<any>;
     /**
      * Restore from an existing key backup via a private key stored in secret
      * storage.
@@ -451,10 +1075,11 @@ export class MatrixClient extends EventEmitter {
      * Restores all rooms if omitted.
      * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
      * Restores all sessions if omitted.
+     * @param {object} opts Optional params such as callbacks
      * @return {Promise.<object>}  Status of restoration with `total` and `imported`
      * key counts.
      */
-    restoreKeyBackupWithSecretStorage(backupInfo: any, targetRoomId: string, targetSessionId: string): Promise<any>;
+    restoreKeyBackupWithSecretStorage(backupInfo: any, targetRoomId: string, targetSessionId: string, opts: any): Promise<any>;
     /**
      * Restore from an existing key backup via an encoded recovery key.
      * @param {string} recoveryKey Encoded recovery key
@@ -463,11 +1088,26 @@ export class MatrixClient extends EventEmitter {
      * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
      * Restores all sessions if omitted.
      * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @param {object} opts Optional params such as callbacks
      * @return {Promise.<object>}  Status of restoration with `total` and `imported`
      * key counts.
      */
-    restoreKeyBackupWithRecoveryKey(recoveryKey: string, targetRoomId: string, targetSessionId: string, backupInfo: any): Promise<any>;
-    _restoreKeyBackup(privKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any): any;
+    restoreKeyBackupWithRecoveryKey(recoveryKey: string, targetRoomId: string, targetSessionId: string, backupInfo: any, opts: any): Promise<any>;
+    /**
+     * Restore from an existing key backup using a cached key, or fail
+     * @param {(string | undefined)} targetRoomId Room ID to target a specific room.
+     * Restores all rooms if omitted.
+     * @param {(string | undefined)} targetSessionId Session ID to target a specific session.
+     * Restores all sessions if omitted.
+     * @param {object} backupInfo Backup metadata from `checkKeyBackup`
+     * @param {object} opts Optional params such as callbacks
+     * @return {Promise.<object>}  Status of restoration with `total` and `imported`
+     * key counts.
+     */
+    restoreKeyBackupWithCache(targetRoomId: string, targetSessionId: string, backupInfo: any, opts: any): Promise<any>;
+    _restoreKeyBackup(privKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any, { cacheCompleteCallback }?: {
+        cacheCompleteCallback: any;
+    }): any;
     deleteKeysFromBackup(roomId: any, sessionId: any, version: any): any;
     /**
      * Get the group for the given group ID.
@@ -503,12 +1143,12 @@ export class MatrixClient extends EventEmitter {
      * @param {string} roomId The room ID
      * @return {Room}  The Room or null if it doesn't exist or there is no data store.
      */
-    getRoom(roomId: string): Room;
+    getRoom(roomId: string): any;
     /**
      * Retrieve all known rooms.
      * @return {Array.<Room>}  A list of rooms, or an empty list if there is no data store.
      */
-    getRooms(): Room[];
+    getRooms(): any[];
     /**
      * Retrieve all rooms that should be displayed to the user
      * This is essentially getRooms() with some rooms filtered out, eg. old versions
@@ -516,7 +1156,7 @@ export class MatrixClient extends EventEmitter {
      * marked at the protocol level as not to be displayed to the user.
      * @return {Array.<Room>}  A list of rooms, or an empty list if there is no data store.
      */
-    getVisibleRooms(): Room[];
+    getVisibleRooms(): any[];
     /**
      * Retrieve a user.
      * @param {string} userId The user ID to retrieve.
@@ -544,6 +1184,16 @@ export class MatrixClient extends EventEmitter {
      * @return {(object | null)}  The contents of the given account data event
      */
     getAccountData(eventType: string): any;
+    /**
+     * Get account data event of given type for the current user. This variant
+     * gets account data directly from the homeserver if the local store is not
+     * ready, which can be useful very early in startup before the initial sync.
+     * @param {string} eventType The event type
+     * @return {Promise}  Resolves: The contents of the given account
+     * data event.
+     * @return {MatrixError}  Rejects: with an error response.
+     */
+    getAccountDataFromServer(eventType: string): Promise<any>;
     /**
      * Gets the users that are ignored by this client
      * @returns {Array.<string>}  The array of users that are ignored (empty if none)
@@ -591,7 +1241,7 @@ export class MatrixClient extends EventEmitter {
      * @return {Promise}  Resolves: TODO
      * @return {MatrixError}  Rejects: with an error response.
      */
-    resendEvent(event: MatrixEvent, room: Room): Promise<any>;
+    resendEvent(event: MatrixEvent, room: any): Promise<any>;
     /**
      * Cancel a queued or unsent event.
      * @param {MatrixEvent} event Event to cancel
@@ -870,7 +1520,7 @@ export class MatrixClient extends EventEmitter {
      * @return {Array.<Room>}  An array of rooms representing the upgrade
      * history.
      */
-    getRoomUpgradeHistory(roomId: string, verifyLinks?: boolean): Room[];
+    getRoomUpgradeHistory(roomId: string, verifyLinks?: boolean): any[];
     /**
      *
      * @param {string} roomId
@@ -964,7 +1614,7 @@ export class MatrixClient extends EventEmitter {
      * @param {MatrixEvent} event The event to get push actions for.
      * @return {PushAction}  A dict of actions to perform.
      */
-    getPushActionsForEvent(event: MatrixEvent): PushAction;
+    getPushActionsForEvent(event: MatrixEvent): any;
     /**
      *
      * @param {string} info The kind of info to set (e.g. 'avatar_url')
@@ -1066,7 +1716,7 @@ export class MatrixClient extends EventEmitter {
      * <code>null</code>.
      * @return {MatrixError}  Rejects: with an error response.
      */
-    scrollback(room: Room, limit: any, callback: any): Promise<any>;
+    scrollback(room: any, limit: any, callback: any): Promise<any>;
     /**
      * Get an EventTimeline for the given event
      *
@@ -1092,7 +1742,7 @@ export class MatrixClient extends EventEmitter {
      * @param {Filter} timelineFilter the timeline filter to pass
      * @return {Promise}
      */
-    _createMessagesRequest(roomId: string, fromToken: string, limit: number, dir: string, timelineFilter?: any): Promise<any>;
+    _createMessagesRequest(roomId: string, fromToken: string, limit: number, dir: string, timelineFilter?: Filter): Promise<any>;
     /**
      * Take an EventTimeline, and back/forward-fill results.
      * @param {EventTimeline} eventTimeline timeline
@@ -1300,7 +1950,7 @@ export class MatrixClient extends EventEmitter {
      * @return {object}  searchResults
      * @private
      */
-    _processRoomEventsSearch(searchResults: any, response: any): any;
+    private _processRoomEventsSearch;
     /**
      * Populate the store with rooms the user has left.
      * @return {Promise}  Resolves: TODO - Resolved when the rooms have
@@ -1315,7 +1965,7 @@ export class MatrixClient extends EventEmitter {
      * @return {Filter}  Resolves to a Filter object.
      * @return {MatrixError}  Rejects: with an error response.
      */
-    createFilter(content: any): any;
+    createFilter(content: any): Filter;
     /**
      * Retrieve a filter.
      * @param {string} userId The user ID of the filter owner
@@ -1332,7 +1982,7 @@ export class MatrixClient extends EventEmitter {
      * @param {Filter} filter
      * @return {Promise.<string>}  Filter ID
      */
-    getOrCreateFilter(filterName: string, filter: any): Promise<string>;
+    getOrCreateFilter(filterName: string, filter: Filter): Promise<string>;
     /**
      * Gets a bearer token from the Home Server that the user can
      * present to a third party in order to prove their ownership
@@ -1468,6 +2118,13 @@ export class MatrixClient extends EventEmitter {
      */
     doesServerSupportSeparateAddAndBind(): Promise<boolean>;
     /**
+     * Query the server to see if it lists support for an unstable feature
+     * in the /versions response
+     * @param {string} feature the feature name
+     * @return {Promise.<boolean>}  true if the feature is supported
+     */
+    doesServerSupportUnstableFeature(feature: string): Promise<boolean>;
+    /**
      * Get if lazy loading members is being used.
      * @return {boolean}  Whether or not members are lazy loaded by this client
      */
@@ -1509,6 +2166,12 @@ export class MatrixClient extends EventEmitter {
      */
     getEventMapper(): (...args: any) => any;
     /**
+     * The app may wish to see if we have a key cached without
+     * triggering a user interaction.
+     * @return {object}
+     */
+    getCrossSigningCacheCallbacks(): any;
+    /**
      * Generates a random string suitable for use as a client secret. <strong>This
      * method is experimental and may change.</strong>
      * @return {string}  A new client secret
@@ -1522,20 +2185,12 @@ export namespace MatrixClient {
  * :client.callback
  */
 export type module = (err: any, data: any) => any;
-/**
- * {@link https://github.com/kriskowal/q|A promise implementation (Q)}. Functions
- * which return this will specify 2 return arguments. These arguments map to the
- * "onFulfilled" and "onRejected" values of the Promise.
- */
-export type PromiseDeprecated = any;
-import ReEmitter from "./ReEmitter";
-import SyncApi from "./sync";
-import RoomList from "./crypto/RoomList";
-import PushProcessor from "./pushprocessor";
-import MatrixScheduler from "./scheduler";
-import DeviceInfo from "./crypto/deviceinfo";
-import VerificationBase from "./crypto/verification/Base";
+import { ReEmitter } from "./ReEmitter";
+import { SyncApi } from "./sync";
+import { Crypto } from "./crypto";
+import { RoomList } from "./crypto/RoomList";
+import { PushProcessor } from "./pushprocessor";
+import { MatrixScheduler } from "./scheduler";
 import { MatrixEvent } from "./models/event";
-import Room from "./models/room";
-import { PushAction } from "./pushprocessor";
-import EventTimeline from "./models/event-timeline";
+import { Filter } from "./filter";
+import { EventTimeline } from "./models/event-timeline";

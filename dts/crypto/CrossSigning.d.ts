@@ -1,4 +1,8 @@
-export class CrossSigningInfo extends $_generated_1.EventEmitter {
+export function createCryptoStoreCacheCallbacks(store: any): {
+    getCrossSigningKeyCache: (type: any, _expectedPublicKey: any) => Promise<any>;
+    storeCrossSigningKeyCache: (type: any, key: any) => any;
+};
+export class CrossSigningInfo extends EventEmitter {
     static fromStorage(obj: any, userId: any): any;
     /**
      * Store private keys in secret storage for use by other devices. This is
@@ -23,9 +27,11 @@ export class CrossSigningInfo extends $_generated_1.EventEmitter {
      * @param {string} userId the user that the information is about
      * @param {object} callbacks Callbacks used to interact with the app
      *     Requires getCrossSigningKey and saveCrossSigningKeys
+     * @param {object} cacheCallbacks Callbacks used to interact with the cache
      */
-    constructor(userId: string, callbacks: any);
+    constructor(userId: string, callbacks: any, cacheCallbacks: any);
     _callbacks: any;
+    _cacheCallbacks: any;
     keys: {};
     firstUse: boolean;
     /**
@@ -46,16 +52,20 @@ export class CrossSigningInfo extends $_generated_1.EventEmitter {
      * want to know this anyway...
      *
      * @param {SecretStorage} secretStorage The secret store using account data
-     * @returns {boolean} Whether all private keys were found in storage
+     * @returns {object} map of key name to key info the secret is encrypted
+     *     with, or null if it is not present or not encrypted with a trusted
+     *     key
      */
     /**
      * Check whether the private keys exist in secret storage.
      * XXX: This could be static, be we often seem to have an instance when we
      * want to know this anyway...
      * @param {SecretStorage} secretStorage The secret store using account data
-     * @returns {boolean}  Whether all private keys were found in storage
+     * @returns {object}  map of key name to key info the secret is encrypted
+     *     with, or null if it is not present or not encrypted with a trusted
+     *     key
      */
-    isStoredInSecretStorage(secretStorage: any): boolean;
+    isStoredInSecretStorage(secretStorage: any): any;
     /**
      * Get the ID used to identify the user. This can also be used to test for
      * the existence of a given key type.
@@ -95,11 +105,17 @@ export class CrossSigningInfo extends $_generated_1.EventEmitter {
     /**
      * Check whether a given device is trusted.
      * @param {CrossSigningInfo} userCrossSigning Cross signing info for user
-     * @param {DeviceInfo} device The device to check
+     * @param  device The device to check
      * @param {boolean} localTrust Whether the device is trusted locally
+     * @param {boolean} trustCrossSignedDevices Whether we trust cross signed devices
      * @returns {DeviceTrustLevel}
      */
-    checkDeviceTrust(userCrossSigning: CrossSigningInfo, device: DeviceInfo, localTrust: boolean): DeviceTrustLevel;
+    checkDeviceTrust(userCrossSigning: CrossSigningInfo, device: any, localTrust: boolean, trustCrossSignedDevices: boolean): DeviceTrustLevel;
+    /**
+     *
+     * @returns {object}  Cache callbacks
+     */
+    getCacheCallbacks(): any;
 }
 export namespace CrossSigningLevel {
     export const MASTER: number;
@@ -133,11 +149,12 @@ export class UserTrustLevel {
     isTofu(): boolean;
 }
 export class DeviceTrustLevel {
-    static fromUserTrustLevel(userTrustLevel: any, localVerified: any): DeviceTrustLevel;
-    constructor(crossSigningVerified: any, tofu: any, localVerified: any);
+    static fromUserTrustLevel(userTrustLevel: any, localVerified: any, trustCrossSignedDevices: any): DeviceTrustLevel;
+    constructor(crossSigningVerified: any, tofu: any, localVerified: any, trustCrossSignedDevices: any);
     _crossSigningVerified: any;
     _tofu: any;
     _localVerified: any;
+    _trustCrossSignedDevices: any;
     /**
      * @returns {bool} true if this device is verified via any means
      */
@@ -163,5 +180,4 @@ export class DeviceTrustLevel {
      */
     isTofu(): boolean;
 }
-import * as $_generated_1 from "events";
-import DeviceInfo from "./deviceinfo";
+import { EventEmitter } from "events";

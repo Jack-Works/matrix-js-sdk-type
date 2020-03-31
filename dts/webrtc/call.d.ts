@@ -36,6 +36,106 @@ export function setVideoInput(deviceId: string): void;
  * @return {MatrixCall}  the call or null if the browser doesn't support calling.
  */
 export function createNewMatrixCall(client: any, roomId: string, options: any): MatrixCall;
+/**
+ * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
+ * <p>
+ * The error given will have a code equal to either `MatrixCall.ERR_LOCAL_OFFER_FAILED` or
+ * `MatrixCall.ERR_NO_USER_MEDIA`. `ERR_LOCAL_OFFER_FAILED` is emitted when the local client
+ * fails to create an offer. `ERR_NO_USER_MEDIA` is emitted when the user has denied access
+ * to their audio/video hardware.
+ *
+ * @event module:webrtc/call~MatrixCall#"error"
+ * @param {Error} err The error raised by MatrixCall.
+ * @example
+ * matrixCall.on("error", function(err){
+ *   console.error(err.code, err);
+ * });
+ */
+/**
+ * Construct a new Matrix Call.
+ * @constructor
+ * @param {Object} opts Config options.
+ * @param {string} opts.roomId The room ID for this call.
+ * @param {Object} opts.webRtc The WebRTC globals from the browser.
+ * @param {boolean} opts.forceTURN whether relay through TURN should be forced.
+ * @param {Object} opts.URL The URL global.
+ * @param {Array<Object>} opts.turnServers Optional. A list of TURN servers.
+ * @param {MatrixClient} opts.client The Matrix Client instance to send events to.
+ */
+/**
+ * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
+ * <p>
+ * The error given will have a code equal to either `MatrixCall.ERR_LOCAL_OFFER_FAILED` or
+ * `MatrixCall.ERR_NO_USER_MEDIA`. `ERR_LOCAL_OFFER_FAILED` is emitted when the local client
+ * fails to create an offer. `ERR_NO_USER_MEDIA` is emitted when the user has denied access
+ * to their audio/video hardware.
+ *
+ * @event module:webrtc/call~MatrixCall#"error"
+ * @param {Error} err The error raised by MatrixCall.
+ * @example
+ * matrixCall.on("error", function(err){
+ *   console.error(err.code, err);
+ * });
+ */
+/**
+ * Construct a new Matrix Call.
+ * @constructor
+ * @param {Object} opts Config options.
+ * @param {string} opts.roomId The room ID for this call.
+ * @param {Object} opts.webRtc The WebRTC globals from the browser.
+ * @param {boolean} opts.forceTURN whether relay through TURN should be forced.
+ * @param {Object} opts.URL The URL global.
+ * @param {Array<Object>} opts.turnServers Optional. A list of TURN servers.
+ * @param {MatrixClient} opts.client The Matrix Client instance to send events to.
+ */
+/**
+ * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
+ * <p>
+ * The error given will have a code equal to either `MatrixCall.ERR_LOCAL_OFFER_FAILED` or
+ * `MatrixCall.ERR_NO_USER_MEDIA`. `ERR_LOCAL_OFFER_FAILED` is emitted when the local client
+ * fails to create an offer. `ERR_NO_USER_MEDIA` is emitted when the user has denied access
+ * to their audio/video hardware.
+ * @event   module:webrtc/call~MatrixCall#"error"
+ * @param {Error} err The error raised by MatrixCall.
+ * @example   matrixCall.on("error", function(err){
+ *   console.error(err.code, err);
+ * });
+ */
+/**
+ * Construct a new Matrix Call.
+ * @constructor
+ * @param {object} opts Config options.
+ * @param {string} opts.roomId The room ID for this call.
+ * @param {object} opts.webRtc The WebRTC globals from the browser.
+ * @param {boolean} opts.forceTURN whether relay through TURN should be forced.
+ * @param {object} opts.URL The URL global.
+ * @param {Array.<object>} opts.turnServers Optional. A list of TURN servers.
+ * @param {MatrixClient} opts.client The Matrix Client instance to send events to.
+ */
+/**
+ * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
+ * <p>
+ * The error given will have a code equal to either `MatrixCall.ERR_LOCAL_OFFER_FAILED` or
+ * `MatrixCall.ERR_NO_USER_MEDIA`. `ERR_LOCAL_OFFER_FAILED` is emitted when the local client
+ * fails to create an offer. `ERR_NO_USER_MEDIA` is emitted when the user has denied access
+ * to their audio/video hardware.
+ * @event   module:webrtc/call~MatrixCall#"error"
+ * @param {Error} err The error raised by MatrixCall.
+ * @example   matrixCall.on("error", function(err){
+ *   console.error(err.code, err);
+ * });
+ */
+/**
+ * Construct a new Matrix Call.
+ * @constructor
+ * @param {object} opts Config options.
+ * @param {string} opts.roomId The room ID for this call.
+ * @param {object} opts.webRtc The WebRTC globals from the browser.
+ * @param {boolean} opts.forceTURN whether relay through TURN should be forced.
+ * @param {object} opts.URL The URL global.
+ * @param {Array.<object>} opts.turnServers Optional. A list of TURN servers.
+ * @param {MatrixClient} opts.client The Matrix Client instance to send events to.
+ */
 export class MatrixCall {
     constructor(opts: any);
     roomId: any;
@@ -83,7 +183,7 @@ export class MatrixCall {
      * to render the local camera preview.
      * @throws   If you have not specified a listener for 'error' events.
      */
-    placeScreenSharingCall(remoteVideoElement: Element, localVideoElement: Element): void;
+    placeScreenSharingCall(remoteVideoElement: Element, localVideoElement: Element): Promise<void>;
     /**
      * Play the given HTMLMediaElement, serialising the operation into a chain
      * of promises to avoid racing access to the element
@@ -149,7 +249,7 @@ export class MatrixCall {
      * @protected
      * @param {MatrixEvent} event The m.call.invite event
      */
-    _initWithInvite(event: any): void;
+    protected _initWithInvite(event: any): void;
     msg: any;
     peerConn: any;
     direction: string;
@@ -158,7 +258,7 @@ export class MatrixCall {
      * @protected
      * @param {MatrixEvent} event The m.call.hangup event
      */
-    _initWithHangup(event: any): void;
+    protected _initWithHangup(event: any): void;
     answer(): void;
     /**
      * Replace this call with a new call, e.g. for glare resolution. Used by
@@ -166,7 +266,7 @@ export class MatrixCall {
      * @protected
      * @param {MatrixCall} newCall The new call.
      */
-    _replacedBy(newCall: MatrixCall): void;
+    protected _replacedBy(newCall: MatrixCall): void;
     successor: MatrixCall;
     /**
      * Hangup a call.
@@ -209,7 +309,7 @@ export class MatrixCall {
      * @private
      * @param {object} stream
      */
-    _maybeGotUserMediaForInvite(stream: any): void;
+    private _maybeGotUserMediaForInvite;
     localAVStream: any;
     _sendAnswer(stream: any): void;
     /**
@@ -222,70 +322,70 @@ export class MatrixCall {
      * @private
      * @param {object} stream
      */
-    _maybeGotUserMediaForAnswer(stream: any): void;
+    private _maybeGotUserMediaForAnswer;
     /**
      * Internal
      * @private
      * @param {object} event
      */
-    _gotLocalIceCandidate(event: any): void;
+    private _gotLocalIceCandidate;
     /**
      * Used by MatrixClient.
      * @protected
      * @param {object} cand
      */
-    _gotRemoteIceCandidate(cand: any): void;
+    protected _gotRemoteIceCandidate(cand: any): void;
     /**
      * Used by MatrixClient.
      * @protected
      * @param {object} msg
      */
-    _receivedAnswer(msg: any): void;
+    protected _receivedAnswer(msg: any): void;
     /**
      * Internal
      * @private
      * @param {object} description
      */
-    _gotLocalOffer(description: any): void;
+    private _gotLocalOffer;
     /**
      * Internal
      * @private
      * @param {object} error
      */
-    _getLocalOfferFailed(error: any): void;
+    private _getLocalOfferFailed;
     /**
      * Internal
      * @private
      * @param {object} error
      */
-    _getUserMediaFailed(error: any): void;
+    private _getUserMediaFailed;
     /**
      * Internal
      * @private
      */
-    _onIceConnectionStateChanged(): void;
+    private _onIceConnectionStateChanged;
     /**
      * Internal
      * @private
      */
-    _onSignallingStateChanged(): void;
+    private _onSignallingStateChanged;
     /**
      * Internal
      * @private
      */
-    _onSetRemoteDescriptionSuccess(): void;
+    private _onSetRemoteDescriptionSuccess;
     /**
      * Internal
      * @private
      * @param {object} e
      */
-    _onSetRemoteDescriptionError(e: any): void;
+    private _onSetRemoteDescriptionError;
     /**
      * Internal
      * @private
      * @param {object} event
      */
-    _onAddStream(event: any): void;
+    private _onAddStream;
     remoteAVStream: any;
     remoteAStream: any;
     /**
@@ -293,32 +393,32 @@ export class MatrixCall {
      * @private
      * @param {object} event
      */
-    _onRemoteStreamStarted(event: any): void;
+    private _onRemoteStreamStarted;
     /**
      * Internal
      * @private
      * @param {object} event
      */
-    _onRemoteStreamEnded(event: any): void;
+    private _onRemoteStreamEnded;
     hangupParty: string;
     /**
      * Internal
      * @private
      * @param {object} event
      */
-    _onRemoteStreamTrackStarted(event: any): void;
+    private _onRemoteStreamTrackStarted;
     /**
      * Used by MatrixClient.
      * @protected
      * @param {object} msg
      */
-    _onHangupReceived(msg: any): void;
+    protected _onHangupReceived(msg: any): void;
     /**
      * Used by MatrixClient.
      * @protected
      * @param {object} msg
      */
-    _onAnsweredElsewhere(msg: any): void;
+    protected _onAnsweredElsewhere(msg: any): void;
 }
 export namespace MatrixCall {
     export const CALL_TIMEOUT_MS: number;

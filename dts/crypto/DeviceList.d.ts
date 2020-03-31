@@ -5,7 +5,7 @@
  *
  * @alias  module:crypto/DeviceList
  */
-export default class DeviceList extends $_generated_0.EventEmitter {
+export class DeviceList extends EventEmitter {
     constructor(baseApis: any, cryptoStore: any, olmDevice: any);
     _cryptoStore: any;
     _devices: {};
@@ -88,12 +88,17 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      */
     _getDevicesFromStore(userIds: string[]): any;
     /**
+     * Returns a list of all user IDs the DeviceList knows about
+     * @return {Array}  All known user IDs
+     */
+    getKnownUserIds(): any[];
+    /**
      * Get the stored device keys for a user id
      * @param {string} userId the user to list keys for.
-     * @return {(Array.<DeviceInfo> | null)}  list of devices, or null if we haven't
+     * @return {(Array.<> | null)}  list of devices, or null if we haven't
      * managed to get a list of devices for this user yet.
      */
-    getStoredDevicesForUser(userId: string): ($_generated_2)[];
+    getStoredDevicesForUser(userId: string): any[];
     /**
      * Get the stored device data for a user, in raw object form
      * @param {string} userId the user to get data for
@@ -116,17 +121,24 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      * Get the stored keys for a single device
      * @param {string} userId
      * @param {string} deviceId
-     * @return {(DeviceInfo | null)}  device, or undefined
+     * @return {( | null)}  device, or undefined
      * if we don't know about this device
      */
-    getStoredDevice(userId: string, deviceId: string): $_generated_2;
+    getStoredDevice(userId: string, deviceId: string): null;
+    /**
+     * Get a user ID by one of their device's curve25519 identity key
+     * @param {string} algorithm encryption algorithm
+     * @param {string} senderKey curve25519 key to match
+     * @return {string}  user ID
+     */
+    getUserByIdentityKey(algorithm: string, senderKey: string): string;
     /**
      * Find a device by curve25519 identity key
      * @param {string} algorithm encryption algorithm
      * @param {string} senderKey curve25519 key to match
-     * @return {(DeviceInfo | null)}
+     * @return {( | null)}
      */
-    getDeviceByIdentityKey(algorithm: string, senderKey: string): $_generated_2;
+    getDeviceByIdentityKey(algorithm: string, senderKey: string): null;
     /**
      * Replaces the list of devices for a user with the given device list
      * @param {string} u The user ID
@@ -199,7 +211,7 @@ export default class DeviceList extends $_generated_0.EventEmitter {
      */
     _doKeyDownload(users: string[]): Promise<any>;
 }
-import * as $_generated_0 from "events";
+import { EventEmitter } from "events";
 declare class DeviceListUpdateSerialiser {
     /**
      *
@@ -214,9 +226,9 @@ declare class DeviceListUpdateSerialiser {
     _downloadInProgress: boolean;
     _keyDownloadsQueuedByUser: {};
     _queuedQueryDeferred: {
-        resolve: undefined;
-        reject: undefined;
-        promise: Promise<any>;
+        resolve: any;
+        reject: any;
+        promise: Promise<unknown>;
     };
     _syncToken: string;
     /**
@@ -229,8 +241,7 @@ declare class DeviceListUpdateSerialiser {
      *     users.
      */
     updateDevicesForUsers(users: string[], syncToken: string): Promise<any>;
-    _doQueuedQueries(): Promise<any>;
+    _doQueuedQueries(): Promise<unknown>;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
 }
-import $_generated_2 from "./deviceinfo";
 export {};

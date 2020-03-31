@@ -2,13 +2,8 @@
  * A key verification channel that sends verification events in the timeline of a room.
  * Uses the event id of the initial m.key.verification.request event as a transaction id.
  */
-export default class InRoomChannel {
-    /**
-     *
-     * @param {MatrixEvent} event the event to get the timestamp of
-     * @return {number}  the timestamp when the event was sent
-     */
-    static getTimestamp(event: any): number;
+export class InRoomChannel {
+    static getOtherPartyUserId(event: any, client: any): any;
     /**
      * Checks whether the given event type should be allowed to initiate a new VerificationRequest over this channel
      * @param {string} type the event type to check
@@ -45,20 +40,33 @@ export default class InRoomChannel {
      * @param {string} roomId id of the room where verification events should be posted in, should be a DM with the given user.
      * @param {string} userId id of user that the verification request is directed at, should be present in the room.
      */
-    constructor(client: any, roomId: string, userId: string);
+    constructor(client: any, roomId: string, userId?: string);
     _client: any;
     _roomId: string;
-    _userId: string;
+    userId: string;
     _requestEventId: any;
-    get needsDoneMessage(): boolean;
+    get receiveStartFromOtherDevices(): boolean;
+    get roomId(): string;
+    /** The transaction id generated/used by this verification channel */
     get transactionId(): any;
+    /**
+     * @param {MatrixEvent} event the event to get the timestamp of
+     * @return {number} the timestamp when the event was sent
+     */
+    /**
+     *
+     * @param {MatrixEvent} event the event to get the timestamp of
+     * @return {number}  the timestamp when the event was sent
+     */
+    getTimestamp(event: any): number;
     /**
      * Changes the state of the channel, request, and verifier in response to a key verification event.
      * @param {MatrixEvent} event to handle
      * @param {VerificationRequest} request the request to forward handling to
+     * @param {boolean} isLiveEvent whether this is an even received through sync or not
      * @returns {Promise}  a promise that resolves when any requests as an anwser to the passed-in event are sent.
      */
-    handleEvent(event: any, request: $_generated_0): Promise<any>;
+    handleEvent(event: any, request: VerificationRequest, isLiveEvent: boolean): Promise<any>;
     /**
      * Adds the transaction id (relation) back to a received event
      * so it has the same format as returned by `completeContent` before sending.
@@ -93,4 +101,15 @@ export default class InRoomChannel {
      */
     sendCompleted(type: string, content: any): Promise<any>;
 }
-import $_generated_0 from "./VerificationRequest";
+export class InRoomRequests {
+    _requestsByRoomId: Map<any, any>;
+    getRequest(event: any): any;
+    getRequestByChannel(channel: any): any;
+    _getRequestByTxnId(roomId: any, txnId: any): any;
+    setRequest(event: any, request: any): void;
+    setRequestByChannel(channel: any, request: any): void;
+    _setRequest(roomId: any, txnId: any, request: any): void;
+    removeRequest(event: any): void;
+    findRequestInProgress(roomId: any): any;
+}
+import { VerificationRequest } from "./VerificationRequest";

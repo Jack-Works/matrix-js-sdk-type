@@ -1,4 +1,39 @@
-export default EventTimelineSet;
+/**
+ * Construct a set of EventTimeline objects, typically on behalf of a given
+ * room.  A room may have multiple EventTimelineSets for different levels
+ * of filtering.  The global notification list is also an EventTimelineSet, but
+ * lacks a room.
+ *
+ * <p>This is an ordered sequence of timelines, which may or may not
+ * be continuous. Each timeline lists a series of events, as well as tracking
+ * the room state at the start and the end of the timeline (if appropriate).
+ * It also tracks forward and backward pagination tokens, as well as containing
+ * links to the next timeline in the sequence.
+ *
+ * <p>There is one special timeline - the 'live' timeline, which represents the
+ * timeline to which events are being added in real-time as they are received
+ * from the /sync API. Note that you should not retain references to this
+ * timeline - even if it is the current timeline right now, it may not remain
+ * so if the server gives us a timeline gap in /sync.
+ *
+ * <p>In order that we can find events from their ids later, we also maintain a
+ * map from event_id to timeline and index.
+ *
+ * @constructor
+ * @param {?Room} room
+ * Room for this timelineSet. May be null for non-room cases, such as the
+ * notification timeline.
+ * @param {Object} opts Options inherited from Room.
+ *
+ * @param {boolean} [opts.timelineSupport = false]
+ * Set to true to enable improved timeline support.
+ * @param {Object} [opts.filter = null]
+ * The filter object, if any, for this timelineSet.
+ * @param {boolean} [opts.unstableClientRelationAggregation = false]
+ * Optional. Set to true to enable client-side aggregation of event relations
+ * via `getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ */
 /**
  * Construct a set of EventTimeline objects, typically on behalf of a given
  * room.  A room may have multiple EventTimelineSets for different levels
@@ -65,7 +100,37 @@ export default EventTimelineSet;
  * via `getRelationsForEvent`.
  * This feature is currently unstable and the API may change without notice.
  */
-declare class EventTimelineSet {
+/**
+ * Construct a set of EventTimeline objects, typically on behalf of a given
+ * room.  A room may have multiple EventTimelineSets for different levels
+ * of filtering.  The global notification list is also an EventTimelineSet, but
+ * lacks a room.
+ *
+ * <p>This is an ordered sequence of timelines, which may or may not
+ * be continuous. Each timeline lists a series of events, as well as tracking
+ * the room state at the start and the end of the timeline (if appropriate).
+ * It also tracks forward and backward pagination tokens, as well as containing
+ * links to the next timeline in the sequence.
+ *
+ * <p>There is one special timeline - the 'live' timeline, which represents the
+ * timeline to which events are being added in real-time as they are received
+ * from the /sync API. Note that you should not retain references to this
+ * timeline - even if it is the current timeline right now, it may not remain
+ * so if the server gives us a timeline gap in /sync.
+ *
+ * <p>In order that we can find events from their ids later, we also maintain a
+ * map from event_id to timeline and index.
+ * @constructor
+ * @param {(Room | null)} room Room for this timelineSet. May be null for non-room cases, such as the
+ * notification timeline.
+ * @param {object} opts Options inherited from Room.
+ * @param {(boolean | undefined)} opts.timelineSupport Set to true to enable improved timeline support.
+ * @param {(object | undefined)} opts.filter The filter object, if any, for this timelineSet.
+ * @param {(boolean | undefined)} opts.unstableClientRelationAggregation Optional. Set to true to enable client-side aggregation of event relations
+ * via `getRelationsForEvent`.
+ * This feature is currently unstable and the API may change without notice.
+ */
+export class EventTimelineSet {
     constructor(room: any, opts: any);
     room: any;
     _timelineSupport: boolean;
@@ -167,8 +232,9 @@ declare class EventTimelineSet {
      * Add an event to the end of this live timeline.
      * @param {MatrixEvent} event Event to be added
      * @param {(string | null)} duplicateStrategy 'ignore' or 'replace'
+     * @param {boolean} fromCache whether the sync response came from cache
      */
-    addLiveEvent(event: MatrixEvent, duplicateStrategy: string): void;
+    addLiveEvent(event: MatrixEvent, duplicateStrategy: string, fromCache: boolean): void;
     /**
      * Add event to the given timeline, and emit Room.timeline. Assumes
      * we have already checked we don't know about this event.
@@ -177,9 +243,10 @@ declare class EventTimelineSet {
      * @param {MatrixEvent} event
      * @param {EventTimeline} timeline
      * @param {boolean} toStartOfTimeline
+     * @param {boolean} fromCache whether the sync response came from cache
      * @fires   module:client~MatrixClient#event:"Room.timeline"
      */
-    addEventToTimeline(event: MatrixEvent, timeline: EventTimeline, toStartOfTimeline: boolean): void;
+    addEventToTimeline(event: MatrixEvent, timeline: EventTimeline, toStartOfTimeline: boolean, fromCache: boolean): void;
     /**
      * Replaces event with ID oldEventId with one with newEventId, if oldEventId is
      * recognised.  Otherwise, add to the live timeline.  Used to handle remote echos.
@@ -230,6 +297,6 @@ declare class EventTimelineSet {
      */
     aggregateRelations(event: MatrixEvent): void;
 }
-import EventTimeline from "./event-timeline";
+import { EventTimeline } from "./event-timeline";
 import { MatrixEvent } from "./event";
-import Relations from "./relations";
+import { Relations } from "./relations";

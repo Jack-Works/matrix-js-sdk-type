@@ -1,4 +1,3 @@
-export default SyncAccumulator;
 /**
  * The purpose of this class is to accumulate /sync responses such that a
  * complete "initial" JSON response can be returned which accurately represents
@@ -9,7 +8,7 @@ export default SyncAccumulator;
  * be loaded from disk and incremental syncs can be performed on the server,
  * rather than asking the server to do an initial sync on startup.
  */
-declare class SyncAccumulator {
+export class SyncAccumulator {
     /**
      *
      * @param {object} opts

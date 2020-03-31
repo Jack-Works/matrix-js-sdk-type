@@ -14,20 +14,34 @@
  *
  * @implements {CryptoStore}
  */
-export default class MemoryCryptoStore {
+export class MemoryCryptoStore {
     _outgoingRoomKeyRequests: any[];
     _account: any;
     _crossSigningKeys: any;
+    _privateKeys: {};
+    _backupKeys: {};
     _sessions: {};
+    _sessionProblems: {};
+    _notifiedErrorDevices: {};
     _inboundGroupSessions: {};
+    _inboundGroupSessionsWithheld: {};
     _deviceData: any;
     _rooms: {};
     _sessionsNeedingBackup: {};
     /**
-     * Delete all data from this store.
+     * Ensure the database exists and is up-to-date.
      *
-     * @returns {Promise} Promise which resolves when the store has been cleared.
+     * This must be called before the store can be used.
+     *
+     * @return {Promise} resolves to the store.
      */
+    /**
+     * Ensure the database exists and is up-to-date.
+     *
+     * This must be called before the store can be used.
+     * @return {Promise}  resolves to the store.
+     */
+    startup(): Promise<any>;
     /**
      * Delete all data from this store.
      * @returns {Promise}  Promise which resolves when the store has been cleared.
@@ -100,16 +114,22 @@ export default class MemoryCryptoStore {
     getAccount(txn: any, func: any): void;
     storeAccount(txn: any, newData: any): void;
     getCrossSigningKeys(txn: any, func: any): void;
+    getSecretStorePrivateKey(txn: any, func: any, type: any): any;
     storeCrossSigningKeys(txn: any, keys: any): void;
+    storeSecretStorePrivateKey(txn: any, type: any, key: any): void;
     countEndToEndSessions(txn: any, func: any): number;
     getEndToEndSession(deviceKey: any, sessionId: any, txn: any, func: any): void;
     getEndToEndSessions(deviceKey: any, txn: any, func: any): void;
     getAllEndToEndSessions(txn: any, func: any): void;
     storeEndToEndSession(deviceKey: any, sessionId: any, sessionInfo: any, txn: any): void;
+    storeEndToEndSessionProblem(deviceKey: any, type: any, fixed: any): Promise<void>;
+    getEndToEndSessionProblem(deviceKey: any, timestamp: any): Promise<any>;
+    filterOutNotifiedErrorDevices(devices: any): Promise<any[]>;
     getEndToEndInboundGroupSession(senderCurve25519Key: any, sessionId: any, txn: any, func: any): void;
     getAllEndToEndInboundGroupSessions(txn: any, func: any): void;
     addEndToEndInboundGroupSession(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
     storeEndToEndInboundGroupSession(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
+    storeEndToEndInboundGroupSessionWithheld(senderCurve25519Key: any, sessionId: any, sessionData: any, txn: any): void;
     getEndToEndDeviceData(txn: any, func: any): void;
     storeEndToEndDeviceData(deviceData: any, txn: any): void;
     storeEndToEndRoom(roomId: any, roomInfo: any, txn: any): void;

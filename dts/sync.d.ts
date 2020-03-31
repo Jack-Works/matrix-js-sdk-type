@@ -1,4 +1,18 @@
-export default SyncApi;
+/**
+ * <b>Internal class - unstable.</b>
+ * Construct an entity which is able to sync with a homeserver.
+ * @constructor
+ * @param {MatrixClient} client The matrix client instance to use.
+ * @param {Object} opts Config options
+ * @param {any} opts.crypto Crypto manager
+ * @param {Function=} opts.canResetEntireTimeline A function which is called
+ * with a room ID and returns a boolean. It should return 'true' if the SDK can
+ * SAFELY remove events from this room. It may not be safe to remove events if
+ * there are other references to the timelines for this room.
+ * Default: returns false.
+ * @param {Boolean=} opts.disablePresence True to perform syncing without automatically
+ * updating presence.
+ */
 /**
  * <b>Internal class - unstable.</b>
  * Construct an entity which is able to sync with a homeserver.
@@ -29,7 +43,22 @@ export default SyncApi;
  * @param {(boolean | undefined)} opts.disablePresence True to perform syncing without automatically
  * updating presence.
  */
-declare class SyncApi {
+/**
+ * <b>Internal class - unstable.</b>
+ * Construct an entity which is able to sync with a homeserver.
+ * @constructor
+ * @param {MatrixClient} client The matrix client instance to use.
+ * @param {object} opts Config options
+ * @param {( | undefined)} opts.crypto Crypto manager
+ * @param {(((...args: any) => any) | undefined)} opts.canResetEntireTimeline A function which is called
+ * with a room ID and returns a boolean. It should return 'true' if the SDK can
+ * SAFELY remove events from this room. It may not be safe to remove events if
+ * there are other references to the timelines for this room.
+ * Default: returns false.
+ * @param {(boolean | undefined)} opts.disablePresence True to perform syncing without automatically
+ * updating presence.
+ */
+export class SyncApi {
     constructor(client: any, opts: any);
     client: any;
     opts: any;
@@ -41,9 +70,9 @@ declare class SyncApi {
     _running: boolean;
     _keepAliveTimer: any;
     _connectionReturnedDefer: {
-        resolve: undefined;
-        reject: undefined;
-        promise: Promise<any>;
+        resolve: any;
+        reject: any;
+        promise: Promise<unknown>;
     };
     _notifEvents: any[];
     _failedSyncCount: number;
@@ -69,13 +98,13 @@ declare class SyncApi {
      * @param {Room} room
      * @private
      */
-    _registerStateListeners(room: Room): void;
+    private _registerStateListeners;
     /**
      *
      * @param {Room} room
      * @private
      */
-    _deregisterStateListeners(room: Room): void;
+    private _deregisterStateListeners;
     /**
      * Sync rooms the user has left.
      * @return {Promise}  Resolved when they've been added to the store.
@@ -218,9 +247,10 @@ declare class SyncApi {
      * @param {Array.<MatrixEvent>} stateEventList A list of state events. This is the state
      * at the *START* of the timeline list if it is supplied.
      * @param {(Array.<MatrixEvent> | undefined)} timelineEventList A list of timeline events. Lower index
+     * @param {boolean} fromCache whether the sync response came from cache
      * is earlier in time. Higher index is later.
      */
-    _processRoomEvents(room: Room, stateEventList: any[], timelineEventList: any[]): void;
+    _processRoomEvents(room: Room, stateEventList: any[], timelineEventList: any[], fromCache: boolean): void;
     /**
      * Takes a list of timelineEvents and adds and adds to _notifEvents
      * as appropriate.
@@ -243,5 +273,5 @@ declare class SyncApi {
     _updateSyncState(newState: string, data: any): void;
     _onOnline(): void;
 }
-import Room from "./models/room";
-import Group from "./models/group";
+import { Room } from "./models/room";
+import { Group } from "./models/group";
