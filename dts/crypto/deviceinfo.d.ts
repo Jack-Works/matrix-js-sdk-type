@@ -1,3 +1,39 @@
+/**
+  *
+  * @module crypto/deviceinfo
+  */
+/**
+  * Information about a user's device
+  * @constructor
+  * @alias module:crypto/deviceinfo
+  * @property {string} deviceId the ID of this device
+  * @property {Array.<string>} algorithms list of algorithms supported by this device
+  * @property {object.<string, string>} keys a map from
+  *      &lt;key type&gt;:&lt;id&gt; -> &lt;base64-encoded key&gt;>
+  * @property {DeviceVerification} verified whether the device has been verified/blocked by the user
+  * @property {boolean} known whether the user knows of this device's existence (useful when warning
+  *     the user that a user has added new devices)
+  * @property {object} unsigned additional data from the homeserver
+  * @param {string} deviceId id of the device
+  */
+/**
+  *
+  * @module crypto/deviceinfo
+  */
+/**
+  * Information about a user's device
+  * @constructor
+  * @alias module:crypto/deviceinfo
+  * @property {string} deviceId the ID of this device
+  * @property {Array.<string>} algorithms list of algorithms supported by this device
+  * @property {object.<string, string>} keys a map from
+  *      &lt;key type&gt;:&lt;id&gt; -> &lt;base64-encoded key&gt;>
+  * @property {DeviceVerification} verified whether the device has been verified/blocked by the user
+  * @property {boolean} known whether the user knows of this device's existence (useful when warning
+  *     the user that a user has added new devices)
+  * @property {object} unsigned additional data from the homeserver
+  * @param {string} deviceId id of the device
+  */
 export class DeviceInfo {
     constructor(deviceId: any);
     algorithms: any[];
@@ -7,59 +43,54 @@ export class DeviceInfo {
     unsigned: {};
     signatures: {};
     /**
-     * Prepare a DeviceInfo for JSON serialisation in the session store
-     *
-     * @return {object} deviceinfo with non-serialised members removed
-     */
+      * Prepare a DeviceInfo for JSON serialisation in the session store
+      * @return {object} deviceinfo with non-serialised members removed
+      */
+    toStorage(): object;
     /**
-     * Prepare a DeviceInfo for JSON serialisation in the session store
-     * @return {object}  deviceinfo with non-serialised members removed
-     */
-    toStorage(): any;
-    /**
-     * Get the fingerprint for this device (ie, the Ed25519 key)
-     * @return {string}  base64-encoded fingerprint of this device
-     */
+      * Get the fingerprint for this device (ie, the Ed25519 key)
+      * @return {string} base64-encoded fingerprint of this device
+      */
     getFingerprint(): string;
     /**
-     * Get the identity key for this device (ie, the Curve25519 key)
-     * @return {string}  base64-encoded identity key of this device
-     */
+      * Get the identity key for this device (ie, the Curve25519 key)
+      * @return {string} base64-encoded identity key of this device
+      */
     getIdentityKey(): string;
     /**
-     * Get the configured display name for this device, if any
-     * @return {(string | null)}  displayname
-     */
-    getDisplayName(): string;
+      * Get the configured display name for this device, if any
+      * @return {string?} displayname
+      */
+    getDisplayName(): string | null;
     /**
-     * Returns true if this device is blocked
-     * @return {boolean}  true if blocked
-     */
+      * Returns true if this device is blocked
+      * @return {Boolean} true if blocked
+      */
     isBlocked(): boolean;
     /**
-     * Returns true if this device is verified
-     * @return {boolean}  true if verified
-     */
+      * Returns true if this device is verified
+      * @return {Boolean} true if verified
+      */
     isVerified(): boolean;
     /**
-     * Returns true if this device is unverified
-     * @return {boolean}  true if unverified
-     */
+      * Returns true if this device is unverified
+      * @return {Boolean} true if unverified
+      */
     isUnverified(): boolean;
     /**
-     * Returns true if the user knows about this device's existence
-     * @return {boolean}  true if known
-     */
+      * Returns true if the user knows about this device's existence
+      * @return {Boolean} true if known
+      */
     isKnown(): boolean;
 }
 export namespace DeviceInfo {
     /**
-     * rehydrate a DeviceInfo from the session store
-     * @param {object} obj raw object from session store
-     * @param {string} deviceId id of the device
-     * @return {DeviceInfo}  new DeviceInfo
-     */
-    export function fromStorage(obj: any, deviceId: string): DeviceInfo;
+      * rehydrate a DeviceInfo from the session store
+      * @param {object} obj raw object from session store
+      * @param {string} deviceId id of the device
+      * @return {DeviceInfo} new DeviceInfo
+      */
+    export function fromStorage(obj: object, deviceId: string): DeviceInfo;
     export namespace DeviceVerification {
         export const VERIFIED: number;
         export const UNVERIFIED: number;

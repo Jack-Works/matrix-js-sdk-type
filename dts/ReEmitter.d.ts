@@ -1,3 +1,7 @@
+/**
+  *
+  * @module
+  */
 export class ReEmitter {
     constructor(target: any);
     target: any;

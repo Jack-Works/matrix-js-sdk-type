@@ -61,7 +61,7 @@ export declare function forEach<T>(array: T[], fn: (t: T, i: number) => void): v
  * @return {*} The first value in the array which returns <code>true</code> for
  * the given function.
  */
-export declare function findElement<T>(array: T[], fn: (t: T, i?: number, a?: T[]) => boolean, reverse?: boolean): T;
+export declare function findElement<T>(array: T[], fn: (t: T, i?: number, a?: T[]) => boolean, reverse?: boolean): T | undefined;
 /**
  * The removeElement() method removes the first element in the array that
  * satisfies (returns true) the provided testing function.
@@ -72,7 +72,7 @@ export declare function findElement<T>(array: T[], fn: (t: T, i?: number, a?: T[
  * @param {boolean} reverse True to search in reverse order.
  * @return {boolean} True if an element was removed.
  */
-export declare function removeElement<T>(array: T[], fn: (t: T, i?: number, a?: T[]) => boolean, reverse?: boolean): any;
+export declare function removeElement<T>(array: T[], fn: (t: T, i?: number, a?: T[]) => boolean, reverse?: boolean): false | T;
 /**
  * Checks if the given thing is a function.
  * @param {*} value The thing to check.
@@ -173,8 +173,8 @@ export declare function ensureNoTrailingSlash(url: string): string;
 export declare function sleep<T>(ms: number, value: T): Promise<T>;
 export declare function isNullOrUndefined(val: any): boolean;
 export declare function defer(): {
-    resolve: any;
-    reject: any;
+    resolve: undefined;
+    reject: undefined;
     promise: Promise<unknown>;
 };
 export declare function promiseMapSeries<T>(promises: Promise<T>[], fn: (t: T) => void): Promise<void>;
