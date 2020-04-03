@@ -8,7 +8,7 @@
   * @param {string} workerScript URL to the worker script
   * @param {string=} dbName Optional database name. The same name must be used
   * to open the same database.
-  * @param {object} workerApi The web worker compatible interface object
+  * @param {object=} workerApi The web worker compatible interface object
   */
 /**
  * An IndexedDB store backend where the actual backend sits in a web

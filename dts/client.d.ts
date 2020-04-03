@@ -765,12 +765,12 @@ export class MatrixClient extends EventEmitter {
       * Restores all rooms if omitted.
       * @param {string=} targetSessionId Session ID to target a specific session.
       * Restores all sessions if omitted.
-      * @param {object} backupInfo Backup metadata from `checkKeyBackup`
-      * @param {object} opts Optional params such as callbacks
+      * @param {object=} backupInfo Backup metadata from `checkKeyBackup`
+      * @param {object=} opts Optional params such as callbacks
       * @return {Promise.<object>} Status of restoration with `total` and `imported`
       * key counts.
       */
-    restoreKeyBackupWithPassword(password: string, targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo: object, opts: object): Promise<object>;
+    restoreKeyBackupWithPassword(password: string, targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo?: object | undefined, opts?: object | undefined): Promise<object>;
     /**
       * Restore from an existing key backup via a private key stored in secret
       * storage.
@@ -779,11 +779,11 @@ export class MatrixClient extends EventEmitter {
       * Restores all rooms if omitted.
       * @param {string=} targetSessionId Session ID to target a specific session.
       * Restores all sessions if omitted.
-      * @param {object} opts Optional params such as callbacks
+      * @param {object=} opts Optional params such as callbacks
       * @return {Promise.<object>} Status of restoration with `total` and `imported`
       * key counts.
       */
-    restoreKeyBackupWithSecretStorage(backupInfo: object, targetRoomId?: string | undefined, targetSessionId?: string | undefined, opts: object): Promise<object>;
+    restoreKeyBackupWithSecretStorage(backupInfo: object, targetRoomId?: string | undefined, targetSessionId?: string | undefined, opts?: object | undefined): Promise<object>;
     /**
       * Restore from an existing key backup via an encoded recovery key.
       * @param {string} recoveryKey Encoded recovery key
@@ -791,24 +791,24 @@ export class MatrixClient extends EventEmitter {
       * Restores all rooms if omitted.
       * @param {string=} targetSessionId Session ID to target a specific session.
       * Restores all sessions if omitted.
-      * @param {object} backupInfo Backup metadata from `checkKeyBackup`
-      * @param {object} opts Optional params such as callbacks
+      * @param {object=} backupInfo Backup metadata from `checkKeyBackup`
+      * @param {object=} opts Optional params such as callbacks
       * @return {Promise.<object>} Status of restoration with `total` and `imported`
       * key counts.
       */
-    restoreKeyBackupWithRecoveryKey(recoveryKey: string, targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo: object, opts: object): Promise<object>;
+    restoreKeyBackupWithRecoveryKey(recoveryKey: string, targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo?: object | undefined, opts?: object | undefined): Promise<object>;
     /**
       * Restore from an existing key backup using a cached key, or fail
       * @param {string=} targetRoomId Room ID to target a specific room.
       * Restores all rooms if omitted.
       * @param {string=} targetSessionId Session ID to target a specific session.
       * Restores all sessions if omitted.
-      * @param {object} backupInfo Backup metadata from `checkKeyBackup`
-      * @param {object} opts Optional params such as callbacks
+      * @param {object=} backupInfo Backup metadata from `checkKeyBackup`
+      * @param {object=} opts Optional params such as callbacks
       * @return {Promise.<object>} Status of restoration with `total` and `imported`
       * key counts.
       */
-    restoreKeyBackupWithCache(targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo: object, opts: object): Promise<object>;
+    restoreKeyBackupWithCache(targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo?: object | undefined, opts?: object | undefined): Promise<object>;
     _restoreKeyBackup(privKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any, { cacheCompleteCallback }?: {
         cacheCompleteCallback: any;
     }): any;
@@ -828,10 +828,10 @@ export class MatrixClient extends EventEmitter {
     getGroups(): any[];
     /**
       * Get the config for the media repository.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves with an object containing the config.
       */
-    getMediaConfig(callback?: any): Promise<any>;
+    getMediaConfig(callback: any): Promise<any>;
     /**
       * Get the room for the given room ID.
       * This function will return a valid room for any room for which a Room event
@@ -870,11 +870,11 @@ export class MatrixClient extends EventEmitter {
       * Set account data event for the current user.
       * @param {string} eventType The event type
       * @param {object} contents the contents object for the event
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setAccountData(eventType: string, contents: object, callback?: any): Promise<any>;
+    setAccountData(eventType: string, contents: object, callback: any): Promise<any>;
     /**
       * Get account data event of given type for the current user.
       * @param {string} eventType The event type
@@ -898,12 +898,12 @@ export class MatrixClient extends EventEmitter {
     getIgnoredUsers(): string[];
     /**
       * Sets the users that the current user should ignore.
-      * @param {Array.<string>=} userIds the user IDs to ignore
+      * @param {Array.<string>} userIds the user IDs to ignore
       * @param {callback=} callback Optional.
       * @return {Promise} Resolves: Account data event
       * @return {MatrixError} Rejects: with an error response.
       */
-    setIgnoredUsers(userIds?: string[] | undefined, callback?: any): Promise<any>;
+    setIgnoredUsers(userIds: string[], callback?: any): Promise<any>;
     /**
       * Gets whether or not a specific user is being ignored by this client.
       * @param {string} userId the user ID to check
@@ -921,7 +921,7 @@ export class MatrixClient extends EventEmitter {
       *                                     the signing URL is passed in this parameter.
       * @param {Array.<string>} opts.viaServers The server names to try and join through in
       *                                   addition to those that are automatically chosen.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: Room object.
       * @return {MatrixError} Rejects: with an error response.
       */
@@ -929,7 +929,7 @@ export class MatrixClient extends EventEmitter {
         syncRoom: boolean;
         inviteSignUrl: boolean;
         viaServers: string[];
-    }, callback?: any): Promise<any>;
+    }, callback: any): Promise<any>;
     /**
       * Resend an event.
       * @param {MatrixEvent} event The event to resend.
@@ -949,89 +949,89 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} roomId
       * @param {string} name
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomName(roomId: string, name: string, callback?: any): Promise<any>;
+    setRoomName(roomId: string, name: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} topic
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomTopic(roomId: string, topic: string, callback?: any): Promise<any>;
+    setRoomTopic(roomId: string, topic: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getRoomTags(roomId: string, callback?: any): Promise<any>;
+    getRoomTags(roomId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} tagName name of room tag to be set
       * @param {object} metadata associated with that tag to be stored
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomTag(roomId: string, tagName: string, metadata: object, callback?: any): Promise<any>;
+    setRoomTag(roomId: string, tagName: string, metadata: object, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} tagName name of room tag to be removed
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    deleteRoomTag(roomId: string, tagName: string, callback?: any): Promise<any>;
+    deleteRoomTag(roomId: string, tagName: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} eventType event type to be set
       * @param {object} content event content
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomAccountData(roomId: string, eventType: string, content: object, callback?: any): Promise<any>;
+    setRoomAccountData(roomId: string, eventType: string, content: object, callback: any): Promise<any>;
     /**
       * Set a user's power level.
       * @param {string} roomId
       * @param {string} userId
       * @param {number} powerLevel
       * @param {MatrixEvent} event
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPowerLevel(roomId: string, userId: string, powerLevel: number, event: MatrixEvent, callback?: any): Promise<any>;
+    setPowerLevel(roomId: string, userId: string, powerLevel: number, event: MatrixEvent, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} eventType
       * @param {object} content
       * @param {string} txnId Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendEvent(roomId: string, eventType: string, content: object, txnId: string, callback?: any): Promise<any>;
+    sendEvent(roomId: string, eventType: string, content: object, txnId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {object} eventObject An object with the partial structure of an event, to which event_id, user_id, room_id and origin_server_ts will be added.
       * @param {string} txnId the txnId.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    _sendCompleteEvent(roomId: string, eventObject: object, txnId: string, callback?: any): Promise<any>;
+    _sendCompleteEvent(roomId: string, eventObject: object, txnId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1048,103 +1048,103 @@ export class MatrixClient extends EventEmitter {
       * @param {string} roomId
       * @param {object} content
       * @param {string} txnId Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendMessage(roomId: string, content: object, txnId: string, callback?: any): Promise<any>;
+    sendMessage(roomId: string, content: object, txnId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} body
       * @param {string} txnId Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendTextMessage(roomId: string, body: string, txnId: string, callback?: any): Promise<any>;
+    sendTextMessage(roomId: string, body: string, txnId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} body
       * @param {string} txnId Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendNotice(roomId: string, body: string, txnId: string, callback?: any): Promise<any>;
+    sendNotice(roomId: string, body: string, txnId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} body
       * @param {string} txnId Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendEmoteMessage(roomId: string, body: string, txnId: string, callback?: any): Promise<any>;
+    sendEmoteMessage(roomId: string, body: string, txnId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} url
       * @param {object} info
       * @param {string} text
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendImageMessage(roomId: string, url: string, info: object, text: string, callback?: any): Promise<any>;
+    sendImageMessage(roomId: string, url: string, info: object, text: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} url
       * @param {object} info
       * @param {string} text
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendStickerMessage(roomId: string, url: string, info: object, text: string, callback?: any): Promise<any>;
+    sendStickerMessage(roomId: string, url: string, info: object, text: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} body
       * @param {string} htmlBody
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendHtmlMessage(roomId: string, body: string, htmlBody: string, callback?: any): Promise<any>;
+    sendHtmlMessage(roomId: string, body: string, htmlBody: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} body
       * @param {string} htmlBody
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendHtmlNotice(roomId: string, body: string, htmlBody: string, callback?: any): Promise<any>;
+    sendHtmlNotice(roomId: string, body: string, htmlBody: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} body
       * @param {string} htmlBody
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendHtmlEmote(roomId: string, body: string, htmlBody: string, callback?: any): Promise<any>;
+    sendHtmlEmote(roomId: string, body: string, htmlBody: string, callback: any): Promise<any>;
     /**
       * Send a receipt.
       * @param {Event} event The event being acknowledged
       * @param {string} receiptType The kind of receipt e.g. "m.read"
       * @param {object} opts Additional content to send alongside the receipt.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendReceipt(event: Event, receiptType: string, opts: object, callback?: any): Promise<any>;
+    sendReceipt(event: Event, receiptType: string, opts: object, callback: any): Promise<any>;
     /**
       * Send a read receipt.
       * @param {Event} event The event that has been read.
@@ -1152,13 +1152,13 @@ export class MatrixClient extends EventEmitter {
       * @param {boolean} opts.hidden True to prevent the receipt from being sent to
       * other users and homeservers. Default false (send to everyone). <b>This
       * property is unstable and may change in the future.</b>
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
     sendReadReceipt(event: Event, opts: {
         hidden: boolean;
-    }, callback?: any): Promise<any>;
+    }, callback: any): Promise<any>;
     /**
       * Set a marker to indicate the point in a room before which the user has read every
       * event. This can be retrieved from room account data (the event type is `m.fully_read`)
@@ -1187,22 +1187,22 @@ export class MatrixClient extends EventEmitter {
       * describe (ms since epoch).  The preview returned will either be the most
       * recent one preceding this timestamp if available, or failing that the next
       * most recent available preview.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: Object of OG metadata.
       * @return {MatrixError} Rejects: with an error response.
       * May return synthesized attributes if the URL lacked OG meta.
       */
-    getUrlPreview(url: string, ts: number, callback?: any): Promise<any>;
+    getUrlPreview(url: string, ts: number, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {boolean} isTyping
       * @param {number} timeoutMs
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendTyping(roomId: string, isTyping: boolean, timeoutMs: number, callback?: any): Promise<any>;
+    sendTyping(roomId: string, isTyping: boolean, timeoutMs: number, callback: any): Promise<any>;
     /**
       * Determines the history of room upgrades for a given room, as far as the
       * client can see. Returns an array of Rooms where the first entry is the
@@ -1222,38 +1222,38 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} roomId
       * @param {string} userId
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    invite(roomId: string, userId: string, callback?: any): Promise<any>;
+    invite(roomId: string, userId: string, callback: any): Promise<any>;
     /**
       * Invite a user to a room based on their email address.
       * @param {string} roomId The room to invite the user to.
       * @param {string} email The email address to invite.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteByEmail(roomId: string, email: string, callback?: any): Promise<any>;
+    inviteByEmail(roomId: string, email: string, callback: any): Promise<any>;
     /**
       * Invite a user to a room based on a third-party identifier.
       * @param {string} roomId The room to invite the user to.
       * @param {string} medium The medium to invite the user e.g. "email".
       * @param {string} address The address for the specified medium.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteByThreePid(roomId: string, medium: string, address: string, callback?: any): Promise<any>;
+    inviteByThreePid(roomId: string, medium: string, address: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    leave(roomId: string, callback?: any): Promise<any>;
+    leave(roomId: string, callback: any): Promise<any>;
     /**
       * Leaves all rooms in the chain of room upgrades based on the given room. By
       * default, this will leave all the previous and upgraded rooms, including the
@@ -1271,40 +1271,40 @@ export class MatrixClient extends EventEmitter {
       * @param {string} roomId
       * @param {string} userId
       * @param {string} reason Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    ban(roomId: string, userId: string, reason: string, callback?: any): Promise<any>;
+    ban(roomId: string, userId: string, reason: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {boolean} deleteRoom True to delete the room from the store on success.
       * Default: true.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    forget(roomId: string, deleteRoom: boolean, callback?: any): Promise<any>;
+    forget(roomId: string, deleteRoom: boolean, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} userId
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: Object (currently empty)
       * @return {MatrixError} Rejects: with an error response.
       */
-    unban(roomId: string, userId: string, callback?: any): Promise<any>;
+    unban(roomId: string, userId: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} roomId
       * @param {string} userId
       * @param {string} reason Optional.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    kick(roomId: string, userId: string, reason: string, callback?: any): Promise<any>;
+    kick(roomId: string, userId: string, reason: string, callback: any): Promise<any>;
     /**
       * Obtain a dict of actions which should be performed for this event according
       * to the push rules for this user.  Caches the dict on the event.
@@ -1316,27 +1316,27 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} info The kind of info to set (e.g. 'avatar_url')
       * @param {object} data The JSON object to set.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setProfileInfo(info: string, data: object, callback?: any): Promise<any>;
+    setProfileInfo(info: string, data: object, callback: any): Promise<any>;
     /**
       *
       * @param {string} name
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setDisplayName(name: string, callback?: any): Promise<any>;
+    setDisplayName(name: string, callback: any): Promise<any>;
     /**
       *
       * @param {string} url
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setAvatarUrl(url: string, callback?: any): Promise<any>;
+    setAvatarUrl(url: string, callback: any): Promise<any>;
     /**
       * Turn an MXC URL into an HTTP one. <strong>This method is experimental and
       * may change.</strong>
@@ -1364,7 +1364,7 @@ export class MatrixClient extends EventEmitter {
       * @param {object} opts Options to apply
       * @param {string} opts.presence One of "online", "offline" or "unavailable"
       * @param {string} opts.status_msg The status message to attach.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       * @throws If 'presence' isn't a valid presence enum value.
@@ -1372,31 +1372,31 @@ export class MatrixClient extends EventEmitter {
     setPresence(opts: {
         presence: string;
         status_msg: string;
-    }, callback?: any): Promise<any>;
+    }, callback: any): Promise<any>;
     /**
       * Retrieve current user presence list.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getPresenceList(callback?: any): Promise<any>;
+    getPresenceList(callback: any): Promise<any>;
     /**
       * Add users to the current user presence list.
-      * @param {callback=} callback Optional.
-      * @param {Array.<string>=} userIds
+      * @param {callback} callback Optional.
+      * @param {Array.<string>} userIds
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteToPresenceList(callback?: any, userIds?: string[] | undefined): Promise<any>;
+    inviteToPresenceList(callback: any, userIds: string[]): Promise<any>;
     /**
       * Drop users from the current user presence list.
-      * @param {callback=} callback Optional.
-      * @param {Array.<string>=} userIds
+      * @param {callback} callback Optional.
+      * @param {Array.<string>} userIds
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       * *
       */
-    dropFromPresenceList(callback?: any, userIds?: string[] | undefined): Promise<any>;
+    dropFromPresenceList(callback: any, userIds: string[]): Promise<any>;
     /**
       * Retrieve older messages from the given room and put them in the timeline.
       *
@@ -1407,13 +1407,13 @@ export class MatrixClient extends EventEmitter {
       * @param {Room} room The room to get older messages in.
       * @param {Integer} limit Optional. The maximum number of previous events to
       * pull in. Default: 30.
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: Room. If you are at the beginning
       * of the timeline, <code>Room.oldState.paginationToken</code> will be
       * <code>null</code>.
       * @return {MatrixError} Rejects: with an error response.
       */
-    scrollback(room: any, limit: any, callback?: any): Promise<any>;
+    scrollback(room: any, limit: any, callback: any): Promise<any>;
     /**
       * Get an EventTimeline for the given event
       *
@@ -1560,7 +1560,7 @@ export class MatrixClient extends EventEmitter {
       * @param {string} clientSecret As requestEmailToken
       * @param {number} sendAttempt As requestEmailToken
       * @param {string} nextLink As requestEmailToken
-      * @param {callback=} callback Optional. As requestEmailToken
+      * @param {callback} callback Optional. As requestEmailToken
       * @return {Promise} Resolves: As requestEmailToken
       */
     requestPasswordEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string): Promise<any>;
@@ -1608,14 +1608,14 @@ export class MatrixClient extends EventEmitter {
       * @param {string} opts.query The text to query.
       * @param {string=} opts.keys The keys to search on. Defaults to all keys. One
       * of "content.body", "content.name", "content.topic".
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
     searchMessageText(opts: {
         query: string;
         keys?: string | undefined;
-    }, callback?: any): Promise<any>;
+    }, callback: any): Promise<any>;
     /**
       * Perform a server-side search for room events.
       *
@@ -1697,11 +1697,11 @@ export class MatrixClient extends EventEmitter {
     getOpenIdToken(): Promise<any>;
     /**
       *
-      * @param {callback=} callback Optional.
+      * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    turnServer(callback?: any): Promise<any>;
+    turnServer(callback: any): Promise<any>;
     /**
       * Get the TURN servers for this home server.
       * @return {Array.<object>} The servers or an empty list.

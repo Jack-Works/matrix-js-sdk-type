@@ -209,10 +209,10 @@ export class SyncApi {
       * @param {Array.<MatrixEvent>} stateEventList A list of state events. This is the state
       * at the *START* of the timeline list if it is supplied.
       * @param {Array.<MatrixEvent>=} timelineEventList A list of timeline events. Lower index
-      * @param {boolean} fromCache whether the sync response came from cache
+      * @param {boolean=} fromCache whether the sync response came from cache
       * is earlier in time. Higher index is later.
       */
-    _processRoomEvents(room: Room, stateEventList: any[], timelineEventList?: any[] | undefined, fromCache: boolean): void;
+    _processRoomEvents(room: Room, stateEventList: any[], timelineEventList?: any[] | undefined, fromCache?: boolean | undefined): void;
     /**
       * Takes a list of timelineEvents and adds and adds to _notifEvents
       * as appropriate.

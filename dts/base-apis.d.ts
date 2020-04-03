@@ -132,11 +132,11 @@ export class MatrixBaseApis {
       * Register a guest account.
       * @param {object=} opts Registration options
       * @param {object} opts.body JSON HTTP body to provide.
-      * @param {callback} callback Optional.
+      * @param {callback=} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    registerGuest(opts?: object | undefined, callback: any): Promise<any>;
+    registerGuest(opts?: object | undefined, callback?: any): Promise<any>;
     /**
       *
       * @param {object} data parameters for registration request
