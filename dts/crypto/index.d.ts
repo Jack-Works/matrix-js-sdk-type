@@ -130,11 +130,11 @@ export class Crypto {
       * @param {string} password Passphrase string that can be entered by the user
       *     when restoring the backup as an alternative to entering the recovery key.
       *     Optional.
-      * @returns {Promise.<Array>} Array with public key metadata, encoded private
+      * @returns {Promise.<object>} Object with public key metadata, encoded private
       *     recovery key which should be disposed of after displaying to the user,
       *     and raw private key to avoid round tripping if needed.
       */
-    createRecoveryKeyFromPassphrase(password: string): Promise<any[]>;
+    createRecoveryKeyFromPassphrase(password: string): Promise<object>;
     /**
       * Checks whether cross signing:
       * - is enabled on this account
@@ -164,6 +164,10 @@ export class Crypto {
       *     auth data as an object.
       * @param {function=} opts.createSecretStorageKey Optional. Function
       * called to await a secret storage key creation flow.
+      * Returns:
+      *     {Promise<Object>} Object with public key metadata, encoded private
+      *     recovery key which should be disposed of after displaying to the user,
+      *     and raw private key to avoid round tripping if needed.
       * @param {object=} opts.keyBackupInfo The current key backup object. If passed,
       * the passphrase and recovery key from this backup will be used.
       * @param {boolean=} opts.setupNewKeyBackup If true, a new key backup version will be
@@ -195,6 +199,7 @@ export class Crypto {
     requestSecret(name: any, devices: any): string;
     getDefaultSecretStorageKeyId(): Promise<any>;
     setDefaultSecretStorageKeyId(k: any): Promise<any>;
+    checkSecretStorageKey(key: any, info: any): boolean;
     /**
       * Checks that a given secret storage private key matches a given public key.
       * This can be used by the getSecretStorageKey callback to verify that the

@@ -159,6 +159,7 @@ export class VerificationRequest extends EventEmitter {
         phase: number;
     }[];
     _isWinningStartRace(newEvent: any): boolean;
+    hasEventId(eventId: any): boolean;
     /**
       * Changes the state of the request and verifier in response to a key verification event.
       * @param {string} type the "symbolic" event type, as returned by the `getEventType` function on the channel.

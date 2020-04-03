@@ -212,6 +212,6 @@ declare class DeviceListUpdateSerialiser {
   */
     updateDevicesForUsers(users: string[], syncToken: string): Promise<any>;
     _doQueuedQueries(): Promise<unknown>;
-    _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any, sskResponse: any): Promise<void>;
+    _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any): Promise<void>;
 }
 export {};

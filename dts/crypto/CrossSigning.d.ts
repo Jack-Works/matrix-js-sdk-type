@@ -34,6 +34,7 @@ export class CrossSigningInfo extends EventEmitter {
     _cacheCallbacks: object;
     keys: {};
     firstUse: boolean;
+    crossSigningVerifiedBefore: boolean;
     /**
   * Calls the app callback to ask for a private key
   * @param {string} type The key type ("master", "self_signing", or "user_signing")
@@ -45,6 +46,7 @@ export class CrossSigningInfo extends EventEmitter {
     toStorage(): {
         keys: {};
         firstUse: boolean;
+        crossSigningVerifiedBefore: boolean;
     };
     /**
   * Check whether the private keys exist in secret storage.
@@ -76,6 +78,7 @@ export class CrossSigningInfo extends EventEmitter {
         SELF_SIGNING: number;
     }): Promise<void>;
     setKeys(keys: any): void;
+    updateCrossSigningVerifiedBefore(isCrossSigningVerified: any): void;
     signObject(data: any, type: any): Promise<any>;
     signUser(key: any): Promise<any>;
     signDevice(userId: any, device: any): Promise<any>;
@@ -109,8 +112,9 @@ export namespace CrossSigningLevel {
  * Represents the ways in which we trust a user
  */
 export class UserTrustLevel {
-    constructor(crossSigningVerified: any, tofu: any);
+    constructor(crossSigningVerified: any, crossSigningVerifiedBefore: any, tofu: any);
     _crossSigningVerified: any;
+    _crossSigningVerifiedBefore: any;
     _tofu: any;
     /**
       *
@@ -122,6 +126,12 @@ export class UserTrustLevel {
       * @returns {boolean} true if this user is verified via cross signing
       */
     isCrossSigningVerified(): boolean;
+    /**
+      *
+      * @returns {boolean} true if we ever verified this user before (at least for
+      * the history of verifications observed by this device).
+      */
+    wasCrossSigningVerified(): boolean;
     /**
       *
       * @returns {boolean} true if this user's key is trusted on first use

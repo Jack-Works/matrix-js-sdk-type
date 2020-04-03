@@ -46,6 +46,13 @@ export class SecretStorage extends EventEmitter {
     hasKey(keyId?: string | undefined): boolean;
     keyNeedsUpgrade(keyId: any): Promise<boolean>;
     /**
+      * Check whether a key matches what we expect based on the key info
+      * @param {Uint8Array} key the key to check
+      * @param {object} info the key info
+      * @return {boolean} whether or not the key matches
+      */
+    checkKey(key: Uint8Array, info: object): boolean;
+    /**
       * Store an encrypted secret on the server
       * @param {string} name The name of the secret
       * @param {string} secret The secret contents.
