@@ -781,7 +781,7 @@ export type EventDecryptionResult = {
     forwardingCurve25519KeyChain: string[] | null;
 };
 import { ReEmitter } from "../ReEmitter";
-import { SAS as SAS_1 } from "./verification/SAS";
+import { SAS } from "./verification/SAS";
 import { IllegalMethod } from "./verification/IllegalMethod";
 import { SHOW_QR_CODE_METHOD } from "./verification/QRCode";
 import { SCAN_QR_CODE_METHOD } from "./verification/QRCode";

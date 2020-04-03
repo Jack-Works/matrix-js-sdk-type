@@ -76,7 +76,7 @@ export class Backend {
     getSecretStorePrivateKey(txn: any, func: any, type: any): void;
     storeCrossSigningKeys(txn: any, keys: any): void;
     storeSecretStorePrivateKey(txn: any, type: any, key: any): void;
-    countEndToEndSessions(txn: any, func: any): void;
+    countEndToEndSessions(txn: any, func: any): number;
     getEndToEndSessions(deviceKey: any, txn: any, func: any): void;
     getEndToEndSession(deviceKey: any, sessionId: any, txn: any, func: any): void;
     getAllEndToEndSessions(txn: any, func: any): void;
