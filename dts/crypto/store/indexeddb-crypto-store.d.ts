@@ -59,6 +59,13 @@ export class IndexedDBCryptoStore {
   */
     getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
     /**
+  * Look for room key requests by state –
+  * unlike above, return a list of all entries in one state.
+  * @param {number} wantedState
+  * @return {Promise.<Array.<*>>} Returns an array of requests in the given state
+  */
+    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<any[]>;
+    /**
   * Look for room key requests by target device and state
   * @param {string} userId Target user ID
   * @param {string} deviceId Target device ID

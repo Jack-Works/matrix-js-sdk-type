@@ -1,4 +1,15 @@
 export function isCryptoAvailable(): boolean;
+/**
+  * Fix up the backup key, that may be in the wrong format due to a bug in a
+  * migration step.  Some backup keys were stored as a comma-separated list of
+  * integers, rather than a base64-encoded byte array.  If this function is
+  * passed a string that looks like a list of integers rather than a base64
+  * string, it will attempt to convert it to the right format.
+  * @param {string} key the key to check
+  * @returns {(null | string)} If the key is in the wrong format, then the fixed
+  * key will be returned. Otherwise null will be returned.
+  */
+export function fixBackupKey(key: string): string | null;
 export namespace verificationMethods {
     export const RECIPROCATE_QR_CODE: string;
     export const SAS: string;
@@ -96,6 +107,7 @@ export class Crypto {
     _lastNewSessionForced: {};
     _toDeviceVerificationRequests: ToDeviceRequests;
     _inRoomVerificationRequests: InRoomRequests;
+    _sendKeyRequestsImmediately: boolean;
     _crossSigningInfo: CrossSigningInfo;
     _secretStorage: SecretStorage;
     /**
@@ -156,13 +168,21 @@ export class Crypto {
       * signing it with the cross-signing master key. If everything is already set
       * up, then no changes are made, so this is safe to run to ensure secret storage
       * is ready for use.
+      *
+      * This function
+      * - creates a new Secure Secret Storage key if no default key exists
+      *   - if a key backup exists, it is migrated to store the key in the Secret
+      *     Storage
+      * - creates a backup if none exists, and one is requested
+      * - migrates Secure Secret Storage to use the latest algorithm, if an outdated
+      *   algorithm is found
       * @param {Object} opts __auto_generated__
-      * @param {function=} opts.authUploadDeviceSigningKeys Optional. Function
+      * @param {((...args: any[]) => any)=} opts.authUploadDeviceSigningKeys Optional. Function
       * called to await an interactive auth flow when uploading device signing keys.
       * Args:
       *     {function} A function that makes the request requiring auth. Receives the
       *     auth data as an object.
-      * @param {function=} opts.createSecretStorageKey Optional. Function
+      * @param {((...args: any[]) => any)=} opts.createSecretStorageKey Optional. Function
       * called to await a secret storage key creation flow.
       * Returns:
       *     {Promise<Object>} Object with public key metadata, encoded private
@@ -182,8 +202,8 @@ export class Crypto {
       *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
       */
     bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo, setupNewKeyBackup, setupNewSecretStorage, getKeyBackupPassphrase, }?: {
-        authUploadDeviceSigningKeys?: Function | undefined;
-        createSecretStorageKey?: Function | undefined;
+        authUploadDeviceSigningKeys?: ((...args: any[]) => any) | undefined;
+        createSecretStorageKey?: ((...args: any[]) => any) | undefined;
         keyBackupInfo?: object | undefined;
         setupNewKeyBackup?: boolean | undefined;
         setupNewSecretStorage?: boolean | undefined;
@@ -235,7 +255,7 @@ export class Crypto {
       * keys will be created for the given level and below.  Defaults to
       * regenerating all keys.
       * @param {Object} opts __auto_generated__
-      * @param {function=} opts.authUploadDeviceSigningKeys Optional. Function
+      * @param {((...args: any[]) => any)=} opts.authUploadDeviceSigningKeys Optional. Function
       * called to await an interactive auth flow when uploading device signing keys.
       * Args:
       *     {function} A function that makes the request requiring auth. Receives the
@@ -246,7 +266,7 @@ export class Crypto {
         USER_SIGNING: number;
         SELF_SIGNING: number;
     } | undefined, { authUploadDeviceSigningKeys, }?: {
-        authUploadDeviceSigningKeys?: Function | undefined;
+        authUploadDeviceSigningKeys?: ((...args: any[]) => any) | undefined;
     }): Promise<void>;
     /**
      * Run various follow-up actions after cross-signing keys have changed locally
@@ -541,9 +561,13 @@ export class Crypto {
     /**
       * Import a list of room keys previously exported by exportRoomKeys
       * @param {Array.<object>} keys a list of session export objects
+      * @param {object} opts
+      * @param {((...args: any[]) => any)} opts.progressCallback called with an object which has a stage param
       * @return {Promise} a promise which resolves once the keys have been imported
       */
-    importRoomKeys(keys: object[]): Promise<any>;
+    importRoomKeys(keys: object[], opts?: {
+        progressCallback: (...args: any[]) => any;
+    }): Promise<any>;
     /**
       * Schedules sending all keys waiting to be sent to the backup, if not already
       * scheduled. Retries if necessary.
@@ -616,6 +640,11 @@ export class Crypto {
       * @param {RoomKeyRequestBody} requestBody parameters to match for cancellation
       */
     cancelRoomKeyRequest(requestBody: object): void;
+    /**
+      * Re-send any outgoing key requests, eg after verification
+      * @returns {Promise}
+      */
+    cancelAndResendAllOutgoingKeyRequests(): Promise<any>;
     /**
       * handle an m.room.encryption event
       * @param {MatrixEvent} event encryption event

@@ -54,6 +54,7 @@ export class Filter {
       * @param {number} limit The max number of events to return for each room.
       */
     setTimelineLimit(limit: number): void;
+    setLazyLoadMembers(enabled: any): void;
     /**
       * Control whether left rooms should be included in responses.
       * @param {boolean} includeLeave True to make rooms the user has left appear
@@ -73,12 +74,6 @@ export namespace Filter {
     export function fromJson(userId: string, filterId: string, jsonObj: object): Filter;
     export namespace LAZY_LOADING_MESSAGES_FILTER {
         export const lazy_load_members: boolean;
-    }
-    export namespace LAZY_LOADING_SYNC_FILTER {
-        export namespace room {
-            import state = Filter.LAZY_LOADING_MESSAGES_FILTER;
-            export { state };
-        }
     }
 }
 import { FilterComponent } from "./filter-component";

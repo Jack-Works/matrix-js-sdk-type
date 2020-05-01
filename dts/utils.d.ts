@@ -105,7 +105,7 @@ export declare function checkObjectHasNoAdditionalKeys(obj: object, allowedKeys:
  * @param {Object} obj The object to deep copy.
  * @return {Object} A copy of the object without any references to the original.
  */
-export declare function deepCopy(obj: object): object;
+export declare function deepCopy<T>(obj: T): T;
 /**
  * Compare two objects for equality. The objects MUST NOT have circular references.
  *

@@ -1,49 +1,13 @@
-/**
-  * The function used to perform HTTP requests. Only use this if you want to
-  * use a different HTTP library, e.g. Angular's <code>$http</code>. This should
-  * be set prior to calling {@link createClient}.
-  * @param {requestFunction} r The request function to use.
-  */
-export function request(r: requestFunction): void;
-/**
-  * Return the currently-set request function.
-  * @return {requestFunction} The current request function.
-  */
-export function getRequest(): requestFunction;
-/**
-  * Apply wrapping code around the request function. The wrapper function is
-  * installed as the new request handler, and when invoked it is passed the
-  * previous value, along with the options and callback arguments.
-  * @param {requestWrapperFunction} wrapper The wrapping function.
-  */
-export function wrapRequest(wrapper: requestWrapperFunction): void;
-/**
-  * Configure a different factory to be used for creating crypto stores
-  * @param {Function} fac a function which will return a new
-  *    {@link module:crypto.store.base~CryptoStore}.
-  */
-export function setCryptoStoreFactory(fac: Function): void;
-/**
-  * Construct a Matrix Client. Similar to {@link module:client.MatrixClient}
-  * except that the 'request', 'store' and 'scheduler' dependencies are satisfied.
-  * @param {(object | string)} opts The configuration options for this client. If
-  * this is a string, it is assumed to be the base URL. These configuration
-  * options will be passed directly to {@link module:client.MatrixClient}.
-  * @param {object} opts.store If not set, defaults to
-  * {@link module:store/memory.MemoryStore}.
-  * @param {object} opts.scheduler If not set, defaults to
-  * {@link module:scheduler~MatrixScheduler}.
-  * @param {requestFunction} opts.request If not set, defaults to the function
-  * supplied to {@link request} which defaults to the request module from NPM.
-  * @param {store.base.CryptoStore=} opts.cryptoStore crypto store implementation. Calls the factory supplied to
-  *    {@link setCryptoStoreFactory} if unspecified; or if no factory has been
-  *    specified, uses a default implementation (indexeddb in the browser,
-  *    in-memory otherwise).
-  * @return {MatrixClient} A new matrix client.
-  * @see {@link module:client.MatrixClient} for the full list of options for
-  * <code>opts</code>.
-  */
-export function createClient(opts: string | object): MatrixClient;
+import type Request from "request";
+import { MemoryCryptoStore } from "./crypto/store/memory-crypto-store";
+import { LocalStorageCryptoStore } from "./crypto/store/localStorage-crypto-store";
+import { IndexedDBCryptoStore } from "./crypto/store/indexeddb-crypto-store";
+import { MemoryStore } from "./store/memory";
+import { StubStore } from "./store/stub";
+import { LocalIndexedDBStoreBackend } from "./store/indexeddb-local-backend";
+import { RemoteIndexedDBStoreBackend } from "./store/indexeddb-remote-backend";
+import { MatrixScheduler } from "./scheduler";
+import { MatrixClient } from "./client";
 export * from "./client";
 export * from "./http-api";
 export * from "./autodiscovery";
@@ -68,24 +32,100 @@ export * from "./store/session/webstorage";
 export * from "./crypto/store/memory-crypto-store";
 export * from "./crypto/store/indexeddb-crypto-store";
 export * from "./content-repo";
-export const ContentHelpers: Promise<typeof import("./content-helpers")>;
+export declare const ContentHelpers: Promise<typeof import("./content-helpers")>;
+export { createNewMatrixCall, setAudioOutput as setMatrixCallAudioOutput, setAudioInput as setMatrixCallAudioInput, setVideoInput as setMatrixCallVideoInput, } from "./webrtc/call";
+/**
+ * The function used to perform HTTP requests. Only use this if you want to
+ * use a different HTTP library, e.g. Angular's <code>$http</code>. This should
+ * be set prior to calling {@link createClient}.
+ * @param {requestFunction} r The request function to use.
+ */
+export declare function request(r: any): void;
+/**
+ * Return the currently-set request function.
+ * @return {requestFunction} The current request function.
+ */
+export declare function getRequest(): any;
+/**
+ * Apply wrapping code around the request function. The wrapper function is
+ * installed as the new request handler, and when invoked it is passed the
+ * previous value, along with the options and callback arguments.
+ * @param {requestWrapperFunction} wrapper The wrapping function.
+ */
+export declare function wrapRequest(wrapper: any): void;
+declare type Store = StubStore | MemoryStore | LocalIndexedDBStoreBackend | RemoteIndexedDBStoreBackend;
+declare type CryptoStore = MemoryCryptoStore | LocalStorageCryptoStore | IndexedDBCryptoStore;
+/**
+ * Configure a different factory to be used for creating crypto stores
+ *
+ * @param {Function} fac  a function which will return a new
+ *    {@link module:crypto.store.base~CryptoStore}.
+ */
+export declare function setCryptoStoreFactory(fac: any): void;
+interface ICreateClientOpts {
+    baseUrl: string;
+    store?: Store;
+    cryptoStore?: CryptoStore;
+    scheduler?: MatrixScheduler;
+    request?: Request;
+}
+/**
+ * Construct a Matrix Client. Similar to {@link module:client.MatrixClient}
+ * except that the 'request', 'store' and 'scheduler' dependencies are satisfied.
+ * @param {(Object|string)} opts The configuration options for this client. If
+ * this is a string, it is assumed to be the base URL. These configuration
+ * options will be passed directly to {@link module:client.MatrixClient}.
+ * @param {Object} opts.store If not set, defaults to
+ * {@link module:store/memory.MemoryStore}.
+ * @param {Object} opts.scheduler If not set, defaults to
+ * {@link module:scheduler~MatrixScheduler}.
+ * @param {requestFunction} opts.request If not set, defaults to the function
+ * supplied to {@link request} which defaults to the request module from NPM.
+ *
+ * @param {module:crypto.store.base~CryptoStore=} opts.cryptoStore
+ *    crypto store implementation. Calls the factory supplied to
+ *    {@link setCryptoStoreFactory} if unspecified; or if no factory has been
+ *    specified, uses a default implementation (indexeddb in the browser,
+ *    in-memory otherwise).
+ *
+ * @return {MatrixClient} A new matrix client.
+ * @see {@link module:client.MatrixClient} for the full list of options for
+ * <code>opts</code>.
+ */
+export declare function createClient(opts: ICreateClientOpts | string): MatrixClient;
 /**
  * The request function interface for performing HTTP requests. This matches the
  * API for the {@link https://github.com/request/request#requestoptions-callback|
  * request NPM module}. The SDK will attempt to call this function in order to
  * perform an HTTP request.
+ * @callback requestFunction
+ * @param {Object} opts The options for this HTTP request.
+ * @param {string} opts.uri The complete URI.
+ * @param {string} opts.method The HTTP method.
+ * @param {Object} opts.qs The query parameters to append to the URI.
+ * @param {Object} opts.body The JSON-serializable object.
+ * @param {boolean} opts.json True if this is a JSON request.
+ * @param {Object} opts._matrix_opts The underlying options set for
+ * {@link MatrixHttpApi}.
+ * @param {requestCallback} callback The request callback.
  */
-export type requestFunction = (opts: object, uri: string, method: string, qs: object, body: object, json: boolean, _matrix_opts: object, callback: requestCallback) => any;
 /**
  * A wrapper for the request function interface.
+ * @callback requestWrapperFunction
+ * @param {requestFunction} origRequest The underlying request function being
+ * wrapped
+ * @param {Object} opts The options for this HTTP request, given in the same
+ * form as {@link requestFunction}.
+ * @param {requestCallback} callback The request callback.
  */
-export type requestWrapperFunction = (origRequest: requestFunction, opts: object, callback: requestCallback) => any;
 /**
  * The request callback interface for performing HTTP requests. This matches the
  * API for the {@link https://github.com/request/request#requestoptions-callback|
  * request NPM module}. The SDK will implement a callback which meets this
  * interface in order to handle the HTTP response.
+ * @callback requestCallback
+ * @param {Error} err The error if one occurred, else falsey.
+ * @param {Object} response The HTTP response which consists of
+ * <code>{statusCode: {Number}, headers: {Object}}</code>
+ * @param {Object} body The parsed HTTP response body.
  */
-export type requestCallback = (err: Error, response: object, body: object) => any;
-import { MatrixClient } from "./client";
-export { createNewMatrixCall, setAudioOutput as setMatrixCallAudioOutput, setAudioInput as setMatrixCallAudioInput, setVideoInput as setMatrixCallVideoInput } from "./webrtc/call";

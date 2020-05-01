@@ -11,7 +11,7 @@ export const CRYPTO_ENABLED: boolean;
   * HTTP API.
   * @param {string} opts.idBaseUrl Optional. The base identity server URL for
   * identity server requests.
-  * @param {Function} opts.request Required. The function to invoke for HTTP
+  * @param {((...args: any[]) => any)} opts.request Required. The function to invoke for HTTP
   * requests. The value of this property is typically <code>require("request")
   * </code> as it returns a function which meets the required interface. See
   * {@link requestFunction} for more information.
@@ -71,7 +71,7 @@ export const CRYPTO_ENABLED: boolean;
   * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
   * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
   *     The cross-signing API is currently UNSTABLE and may change without notice.
-  * @param {function=} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
+  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
   * Secure Secret Storage will be used by default if this is unset.
   * Args:
   *    {string} type The type of key needed.  Will be one of "master",
@@ -82,13 +82,13 @@ export const CRYPTO_ENABLED: boolean;
   *        requested.
   *   Should return a promise that resolves with the private key as a
   *   UInt8Array or rejects with an error.
-  * @param {function=} opts.cryptoCallbacks.saveCrossSigningKeys Optional. Called when new private keys for cross-signing need to be saved.
+  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.saveCrossSigningKeys Optional. Called when new private keys for cross-signing need to be saved.
   * Secure Secret Storage will be used by default if this is unset.
   * Args:
   *   {object} keys the private keys to save. Map of key name to private key
   *       as a UInt8Array. The getPrivateKey callback above will be called
   *       with the corresponding key name when the keys are required again.
-  * @param {function=} opts.cryptoCallbacks.shouldUpgradeDeviceVerifications Optional. Called when there are device-to-device verifications that can be
+  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.shouldUpgradeDeviceVerifications Optional. Called when there are device-to-device verifications that can be
   * upgraded into cross-signing verifications.
   * Args:
   *   {object} users The users whose device verifications can be
@@ -98,7 +98,7 @@ export const CRYPTO_ENABLED: boolean;
   *     user's cross-signing information)
   * Should return a promise which resolves with an array of the user IDs who
   * should be cross-signed.
-  * @param {function=} opts.cryptoCallbacks.getSecretStorageKey Optional. Function called when an encryption key for secret storage
+  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.getSecretStorageKey Optional. Function called when an encryption key for secret storage
   *     is required. One or more keys will be described in the keys object.
   *     The callback function should return a promise with an array of:
   *     [<key name>, <UInt8Array private key>] or null if it cannot provide
@@ -113,7 +113,7 @@ export const CRYPTO_ENABLED: boolean;
   *           }
   *       }
   *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
-  * @param {function=} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
+  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
   * device.
   * Args:
   *   {string} name The name of the secret being requested.
@@ -471,16 +471,16 @@ export class MatrixClient extends EventEmitter {
     /**
       * Get the stored device keys for a user id
       * @param {string} userId the user to list keys for.
-      * @return {Promise.<Array.<>>} list of devices
+      * @return {Array.<>} list of devices
       */
-    getStoredDevicesForUser(userId: string): Promise<any[]>;
+    getStoredDevicesForUser(userId: string): any[];
     /**
       * Get the stored device key for a user id and device id
       * @param {string} userId the user to list keys for.
       * @param {string} deviceId unique identifier for the device
-      * @return {Promise.<?>} device or null
+      * @return device or null
       */
-    getStoredDevice(userId: string, deviceId: string): Promise<any>;
+    getStoredDevice(userId: string, deviceId: string): any;
     /**
       * Mark the given device as verified
       * @param {string} userId owner of the device
@@ -603,7 +603,8 @@ export class MatrixClient extends EventEmitter {
       */
     cancelAndResendEventRoomKeyRequest(event: MatrixEvent): Promise<any>;
     /**
-      * Enable end-to-end encryption for a room.
+      * Enable end-to-end encryption for a room. This does not modify room state.
+      * Any messages sent before the returned promise resolves will be sent unencrypted.
       * @param {string} roomId The room ID to enable encryption in.
       * @param {object} config The encryption config for the room.
       * @return {Promise} A promise that will resolve when encryption is set up.
@@ -634,10 +635,14 @@ export class MatrixClient extends EventEmitter {
     /**
       * Import a list of room keys previously exported by exportRoomKeys
       * @param {Array.<object>} keys a list of session export objects
+      * @param {object} opts
+      * @param {((...args: any[]) => any)} opts.progressCallback called with an object that has a "stage" param
       * @return {Promise} a promise which resolves when the keys
       *    have been imported
       */
-    importRoomKeys(keys: object[]): Promise<any>;
+    importRoomKeys(keys: object[], opts: {
+        progressCallback: (...args: any[]) => any;
+    }): Promise<any>;
     /**
       * Force a re-check of the local key backup status against
       * what's on the server.
@@ -667,7 +672,8 @@ export class MatrixClient extends EventEmitter {
     /**
       *
       * @returns {boolean} true if the client is configured to back up keys to
-      *     the server, otherwise false.
+      *     the server, otherwise false. If we haven't completed a successful check
+      *     of key backup status yet, returns null.
       */
     getKeyBackupEnabled(): boolean;
     /**
@@ -809,8 +815,9 @@ export class MatrixClient extends EventEmitter {
       * key counts.
       */
     restoreKeyBackupWithCache(targetRoomId?: string | undefined, targetSessionId?: string | undefined, backupInfo?: object | undefined, opts?: object | undefined): Promise<object>;
-    _restoreKeyBackup(privKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any, { cacheCompleteCallback }?: {
+    _restoreKeyBackup(privKey: any, targetRoomId: any, targetSessionId: any, backupInfo: any, { cacheCompleteCallback, progressCallback, }?: {
         cacheCompleteCallback: any;
+        progressCallback: any;
     }): any;
     deleteKeysFromBackup(roomId: any, sessionId: any, version: any): any;
     /**
@@ -860,14 +867,15 @@ export class MatrixClient extends EventEmitter {
       * @return {?User} A user or null if there is no data store or the user does
       * not exist.
       */
-    getUser(userId: string): any;
+    getUser(userId: string): User | null;
     /**
       * Retrieve all known users.
       * @return {Array.<User>} A list of users, or an empty list if there is no data store.
       */
-    getUsers(): any[];
+    getUsers(): User[];
     /**
       * Set account data event for the current user.
+      * It will retry the request up to 5 times.
       * @param {string} eventType The event type
       * @param {object} contents the contents object for the event
       * @param {callback} callback Optional.
@@ -1844,15 +1852,15 @@ export class MatrixClient extends EventEmitter {
       * are other references to the timelines for this room, e.g because the client is
       * actively viewing events in this room.
       * Default: returns false.
-      * @param {Function} cb The callback which will be invoked.
+      * @param {((...args: any[]) => any)} cb The callback which will be invoked.
       */
-    setCanResetTimelineCallback(cb: Function): void;
-    _canResetTimelineCallback: Function | undefined;
+    setCanResetTimelineCallback(cb: (...args: any[]) => any): void;
+    _canResetTimelineCallback: ((...args: any[]) => any) | undefined;
     /**
       * Get the callback set via `setCanResetTimelineCallback`.
-      * @return {?Function} The callback or null
+      * @return {?((...args: any[]) => any)} The callback or null
       */
-    getCanResetTimelineCallback(): Function | null;
+    getCanResetTimelineCallback(): ((...args: any[]) => any) | null;
     /**
       * Returns relations for a given event. Handles encryption transparently,
       * with the caveat that the amount of events returned might be 0, even though you get a nextBatch.
@@ -1870,9 +1878,11 @@ export class MatrixClient extends EventEmitter {
     }): object;
     /**
       *
-      * @return {Function}
+      * @param {object=} options
+      * @param {boolean} options.preventReEmit don't reemit events emitted on an event mapped by this mapper on the client
+      * @return {((...args: any[]) => any)}
       */
-    getEventMapper(): Function;
+    getEventMapper(options?: object | undefined): (...args: any[]) => any;
     /**
       * The app may wish to see if we have a key cached without
       * triggering a user interaction.
@@ -1900,6 +1910,7 @@ import { RoomList } from "./crypto/RoomList";
 import { PushProcessor } from "./pushprocessor";
 import { MatrixScheduler } from "./scheduler";
 import { MatrixEvent } from "./models/event";
+import { User } from "./models/user";
 import { PushAction } from "./pushprocessor";
 import { Filter } from "./filter";
 import { EventTimeline } from "./models/event-timeline";

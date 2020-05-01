@@ -1,14 +1,14 @@
 /**
   * Registers an encryption/decryption class for a particular algorithm
   * @param {string} algorithm algorithm tag to register for
-  * @param {any} encryptor {@link
+  * @param {{ new(...args: any[]): any }} encryptor {@link
   *     module:crypto/algorithms/base.EncryptionAlgorithm|EncryptionAlgorithm}
   *     implementation
-  * @param {any} decryptor {@link
+  * @param {{ new(...args: any[]): any }} decryptor {@link
   *     module:crypto/algorithms/base.DecryptionAlgorithm|DecryptionAlgorithm}
   *     implementation
   */
-export function registerAlgorithm(algorithm: string, encryptor: any, decryptor: any): void;
+export function registerAlgorithm(algorithm: string, encryptor: new (...args: any[]) => any, decryptor: new (...args: any[]) => any): void;
 /**
   * Internal module. Defines the base classes of the encryption implementations
   * @module

@@ -62,6 +62,7 @@ export class OlmDevice {
     _outboundGroupSessionStore: {};
     _inboundGroupSessionMessageIndexes: {};
     _sessionsInProgress: {};
+    _olmPrekeyPromise: Promise<void>;
     /**
       * Initialise the OlmAccount. This must be called before any other operations
       * on the OlmDevice.
@@ -93,7 +94,7 @@ export class OlmDevice {
       * This function requires a live transaction object from cryptoStore.doTxn()
       * and therefore may only be called in a doTxn() callback.
       * @param {*} txn Opaque transaction object from cryptoStore.doTxn()
-      * @param {function} func
+      * @param {((...args: any[]) => any)} func
       * @private
       */
     private _getAccount;
@@ -112,7 +113,7 @@ export class OlmDevice {
       * @param {string} deviceKey
       * @param {string} sessionId
       * @param {*} txn Opaque transaction object from cryptoStore.doTxn()
-      * @param {function} func
+      * @param {((...args: any[]) => any)} func
       * @private
       */
     private _getSession;
@@ -121,7 +122,7 @@ export class OlmDevice {
       * function with it. The session object is destroyed once the function
       * returns.
       * @param {object} sessionInfo
-      * @param {function} func
+      * @param {((...args: any[]) => any)} func
       * @private
       */
     private _unpickleSession;
@@ -135,7 +136,7 @@ export class OlmDevice {
     private _saveSession;
     /**
       * get an OlmUtility and call the given function
-      * @param {function} func
+      * @param {((...args: any[]) => any)} func
       * @return {object} result of func
       * @private
       */
@@ -268,7 +269,7 @@ export class OlmDevice {
       * extract an OutboundGroupSession from _outboundGroupSessionStore and call the
       * given function
       * @param {string} sessionId
-      * @param {function} func
+      * @param {((...args: any[]) => any)} func
       * @return {object} result of func
       * @private
       */

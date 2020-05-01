@@ -17,6 +17,7 @@ export class DeviceList extends EventEmitter {
     _resolveSavePromise: ((value?: any) => void) | null;
     _savePromiseTime: any;
     _saveTimer: NodeJS.Timeout | null;
+    _hasFetched: boolean | null;
     /**
      * Load the device tracking state from storage
      */

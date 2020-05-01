@@ -64,6 +64,12 @@ export class MemoryCryptoStore {
       *    there are no pending requests in those states
       */
     getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
+    /**
+      *
+      * @param {number} wantedState
+      * @return {Promise.<Array.<*>>} All OutgoingRoomKeyRequests in state
+      */
+    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<any[]>;
     getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): Promise<any[]>;
     /**
       * Look for an existing room key request by id and state, and update it if

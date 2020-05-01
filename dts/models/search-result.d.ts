@@ -19,10 +19,10 @@ export class SearchResult {
       * Create a SearchResponse from the response to /search
       * @static
       * @param {object} jsonObj
-      * @param {function} eventMapper
+      * @param {((...args: any[]) => any)} eventMapper
       * @return {SearchResult}
       */
-    static fromJson(jsonObj: object, eventMapper: Function): SearchResult;
+    static fromJson(jsonObj: object, eventMapper: (...args: any[]) => any): SearchResult;
     constructor(rank: any, eventContext: any);
     rank: any;
     context: any;

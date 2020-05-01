@@ -77,6 +77,10 @@ export class CrossSigningInfo extends EventEmitter {
         USER_SIGNING: number;
         SELF_SIGNING: number;
     }): Promise<void>;
+    /**
+     * unsets the keys, used when another session has reset the keys, to disable cross-signing
+     */
+    clearKeys(): void;
     setKeys(keys: any): void;
     updateCrossSigningVerifiedBefore(isCrossSigningVerified: any): void;
     signObject(data: any, type: any): Promise<any>;

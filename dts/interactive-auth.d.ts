@@ -50,7 +50,7 @@
   *     the client secret for that session
   * @param {string?} opts.emailSid If returning from having completed m.login.email.identity
   *     auth, the sid for the email verification session.
-  * @param {function?} opts.requestEmailToken A function that takes the email address (string),
+  * @param {((...args: any[]) => any)?} opts.requestEmailToken A function that takes the email address (string),
   *     clientSecret (string), attempt number (int) and sessionId (string) and calls the
   *     relevant requestToken function and returns the promise returned by that function.
   *     If the resulting promise rejects, the rejection will propagate through to the

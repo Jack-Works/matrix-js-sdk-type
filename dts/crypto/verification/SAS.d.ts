@@ -14,12 +14,12 @@ export class SAS {
     _waitingForAccept: boolean | undefined;
     sasEvent: {
         sas: {};
-        confirm: () => void;
+        confirm: () => Promise<void>;
         cancel: () => void;
         mismatch: () => void;
     } | undefined;
     _expectedEvent: string | undefined;
     _doRespondVerification(): Promise<void>;
-    _sendMAC(olmSAS: any, method: any): void;
+    _sendMAC(olmSAS: any, method: any): any;
     _checkMAC(olmSAS: any, content: any, method: any): Promise<void>;
 }

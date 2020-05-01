@@ -6,7 +6,7 @@
   * HTTP API.
   * @param {string} opts.idBaseUrl Optional. The base identity server URL for
   * identity server requests.
-  * @param {Function} opts.request Required. The function to invoke for HTTP
+  * @param {((...args: any[]) => any)} opts.request Required. The function to invoke for HTTP
   * requests. The value of this property is typically <code>require("request")
   * </code> as it returns a function which meets the required interface. See
   * {@link requestFunction} for more information.
@@ -699,10 +699,10 @@ export class MatrixBaseApis {
       *   rather than the whole body. Defaults to false (except on browsers,
       *   where it defaults to true for backwards compatibility). Ignored if
       *   opts.rawResponse is true.
-      * @param {Function=} opts.callback Deprecated. Optional. The callback to
+      * @param {((...args: any[]) => any)=} opts.callback Deprecated. Optional. The callback to
       *    invoke on success/failure. See the promise return values for more
       *    information.
-      * @param {Function=} opts.progressHandler Optional. Called when a chunk of
+      * @param {((...args: any[]) => any)=} opts.progressHandler Optional. Called when a chunk of
       *    data has been uploaded, with an object containing the fields `loaded`
       *    (number of bytes transferred) and `total` (total size, if known).
       * @return {Promise} Resolves to response object, as
@@ -715,8 +715,8 @@ export class MatrixBaseApis {
         type?: string | undefined;
         rawResponse?: boolean | undefined;
         onlyContentUri?: boolean | undefined;
-        callback?: Function | undefined;
-        progressHandler?: Function | undefined;
+        callback?: ((...args: any[]) => any) | undefined;
+        progressHandler?: ((...args: any[]) => any) | undefined;
     }): Promise<any>;
     /**
       * Cancel a file upload in progress

@@ -35,7 +35,7 @@ export class Backend {
   * @private
   * @param {IDBTransaction} txn database transaction
   * @param {RoomKeyRequestBody} requestBody existing request to look for
-  * @param {Function} callback function to call with the results of the
+  * @param {((...args: any[]) => any)} callback function to call with the results of the
   *    search. Either passed a matching
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    not found.
@@ -50,6 +50,12 @@ export class Backend {
   *    requests in those states, an arbitrary one is chosen.
   */
     getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
+    /**
+  *
+  * @param {number} wantedState
+  * @return {Promise.<Array.<*>>} All elements in a given state
+  */
+    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<any[]>;
     getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): Promise<any[]>;
     /**
   * Look for an existing room key request by id and state, and update it if

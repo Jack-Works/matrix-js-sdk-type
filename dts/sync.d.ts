@@ -5,7 +5,7 @@
   * @param {MatrixClient} client The matrix client instance to use.
   * @param {object} opts Config options
   * @param {=} opts.crypto Crypto manager
-  * @param {Function=} opts.canResetEntireTimeline A function which is called
+  * @param {((...args: any[]) => any)=} opts.canResetEntireTimeline A function which is called
   * with a room ID and returns a boolean. It should return 'true' if the SDK can
   * SAFELY remove events from this room. It may not be safe to remove events if
   * there are other references to the timelines for this room.

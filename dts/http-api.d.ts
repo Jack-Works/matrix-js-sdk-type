@@ -1,4 +1,12 @@
 /**
+  * Retries a network operation run in a callback.
+  * @param {number} maxAttempts maximum attempts to try
+  * @param {((...args: any[]) => any)} callback callback that returns a promise of the network operation. If rejected with ConnectionError, it will be retried by calling the callback again.
+  * @return {any} the result of the network operation
+  * @throws {ConnectionError} If after maxAttempts the callback still throws ConnectionError
+  */
+export function retryNetworkOperation(maxAttempts: number, callback: (...args: any[]) => any): any;
+/**
  * A constant representing the URI path for release 0 of the Client-Server HTTP API.
  */
 export const PREFIX_R0: "/_matrix/client/r0";
@@ -26,7 +34,7 @@ export const PREFIX_MEDIA_R0: "/_matrix/media/r0";
   * @param {object} opts The options to use for this HTTP API.
   * @param {string} opts.baseUrl Required. The base client-server URL e.g.
   * 'http://localhost:8008'.
-  * @param {Function} opts.request Required. The function to call for HTTP
+  * @param {((...args: any[]) => any)} opts.request Required. The function to call for HTTP
   * requests. This function must look like function(opts, callback){ ... }.
   * @param {string} opts.prefix Required. The matrix client prefix to use, e.g.
   * '/_matrix/client/r0'. See PREFIX_R0 and PREFIX_UNSTABLE for constants.
@@ -86,9 +94,25 @@ export class MatrixHttpApi {
   * @prop {number} httpStatus The numeric HTTP status code given
   */
 export class MatrixError extends Error {
-    constructor(error: any);
+    constructor(errorJson: any);
     errcode: any;
     name: any;
     message: any;
     data: any;
+}
+/**
+  * Construct a ConnectionError. This is a JavaScript Error indicating
+  * that a request failed because of some error with the connection, either
+  * CORS was not correctly configured on the server, the server didn't response,
+  * the request timed out, or the internet connection on the client side went down.
+  * @constructor
+  */
+export class ConnectionError extends Error {
+    constructor(message: any, cause?: any);
+    _cause: any;
+    get name(): string;
+    get cause(): any;
+}
+export class AbortError extends Error {
+    get name(): string;
 }
