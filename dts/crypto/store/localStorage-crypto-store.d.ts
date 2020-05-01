@@ -1,6 +1,6 @@
 /**
   *
-  * @implements {CryptoStore}
+  * @implements {{}}
   */
 export class LocalStorageCryptoStore extends MemoryCryptoStore {
     static exists(webStore: any): boolean;

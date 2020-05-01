@@ -4,7 +4,7 @@ export const VERSION: 9;
   * Implementation of a CryptoStore which is backed by an existing
   * IndexedDB connection. Generally you want IndexedDBCryptoStore
   * which connects to the database and defers to one of these.
-  * @implements {CryptoStore}
+  * @implements {{}}
   */
 export class Backend {
     /**

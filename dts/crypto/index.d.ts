@@ -26,7 +26,7 @@ export namespace verificationMethods {
   * @param {string} userId The user ID for the local user
   * @param {string} deviceId The identifier for this device.
   * @param {object} clientStore the MatrixClient data store.
-  * @param {CryptoStore} cryptoStore storage for the crypto layer.
+  * @param {{}} cryptoStore storage for the crypto layer.
   * @param {RoomList} roomList An initialised RoomList object
   * @param {Array} verificationMethods Array of verification methods to use.
   *    Each element can either be a string from MatrixClient.verificationMethods
@@ -53,7 +53,7 @@ export namespace verificationMethods {
  *
  * @param {Object} clientStore the MatrixClient data store.
  *
- * @param {any} cryptoStore
+ * @param {{}} cryptoStore
  *    storage for the crypto layer.
  *
  * @param {RoomList} roomList An initialised RoomList object

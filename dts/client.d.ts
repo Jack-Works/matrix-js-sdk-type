@@ -36,7 +36,7 @@ export const CRYPTO_ENABLED: boolean;
   *    migrated out of here to `cryptoStore` instead. If not specified,
   *    end-to-end crypto will be disabled. The `createClient` helper
   *    _will not_ create this store at the moment.
-  * @param {store.base.CryptoStore} opts.cryptoStore A store to be used for end-to-end crypto session data. If not specified,
+  * @param {{}} opts.cryptoStore A store to be used for end-to-end crypto session data. If not specified,
   *    end-to-end crypto will be disabled. The `createClient` helper will create
   *    a default store if needed.
   * @param {string=} opts.deviceId A unique identifier for this device; used for
@@ -173,7 +173,7 @@ export const CRYPTO_ENABLED: boolean;
  *    end-to-end crypto will be disabled. The `createClient` helper
  *    _will not_ create this store at the moment.
  *
- * @param {any} opts.cryptoStore
+ * @param {{}} opts.cryptoStore
  *    A store to be used for end-to-end crypto session data. If not specified,
  *    end-to-end crypto will be disabled. The `createClient` helper will create
  *    a default store if needed.

@@ -5,7 +5,7 @@
 /**
   * An implementation of CryptoStore, which is normally backed by an indexeddb,
   * but with fallback to MemoryCryptoStore.
-  * @implements {CryptoStore}
+  * @implements {{}}
   */
 export class IndexedDBCryptoStore {
     /**

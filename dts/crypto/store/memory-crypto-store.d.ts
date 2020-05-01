@@ -4,7 +4,7 @@
   */
 /**
   *
-  * @implements {CryptoStore}
+  * @implements {{}}
   */
 export class MemoryCryptoStore {
     _outgoingRoomKeyRequests: any[];
