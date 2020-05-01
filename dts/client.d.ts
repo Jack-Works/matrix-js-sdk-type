@@ -838,7 +838,7 @@ export class MatrixClient extends EventEmitter {
       * @param {callback} callback Optional.
       * @return {Promise} Resolves with an object containing the config.
       */
-    getMediaConfig(callback: any): Promise<any>;
+    getMediaConfig(callback: callback): Promise<any>;
     /**
       * Get the room for the given room ID.
       * This function will return a valid room for any room for which a Room event
@@ -882,7 +882,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setAccountData(eventType: string, contents: object, callback: any): Promise<any>;
+    setAccountData(eventType: string, contents: object, callback: callback): Promise<any>;
     /**
       * Get account data event of given type for the current user.
       * @param {string} eventType The event type
@@ -911,7 +911,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: Account data event
       * @return {MatrixError} Rejects: with an error response.
       */
-    setIgnoredUsers(userIds: string[], callback?: any): Promise<any>;
+    setIgnoredUsers(userIds: string[], callback?: callback | undefined): Promise<any>;
     /**
       * Gets whether or not a specific user is being ignored by this client.
       * @param {string} userId the user ID to check
@@ -937,7 +937,7 @@ export class MatrixClient extends EventEmitter {
         syncRoom: boolean;
         inviteSignUrl: boolean;
         viaServers: string[];
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Resend an event.
       * @param {MatrixEvent} event The event to resend.
@@ -961,7 +961,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomName(roomId: string, name: string, callback: any): Promise<any>;
+    setRoomName(roomId: string, name: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -970,7 +970,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomTopic(roomId: string, topic: string, callback: any): Promise<any>;
+    setRoomTopic(roomId: string, topic: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -978,7 +978,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getRoomTags(roomId: string, callback: any): Promise<any>;
+    getRoomTags(roomId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -988,7 +988,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomTag(roomId: string, tagName: string, metadata: object, callback: any): Promise<any>;
+    setRoomTag(roomId: string, tagName: string, metadata: object, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -997,7 +997,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    deleteRoomTag(roomId: string, tagName: string, callback: any): Promise<any>;
+    deleteRoomTag(roomId: string, tagName: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1007,7 +1007,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomAccountData(roomId: string, eventType: string, content: object, callback: any): Promise<any>;
+    setRoomAccountData(roomId: string, eventType: string, content: object, callback: callback): Promise<any>;
     /**
       * Set a user's power level.
       * @param {string} roomId
@@ -1018,7 +1018,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPowerLevel(roomId: string, userId: string, powerLevel: number, event: MatrixEvent, callback: any): Promise<any>;
+    setPowerLevel(roomId: string, userId: string, powerLevel: number, event: MatrixEvent, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1029,7 +1029,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendEvent(roomId: string, eventType: string, content: object, txnId: string, callback: any): Promise<any>;
+    sendEvent(roomId: string, eventType: string, content: object, txnId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1039,7 +1039,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    _sendCompleteEvent(roomId: string, eventObject: object, txnId: string, callback: any): Promise<any>;
+    _sendCompleteEvent(roomId: string, eventObject: object, txnId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1050,7 +1050,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    redactEvent(roomId: string, eventId: string, txnId?: string | undefined, callback?: any): Promise<any>;
+    redactEvent(roomId: string, eventId: string, txnId?: string | undefined, callback?: callback | undefined): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1060,7 +1060,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendMessage(roomId: string, content: object, txnId: string, callback: any): Promise<any>;
+    sendMessage(roomId: string, content: object, txnId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1070,7 +1070,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendTextMessage(roomId: string, body: string, txnId: string, callback: any): Promise<any>;
+    sendTextMessage(roomId: string, body: string, txnId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1080,7 +1080,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendNotice(roomId: string, body: string, txnId: string, callback: any): Promise<any>;
+    sendNotice(roomId: string, body: string, txnId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1090,7 +1090,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendEmoteMessage(roomId: string, body: string, txnId: string, callback: any): Promise<any>;
+    sendEmoteMessage(roomId: string, body: string, txnId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1101,7 +1101,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendImageMessage(roomId: string, url: string, info: object, text: string, callback: any): Promise<any>;
+    sendImageMessage(roomId: string, url: string, info: object, text: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1112,7 +1112,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendStickerMessage(roomId: string, url: string, info: object, text: string, callback: any): Promise<any>;
+    sendStickerMessage(roomId: string, url: string, info: object, text: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1122,7 +1122,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendHtmlMessage(roomId: string, body: string, htmlBody: string, callback: any): Promise<any>;
+    sendHtmlMessage(roomId: string, body: string, htmlBody: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1132,7 +1132,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendHtmlNotice(roomId: string, body: string, htmlBody: string, callback: any): Promise<any>;
+    sendHtmlNotice(roomId: string, body: string, htmlBody: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1142,7 +1142,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendHtmlEmote(roomId: string, body: string, htmlBody: string, callback: any): Promise<any>;
+    sendHtmlEmote(roomId: string, body: string, htmlBody: string, callback: callback): Promise<any>;
     /**
       * Send a receipt.
       * @param {Event} event The event being acknowledged
@@ -1152,7 +1152,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendReceipt(event: Event, receiptType: string, opts: object, callback: any): Promise<any>;
+    sendReceipt(event: Event, receiptType: string, opts: object, callback: callback): Promise<any>;
     /**
       * Send a read receipt.
       * @param {Event} event The event that has been read.
@@ -1166,7 +1166,7 @@ export class MatrixClient extends EventEmitter {
       */
     sendReadReceipt(event: Event, opts: {
         hidden: boolean;
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Set a marker to indicate the point in a room before which the user has read every
       * event. This can be retrieved from room account data (the event type is `m.fully_read`)
@@ -1200,7 +1200,7 @@ export class MatrixClient extends EventEmitter {
       * @return {MatrixError} Rejects: with an error response.
       * May return synthesized attributes if the URL lacked OG meta.
       */
-    getUrlPreview(url: string, ts: number, callback: any): Promise<any>;
+    getUrlPreview(url: string, ts: number, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1210,7 +1210,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendTyping(roomId: string, isTyping: boolean, timeoutMs: number, callback: any): Promise<any>;
+    sendTyping(roomId: string, isTyping: boolean, timeoutMs: number, callback: callback): Promise<any>;
     /**
       * Determines the history of room upgrades for a given room, as far as the
       * client can see. Returns an array of Rooms where the first entry is the
@@ -1234,7 +1234,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    invite(roomId: string, userId: string, callback: any): Promise<any>;
+    invite(roomId: string, userId: string, callback: callback): Promise<any>;
     /**
       * Invite a user to a room based on their email address.
       * @param {string} roomId The room to invite the user to.
@@ -1243,7 +1243,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteByEmail(roomId: string, email: string, callback: any): Promise<any>;
+    inviteByEmail(roomId: string, email: string, callback: callback): Promise<any>;
     /**
       * Invite a user to a room based on a third-party identifier.
       * @param {string} roomId The room to invite the user to.
@@ -1253,7 +1253,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteByThreePid(roomId: string, medium: string, address: string, callback: any): Promise<any>;
+    inviteByThreePid(roomId: string, medium: string, address: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1261,7 +1261,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    leave(roomId: string, callback: any): Promise<any>;
+    leave(roomId: string, callback: callback): Promise<any>;
     /**
       * Leaves all rooms in the chain of room upgrades based on the given room. By
       * default, this will leave all the previous and upgraded rooms, including the
@@ -1283,7 +1283,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    ban(roomId: string, userId: string, reason: string, callback: any): Promise<any>;
+    ban(roomId: string, userId: string, reason: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1293,7 +1293,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    forget(roomId: string, deleteRoom: boolean, callback: any): Promise<any>;
+    forget(roomId: string, deleteRoom: boolean, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1302,7 +1302,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: Object (currently empty)
       * @return {MatrixError} Rejects: with an error response.
       */
-    unban(roomId: string, userId: string, callback: any): Promise<any>;
+    unban(roomId: string, userId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1312,7 +1312,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    kick(roomId: string, userId: string, reason: string, callback: any): Promise<any>;
+    kick(roomId: string, userId: string, reason: string, callback: callback): Promise<any>;
     /**
       * Obtain a dict of actions which should be performed for this event according
       * to the push rules for this user.  Caches the dict on the event.
@@ -1328,7 +1328,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setProfileInfo(info: string, data: object, callback: any): Promise<any>;
+    setProfileInfo(info: string, data: object, callback: callback): Promise<any>;
     /**
       *
       * @param {string} name
@@ -1336,7 +1336,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setDisplayName(name: string, callback: any): Promise<any>;
+    setDisplayName(name: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} url
@@ -1344,7 +1344,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setAvatarUrl(url: string, callback: any): Promise<any>;
+    setAvatarUrl(url: string, callback: callback): Promise<any>;
     /**
       * Turn an MXC URL into an HTTP one. <strong>This method is experimental and
       * may change.</strong>
@@ -1380,14 +1380,14 @@ export class MatrixClient extends EventEmitter {
     setPresence(opts: {
         presence: string;
         status_msg: string;
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Retrieve current user presence list.
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getPresenceList(callback: any): Promise<any>;
+    getPresenceList(callback: callback): Promise<any>;
     /**
       * Add users to the current user presence list.
       * @param {callback} callback Optional.
@@ -1395,7 +1395,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteToPresenceList(callback: any, userIds: string[]): Promise<any>;
+    inviteToPresenceList(callback: callback, userIds: string[]): Promise<any>;
     /**
       * Drop users from the current user presence list.
       * @param {callback} callback Optional.
@@ -1404,7 +1404,7 @@ export class MatrixClient extends EventEmitter {
       * @return {MatrixError} Rejects: with an error response.
       * *
       */
-    dropFromPresenceList(callback: any, userIds: string[]): Promise<any>;
+    dropFromPresenceList(callback: callback, userIds: string[]): Promise<any>;
     /**
       * Retrieve older messages from the given room and put them in the timeline.
       *
@@ -1421,7 +1421,7 @@ export class MatrixClient extends EventEmitter {
       * <code>null</code>.
       * @return {MatrixError} Rejects: with an error response.
       */
-    scrollback(room: any, limit: any, callback: any): Promise<any>;
+    scrollback(room: any, limit: any, callback: callback): Promise<any>;
     /**
       * Get an EventTimeline for the given event
       *
@@ -1623,7 +1623,7 @@ export class MatrixClient extends EventEmitter {
     searchMessageText(opts: {
         query: string;
         keys?: string | undefined;
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Perform a server-side search for room events.
       *
@@ -1709,7 +1709,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    turnServer(callback: any): Promise<any>;
+    turnServer(callback: callback): Promise<any>;
     /**
       * Get the TURN servers for this home server.
       * @return {Array.<object>} The servers or an empty list.
@@ -1900,9 +1900,11 @@ export namespace MatrixClient {
     export const RESTORE_BACKUP_ERROR_BAD_KEY: string;
 }
 /**
- * :client.callback
+ * The standard MatrixClient callback interface. Functions which accept this
+ * will specify 2 return arguments. These arguments map to the 2 parameters
+ * specified in this callback.
  */
-export type module = (err: object, data: object) => any;
+export type callback = (err: object, data: object) => any;
 import { ReEmitter } from "./ReEmitter";
 import { SyncApi } from "./sync";
 import { Crypto } from "./crypto";

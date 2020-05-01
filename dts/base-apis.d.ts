@@ -127,7 +127,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    register(username: string, password: string, sessionId: string, auth: object, bindThreepids: object, guestAccessToken: string, inhibitLogin: string, callback: any): Promise<any>;
+    register(username: string, password: string, sessionId: string, auth: object, bindThreepids: object, guestAccessToken: string, inhibitLogin: string, callback: callback): Promise<any>;
     /**
       * Register a guest account.
       * @param {object=} opts Registration options
@@ -136,7 +136,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    registerGuest(opts?: object | undefined, callback?: any): Promise<any>;
+    registerGuest(opts?: object | undefined, callback?: callback | undefined): Promise<any>;
     /**
       *
       * @param {object} data parameters for registration request
@@ -145,14 +145,14 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: to the /register response
       * @return {MatrixError} Rejects: with an error response.
       */
-    registerRequest(data: object, kind?: string | undefined, callback?: any): Promise<any>;
+    registerRequest(data: object, kind?: string | undefined, callback?: callback | undefined): Promise<any>;
     /**
       *
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    loginFlows(callback: any): Promise<any>;
+    loginFlows(callback: callback): Promise<any>;
     /**
       *
       * @param {string} loginType
@@ -161,7 +161,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    login(loginType: string, data: object, callback: any): Promise<any>;
+    login(loginType: string, data: object, callback: callback): Promise<any>;
     credentials: {
         userId: any;
     } | undefined;
@@ -173,7 +173,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    loginWithPassword(user: string, password: string, callback: any): Promise<any>;
+    loginWithPassword(user: string, password: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} relayState URL Callback after SAML2 Authentication
@@ -181,7 +181,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    loginWithSAML2(relayState: string, callback: any): Promise<any>;
+    loginWithSAML2(relayState: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} redirectUrl The URL to redirect to after the HS
@@ -205,7 +205,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    loginWithToken(token: string, callback: any): Promise<any>;
+    loginWithToken(token: string, callback: callback): Promise<any>;
     /**
       * Logs out the current session.
       * Obviously, further calls that require authorisation should fail after this
@@ -215,7 +215,7 @@ export class MatrixBaseApis {
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: On success, the empty object
       */
-    logout(callback: any): Promise<any>;
+    logout(callback: callback): Promise<any>;
     /**
       * Deactivates the logged-in account.
       * Obviously, further calls that require authorisation should fail after this
@@ -256,7 +256,7 @@ export class MatrixBaseApis {
         invite: string[];
         name: string;
         topic: string;
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Fetches relations for a given event
       * @param {string} roomId the room of the event
@@ -277,7 +277,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    roomState(roomId: string, callback: any): Promise<any>;
+    roomState(roomId: string, callback: callback): Promise<any>;
     /**
       * Get an event in a room by its event id.
       * @param {string} roomId
@@ -286,7 +286,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves to an object containing the event.
       * @return {MatrixError} Rejects: with an error response.
       */
-    fetchRoomEvent(roomId: string, eventId: string, callback: any): Promise<any>;
+    fetchRoomEvent(roomId: string, eventId: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -297,7 +297,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: dictionary of userid to profile information
       * @return {MatrixError} Rejects: with an error response.
       */
-    members(roomId: string, includeMembership: string, excludeMembership: string, atEventId: string, callback: any): Promise<any>;
+    members(roomId: string, includeMembership: string, excludeMembership: string, atEventId: string, callback: callback): Promise<any>;
     /**
       * Upgrades a room to a new protocol version
       * @param {string} roomId
@@ -517,7 +517,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getStateEvent(roomId: string, eventType: string, stateKey: string, callback: any): Promise<any>;
+    getStateEvent(roomId: string, eventType: string, stateKey: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -528,7 +528,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    sendStateEvent(roomId: string, eventType: string, content: object, stateKey: string, callback: any): Promise<any>;
+    sendStateEvent(roomId: string, eventType: string, content: object, stateKey: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -537,7 +537,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    roomInitialSync(roomId: string, limit: number, callback: any): Promise<any>;
+    roomInitialSync(roomId: string, limit: number, callback: callback): Promise<any>;
     /**
       * Set a marker to indicate the point in a room before which the user has read every
       * event. This can be retrieved from room account data (the event type is `m.fully_read`)
@@ -591,7 +591,7 @@ export class MatrixBaseApis {
         filter: {
             generic_search_term: string;
         };
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Create an alias to room ID mapping.
       * @param {string} alias The room alias to create.
@@ -600,7 +600,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO.
       * @return {MatrixError} Rejects: with an error response.
       */
-    createAlias(alias: string, roomId: string, callback: any): Promise<any>;
+    createAlias(alias: string, roomId: string, callback: callback): Promise<any>;
     /**
       * Delete an alias to room ID mapping.  This alias must be on your local server
       * and you must have sufficient access to do this operation.
@@ -609,7 +609,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO.
       * @return {MatrixError} Rejects: with an error response.
       */
-    deleteAlias(alias: string, callback: any): Promise<any>;
+    deleteAlias(alias: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -617,7 +617,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: an object with an `aliases` property, containing an array of local aliases
       * @return {MatrixError} Rejects: with an error response.
       */
-    unstableGetLocalAliases(roomId: string, callback: any): Promise<any>;
+    unstableGetLocalAliases(roomId: string, callback: callback): Promise<any>;
     /**
       * Get room info for the given alias.
       * @param {string} alias The room alias to resolve.
@@ -625,7 +625,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: Object with room_id and servers.
       * @return {MatrixError} Rejects: with an error response.
       */
-    getRoomIdForAlias(alias: string, callback: any): Promise<any>;
+    getRoomIdForAlias(alias: string, callback: callback): Promise<any>;
     /**
       *
       * @param {string} roomAlias
@@ -633,7 +633,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    resolveRoomAlias(roomAlias: string, callback: any): Promise<any>;
+    resolveRoomAlias(roomAlias: string, callback: callback): Promise<any>;
     /**
       * Get the visibility of a room in the current HS's room directory
       * @param {string} roomId
@@ -641,7 +641,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getRoomDirectoryVisibility(roomId: string, callback: any): Promise<any>;
+    getRoomDirectoryVisibility(roomId: string, callback: callback): Promise<any>;
     /**
       * Set the visbility of a room in the current HS's room directory
       * @param {string} roomId
@@ -652,7 +652,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomDirectoryVisibility(roomId: string, visibility: string, callback: any): Promise<any>;
+    setRoomDirectoryVisibility(roomId: string, visibility: string, callback: callback): Promise<any>;
     /**
       * Set the visbility of a room bridged to a 3rd party network in
       * the current HS's room directory.
@@ -666,7 +666,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object
       * @return {MatrixError} Rejects: with an error response.
       */
-    setRoomDirectoryVisibilityAppService(networkId: string, roomId: string, visibility: string, callback: any): Promise<any>;
+    setRoomDirectoryVisibilityAppService(networkId: string, roomId: string, visibility: string, callback: callback): Promise<any>;
     /**
       * Query the user directory with a term matching user IDs, display names and domains.
       * @param {object} opts options
@@ -742,14 +742,14 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getProfileInfo(userId: string, info: string, callback: any): Promise<any>;
+    getProfileInfo(userId: string, info: string, callback: callback): Promise<any>;
     /**
       *
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getThreePids(callback: any): Promise<any>;
+    getThreePids(callback: callback): Promise<any>;
     /**
       * Add a 3PID to your homeserver account and optionally bind it to an identity
       * server as well. An identity server is required as part of the `creds` object.
@@ -762,7 +762,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: on success
       * @return {MatrixError} Rejects: with an error response.
       */
-    addThreePid(creds: object, bind: boolean, callback: any): Promise<any>;
+    addThreePid(creds: object, bind: boolean, callback: callback): Promise<any>;
     /**
       * Add a 3PID to your homeserver account. This API does not use an identity
       * server, as the homeserver is expected to handle 3PID ownership validation.
@@ -818,7 +818,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPassword(authDict: object, newPassword: string, callback: any): Promise<any>;
+    setPassword(authDict: object, newPassword: string, callback: callback): Promise<any>;
     /**
       * Gets all devices recorded for the logged-in user
       * @return {Promise} Resolves: result object
@@ -855,7 +855,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: Array of objects representing pushers
       * @return {MatrixError} Rejects: with an error response.
       */
-    getPushers(callback: any): Promise<any>;
+    getPushers(callback: callback): Promise<any>;
     /**
       * Adds a new pusher or updates an existing pusher
       * @param {object} pusher Object representing a pusher
@@ -863,14 +863,14 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: Empty json object on success
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPusher(pusher: object, callback: any): Promise<any>;
+    setPusher(pusher: object, callback: callback): Promise<any>;
     /**
       *
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    getPushRules(callback: any): Promise<any>;
+    getPushRules(callback: callback): Promise<any>;
     /**
       *
       * @param {string} scope
@@ -881,7 +881,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    addPushRule(scope: string, kind: string, ruleId: string, body: object, callback: any): Promise<any>;
+    addPushRule(scope: string, kind: string, ruleId: string, body: object, callback: callback): Promise<any>;
     /**
       *
       * @param {string} scope
@@ -891,7 +891,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    deletePushRule(scope: string, kind: string, ruleId: string, callback: any): Promise<any>;
+    deletePushRule(scope: string, kind: string, ruleId: string, callback: callback): Promise<any>;
     /**
       * Enable or disable a push notification rule.
       * @param {string} scope
@@ -902,7 +902,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPushRuleEnabled(scope: string, kind: string, ruleId: string, enabled: boolean, callback: any): Promise<any>;
+    setPushRuleEnabled(scope: string, kind: string, ruleId: string, enabled: boolean, callback: callback): Promise<any>;
     /**
       * Set the actions for a push notification rule.
       * @param {string} scope
@@ -913,7 +913,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPushRuleActions(scope: string, kind: string, ruleId: string, actions: any[], callback: any): Promise<any>;
+    setPushRuleActions(scope: string, kind: string, ruleId: string, actions: any[], callback: callback): Promise<any>;
     /**
       * Perform a server-side search.
       * @param {object} opts
@@ -926,7 +926,7 @@ export class MatrixBaseApis {
     search(opts: {
         next_batch: string;
         body: object;
-    }, callback: any): Promise<any>;
+    }, callback: callback): Promise<any>;
     /**
       * Upload keys
       * @param {object} content body of upload request
@@ -936,7 +936,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object. Rejects: with
       *     an error response ({@link module:http-api.MatrixError}).
       */
-    uploadKeysRequest(content: object, opts?: object | undefined, callback?: any): Promise<any>;
+    uploadKeysRequest(content: object, opts?: object | undefined, callback?: callback | undefined): Promise<any>;
     uploadKeySignatures(content: any): any;
     /**
       * Download device keys
@@ -1003,7 +1003,7 @@ export class MatrixBaseApis {
       * @return {MatrixError} Rejects: with an error response.
       * @throws Error if no identity server is set
       */
-    requestEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: any, identityAccessToken: string): Promise<any>;
+    requestEmailToken(email: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: callback, identityAccessToken: string): Promise<any>;
     /**
       * Requests a MSISDN verification token directly from an identity server.
       *
@@ -1029,7 +1029,7 @@ export class MatrixBaseApis {
       * @return {MatrixError} Rejects: with an error response.
       * @throws Error if no identity server is set
       */
-    requestMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: any, identityAccessToken: string): Promise<any>;
+    requestMsisdnToken(phoneCountry: string, phoneNumber: string, clientSecret: string, sendAttempt: number, nextLink: string, callback: callback, identityAccessToken: string): Promise<any>;
     /**
       * Submits a MSISDN token to the identity server
       *
@@ -1099,7 +1099,7 @@ export class MatrixBaseApis {
       *                                 exists
       * @return {MatrixError} Rejects: with an error response.
       */
-    lookupThreePid(medium: string, address: string, callback: any, identityAccessToken: string): Promise<any>;
+    lookupThreePid(medium: string, address: string, callback: callback, identityAccessToken: string): Promise<any>;
     /**
       * Looks up the public Matrix ID mappings for multiple 3PIDs.
       * @param {Array.<Array.<string>>} query Array of arrays containing
@@ -1166,3 +1166,4 @@ export class MatrixBaseApis {
     reportEvent(roomId: string, eventId: string, score: number, reason: string): Promise<any>;
 }
 import { MatrixHttpApi } from "./http-api";
+import { callback } from "./client";
