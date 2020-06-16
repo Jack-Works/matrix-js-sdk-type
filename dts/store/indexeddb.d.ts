@@ -115,45 +115,45 @@ export class IndexedDBStore {
       * client state to where it was at the last save, or null if there
       * is no saved sync data.
       */
-    getSavedSync: (...args: any[]) => any;
+    getSavedSync: Function;
     /**
       *
       * @return {Promise.<boolean>} whether or not the database was newly created in this session.
       */
-    isNewlyCreated: (...args: any[]) => any;
+    isNewlyCreated: Function;
     /**
       *
       * @return {Promise} If there is a saved sync, the nextBatch token
       * for this sync, otherwise null.
       */
-    getSavedSyncToken: (...args: any[]) => any;
+    getSavedSyncToken: Function;
     /**
      * Delete all data from this store.
      * @return {Promise} Resolves if the data was deleted from the database.
      */
-    deleteAllData: any;
-    _reallySave: any;
-    setSyncData: (...args: any[]) => any;
+    deleteAllData: Function;
+    _reallySave: Function;
+    setSyncData: Function;
     /**
       * Returns the out-of-band membership events for this room that
       * were previously loaded.
       * @param {string} roomId
-      * @returns {Array.<event>} the events, potentially an empty array if OOB loading didn't yield any new members
+      * @returns {Array.<any>} the events, potentially an empty array if OOB loading didn't yield any new members
       * @returns {null} in case the members for this room haven't been stored yet
       */
-    getOutOfBandMembers: (...args: any[]) => any;
+    getOutOfBandMembers: Function;
     /**
       * Stores the out-of-band membership events for this room. Note that
       * it still makes sense to store an empty array as the OOB status for the room is
       * marked as fetched, and getOutOfBandMembers will return an empty array instead of null
       * @param {string} roomId
-      * @param {Array.<event>} membershipEvents the membership events to store
+      * @param {Array.<any>} membershipEvents the membership events to store
       * @returns {Promise} when all members have been stored
       */
-    setOutOfBandMembers: (...args: any[]) => any;
-    clearOutOfBandMembers: (...args: any[]) => any;
-    getClientOptions: (...args: any[]) => any;
-    storeClientOptions: (...args: any[]) => any;
+    setOutOfBandMembers: Function;
+    clearOutOfBandMembers: Function;
+    getClientOptions: Function;
+    storeClientOptions: Function;
 }
 import { LocalIndexedDBStoreBackend } from "./indexeddb-local-backend";
 import { RemoteIndexedDBStoreBackend } from "./indexeddb-remote-backend";

@@ -3,12 +3,12 @@
  */
 export type EventStatus = string;
 export namespace EventStatus {
-    export const NOT_SENT: string;
-    export const ENCRYPTING: string;
-    export const SENDING: string;
-    export const QUEUED: string;
-    export const SENT: string;
-    export const CANCELLED: string;
+    const NOT_SENT: string;
+    const ENCRYPTING: string;
+    const SENDING: string;
+    const QUEUED: string;
+    const SENT: string;
+    const CANCELLED: string;
 }
 /**
   * Construct a Matrix Event object

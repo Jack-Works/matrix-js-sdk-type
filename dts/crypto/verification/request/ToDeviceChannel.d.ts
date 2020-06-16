@@ -25,7 +25,7 @@ export class ToDeviceChannel {
       * @param {MatrixClient} client the client to get the current user and device id from
       * @returns {boolean} whether the event is valid and should be passed to handleEvent
       */
-    static validateEvent(event: MatrixEvent, client: any): boolean;
+    static validateEvent(event: MatrixEvent, client: MatrixClient): boolean;
     /**
       * Allow Crypto module to create and know the transaction id before the .start event gets sent.
       * @returns {string} the transaction id
@@ -98,3 +98,4 @@ export class ToDeviceRequests {
 }
 import { MatrixEvent } from "../../../models/event";
 import { VerificationRequest } from "./VerificationRequest";
+import { MatrixClient } from "../../../client";

@@ -12,7 +12,7 @@ export class SyncAccumulator {
     /**
       *
       * @param {object} opts
-      * @param {number=} opts.maxTimelineEntries The ideal maximum number of
+      * @param {Number=} opts.maxTimelineEntries The ideal maximum number of
       * timeline entries to keep in the sync response. This is best-effort, as
       * clients do not always have a back-pagination token for each event, so
       * it's possible there may be slightly *less* than this value. There will

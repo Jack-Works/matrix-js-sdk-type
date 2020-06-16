@@ -4,7 +4,7 @@
   * @extends
   */
 export class SAS {
-    static get NAME(): string;
+    static get NAME(): "m.sas.v1";
     get events(): string[];
     _doVerification(): Promise<void>;
     startEvent: any;

@@ -9,10 +9,10 @@ export function isCryptoAvailable(): boolean;
   * @returns {(null | string)} If the key is in the wrong format, then the fixed
   * key will be returned. Otherwise null will be returned.
   */
-export function fixBackupKey(key: string): string | null;
+export function fixBackupKey(key: string): (null | string);
 export namespace verificationMethods {
-    export const RECIPROCATE_QR_CODE: string;
-    export const SAS: string;
+    const RECIPROCATE_QR_CODE: "m.reciprocate.v1";
+    const SAS: "m.sas.v1";
 }
 /**
   * Cryptography bits
@@ -26,7 +26,7 @@ export namespace verificationMethods {
   * @param {string} userId The user ID for the local user
   * @param {string} deviceId The identifier for this device.
   * @param {object} clientStore the MatrixClient data store.
-  * @param {{}} cryptoStore storage for the crypto layer.
+  * @param {CryptoStore} cryptoStore storage for the crypto layer.
   * @param {RoomList} roomList An initialised RoomList object
   * @param {Array} verificationMethods Array of verification methods to use.
   *    Each element can either be a string from MatrixClient.verificationMethods
@@ -53,7 +53,7 @@ export namespace verificationMethods {
  *
  * @param {Object} clientStore the MatrixClient data store.
  *
- * @param {{}} cryptoStore
+ * @param {any} cryptoStore
  *    storage for the crypto layer.
  *
  * @param {RoomList} roomList An initialised RoomList object
@@ -80,9 +80,10 @@ export class Crypto {
     _cryptoStore: any;
     _roomList: any;
     _verificationMethods: Map<any, any> | {
-        [x: string]: SAS | IllegalMethod;
-        "m.qr_code.show.v1": IllegalMethod;
-        "m.qr_code.scan.v1": IllegalMethod;
+        "m.reciprocate.v1": typeof ReciprocateQRCode;
+        "m.sas.v1": typeof SAS;
+        "m.qr_code.show.v1": typeof IllegalMethod;
+        "m.qr_code.scan.v1": typeof IllegalMethod;
     };
     backupInfo: any;
     backupKey: any;
@@ -177,12 +178,12 @@ export class Crypto {
       * - migrates Secure Secret Storage to use the latest algorithm, if an outdated
       *   algorithm is found
       * @param {Object} opts __auto_generated__
-      * @param {((...args: any[]) => any)=} opts.authUploadDeviceSigningKeys Optional. Function
+      * @param {function=} opts.authUploadDeviceSigningKeys Optional. Function
       * called to await an interactive auth flow when uploading device signing keys.
       * Args:
       *     {function} A function that makes the request requiring auth. Receives the
       *     auth data as an object.
-      * @param {((...args: any[]) => any)=} opts.createSecretStorageKey Optional. Function
+      * @param {function=} opts.createSecretStorageKey Optional. Function
       * called to await a secret storage key creation flow.
       * Returns:
       *     {Promise<Object>} Object with public key metadata, encoded private
@@ -202,12 +203,12 @@ export class Crypto {
       *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
       */
     bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo, setupNewKeyBackup, setupNewSecretStorage, getKeyBackupPassphrase, }?: {
-        authUploadDeviceSigningKeys?: ((...args: any[]) => any) | undefined;
-        createSecretStorageKey?: ((...args: any[]) => any) | undefined;
+        authUploadDeviceSigningKeys?: Function | undefined;
+        createSecretStorageKey?: Function | undefined;
         keyBackupInfo?: object | undefined;
         setupNewKeyBackup?: boolean | undefined;
         setupNewSecretStorage?: boolean | undefined;
-        getKeyBackupPassphrase?: any;
+        getKeyBackupPassphrase?: any | undefined;
     }): Promise<void>;
     addSecretStorageKey(algorithm: any, opts: any, keyID: any): string;
     hasSecretStorageKey(keyID: any): boolean;
@@ -255,18 +256,14 @@ export class Crypto {
       * keys will be created for the given level and below.  Defaults to
       * regenerating all keys.
       * @param {Object} opts __auto_generated__
-      * @param {((...args: any[]) => any)=} opts.authUploadDeviceSigningKeys Optional. Function
+      * @param {function=} opts.authUploadDeviceSigningKeys Optional. Function
       * called to await an interactive auth flow when uploading device signing keys.
       * Args:
       *     {function} A function that makes the request requiring auth. Receives the
       *     auth data as an object.
       */
-    resetCrossSigningKeys(level?: {
-        MASTER: number;
-        USER_SIGNING: number;
-        SELF_SIGNING: number;
-    } | undefined, { authUploadDeviceSigningKeys, }?: {
-        authUploadDeviceSigningKeys?: ((...args: any[]) => any) | undefined;
+    resetCrossSigningKeys(level?: CrossSigningLevel | undefined, { authUploadDeviceSigningKeys, }?: {
+        authUploadDeviceSigningKeys?: Function | undefined;
     }): Promise<void>;
     /**
      * Run various follow-up actions after cross-signing keys have changed locally
@@ -325,7 +322,7 @@ export class Crypto {
       * @param {?} device The device info object to check
       * @returns {DeviceTrustLevel}
       */
-    _checkDeviceInfoTrust(userId: string, device: any): DeviceTrustLevel;
+    _checkDeviceInfoTrust(userId: string, device: unknown): DeviceTrustLevel;
     /**
      * Check the copy of our cross-signing key that we have in the device list and
      * see if we can get the private key. If so, mark it as trusted.
@@ -436,7 +433,7 @@ export class Crypto {
     /**
       * Stores the current one_time_key count which will be handled later (in a call of
       * onSyncCompleted). The count is e.g. coming from a /sync response.
-      * @param {number} currentCount The current count of one_time_keys to be stored
+      * @param {Number} currentCount The current count of one_time_keys to be stored
       */
     updateOneTimeKeyCount(currentCount: number): void;
     _oneTimeKeyCount: number | undefined;
@@ -455,7 +452,7 @@ export class Crypto {
       * @return {(Array.<> | null)} list of devices, or null if we haven't
       * managed to get a list of devices for this user yet.
       */
-    getStoredDevicesForUser(userId: string): any[] | null;
+    getStoredDevicesForUser(userId: string): (any[] | null);
     /**
       * Get the stored keys for a single device
       * @param {string} userId
@@ -463,7 +460,7 @@ export class Crypto {
       * @return {?} device, or undefined
       * if we don't know about this device
       */
-    getStoredDevice(userId: string, deviceId: string): any;
+    getStoredDevice(userId: string, deviceId: string): unknown;
     /**
       * Save the device list, if necessary
       * @param {number} delay Time in ms before which the save actually happens.
@@ -513,7 +510,7 @@ export class Crypto {
       * @param {MatrixEvent} event event to be checked
       * @return {?}
       */
-    getEventSenderDeviceInfo(event: MatrixEvent): any;
+    getEventSenderDeviceInfo(event: MatrixEvent): unknown;
     /**
       * Forces the current outbound group session to be discarded such
       * that another one will be created next time an event is sent.
@@ -552,21 +549,21 @@ export class Crypto {
   *    an Object mapping from userId to deviceId to
   *    {@link module:crypto~OlmSessionResult}
   */
-    ensureOlmSessionsForUsers(users: string[]): Promise<any>;
+    ensureOlmSessionsForUsers(users: Array<string>): Promise<any>;
     /**
       * Get a list containing all of the room keys
       * @return {Array.<MegolmSessionData>} a list of session export objects
       */
-    exportRoomKeys(): any[];
+    exportRoomKeys(): Array<any>;
     /**
       * Import a list of room keys previously exported by exportRoomKeys
       * @param {Array.<object>} keys a list of session export objects
       * @param {object} opts
-      * @param {((...args: any[]) => any)} opts.progressCallback called with an object which has a stage param
+      * @param {Function} opts.progressCallback called with an object which has a stage param
       * @return {Promise} a promise which resolves once the keys have been imported
       */
-    importRoomKeys(keys: object[], opts?: {
-        progressCallback: (...args: any[]) => any;
+    importRoomKeys(keys: Array<object>, opts?: {
+        progressCallback: Function;
     }): Promise<any>;
     /**
       * Schedules sending all keys waiting to be sent to the backup, if not already
@@ -631,15 +628,15 @@ export class Crypto {
       *    already one
       * @return {Promise} a promise that resolves when the key request is queued
       */
-    requestRoomKey(requestBody: object, recipients: {
+    requestRoomKey(requestBody: RoomKeyRequestBody, recipients: Array<{
         userId: string;
         deviceId: string;
-    }[], resend?: boolean): Promise<any>;
+    }>, resend?: boolean): Promise<any>;
     /**
       * Cancel any earlier room key request
       * @param {RoomKeyRequestBody} requestBody parameters to match for cancellation
       */
-    cancelRoomKeyRequest(requestBody: object): void;
+    cancelRoomKeyRequest(requestBody: RoomKeyRequestBody): void;
     /**
       * Re-send any outgoing key requests, eg after verification
       * @returns {Promise}
@@ -675,13 +672,13 @@ export class Crypto {
       * for which we are tracking devices already
       * @returns {Array.<string>} List of user IDs
       */
-    _getTrackedE2eUsers(): string[];
+    _getTrackedE2eUsers(): Array<string>;
     /**
       * Get a list of the e2e-enabled rooms we are members of,
       * and for which we are already tracking the devices
       * @returns {Array.<Room>}
       */
-    _getTrackedE2eRooms(): any[];
+    _getTrackedE2eRooms(): Array<Room>;
     _onToDeviceEvent(event: any): void;
     /**
       * Handle a key event
@@ -766,9 +763,9 @@ export class Crypto {
     /**
       * Get all the room decryptors for a given encryption algorithm.
       * @param {string} algorithm The encryption algorithm
-      * @return {Array} An array of room decryptors
+      * @return {array} An array of room decryptors
       */
-    _getRoomDecryptors(algorithm: string): any[];
+    _getRoomDecryptors(algorithm: string): any;
     /**
       * sign the given object with our ed25519 key
       * @param {object} obj Object to which we will add a 'signatures' property
@@ -807,12 +804,13 @@ export type EventDecryptionResult = {
      * claimedEd25519Key. See
      * {@link module:models/event.MatrixEvent#getForwardingCurve25519KeyChain}.
      */
-    forwardingCurve25519KeyChain: string[] | null;
+    forwardingCurve25519KeyChain: Array<string> | null;
 };
 import { ReEmitter } from "../ReEmitter";
+import { ReciprocateQRCode } from "./verification/QRCode";
 import { SAS } from "./verification/SAS";
-import { IllegalMethod } from "./verification/IllegalMethod";
 import { SHOW_QR_CODE_METHOD } from "./verification/QRCode";
+import { IllegalMethod } from "./verification/IllegalMethod";
 import { SCAN_QR_CODE_METHOD } from "./verification/QRCode";
 import { OlmDevice } from "./OlmDevice";
 import { DeviceList } from "./DeviceList";
@@ -821,11 +819,13 @@ import { ToDeviceRequests } from "./verification/request/ToDeviceChannel";
 import { InRoomRequests } from "./verification/request/InRoomChannel";
 import { CrossSigningInfo } from "./CrossSigning";
 import { SecretStorage } from "./SecretStorage";
+import { CrossSigningLevel } from "./CrossSigning";
 import { DeviceInfo } from "./deviceinfo";
 import { UserTrustLevel } from "./CrossSigning";
 import { DeviceTrustLevel } from "./CrossSigning";
 import { VerificationRequest } from "./verification/request/VerificationRequest";
 import { MatrixEvent } from "../models/event";
+import { Room } from "../models/room";
 /**
   * The parameters of a room key request. The details of the request may
   * vary with the crypto algorithm, but the management and storage layers for

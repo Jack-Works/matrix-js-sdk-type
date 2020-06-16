@@ -35,6 +35,13 @@
   * @param {string} deviceId id of the device
   */
 export class DeviceInfo {
+    /**
+      * rehydrate a DeviceInfo from the session store
+      * @param {object} obj raw object from session store
+      * @param {string} deviceId id of the device
+      * @return {DeviceInfo} new DeviceInfo
+      */
+    static fromStorage(obj: object, deviceId: string): DeviceInfo;
     constructor(deviceId: any);
     algorithms: any[];
     keys: {};
@@ -84,17 +91,10 @@ export class DeviceInfo {
     isKnown(): boolean;
 }
 export namespace DeviceInfo {
-    /**
-      * rehydrate a DeviceInfo from the session store
-      * @param {object} obj raw object from session store
-      * @param {string} deviceId id of the device
-      * @return {DeviceInfo} new DeviceInfo
-      */
-    export function fromStorage(obj: object, deviceId: string): DeviceInfo;
-    export namespace DeviceVerification {
-        export const VERIFIED: number;
-        export const UNVERIFIED: number;
-        export const BLOCKED: number;
+    namespace DeviceVerification {
+        const VERIFIED: number;
+        const UNVERIFIED: number;
+        const BLOCKED: number;
     }
-    export type DeviceVerification = any;
+    type DeviceVerification = any;
 }

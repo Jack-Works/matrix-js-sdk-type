@@ -4,7 +4,7 @@ export const VERSION: 9;
   * Implementation of a CryptoStore which is backed by an existing
   * IndexedDB connection. Generally you want IndexedDBCryptoStore
   * which connects to the database and defers to one of these.
-  * @implements {{}}
+  * @implements {CryptoStore}
   */
 export class Backend {
     /**
@@ -29,13 +29,13 @@ export class Backend {
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    not found
   */
-    getOutgoingRoomKeyRequest(requestBody: object): Promise<any>;
+    getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): Promise<any>;
     /**
   * look for an existing room key request in the db
   * @private
   * @param {IDBTransaction} txn database transaction
   * @param {RoomKeyRequestBody} requestBody existing request to look for
-  * @param {((...args: any[]) => any)} callback function to call with the results of the
+  * @param {Function} callback function to call with the results of the
   *    search. Either passed a matching
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    not found.
@@ -43,19 +43,19 @@ export class Backend {
     private _getOutgoingRoomKeyRequest;
     /**
   * Look for room key requests by state
-  * @param {Array.<number>} wantedStates list of acceptable states
+  * @param {Array.<Number>} wantedStates list of acceptable states
   * @return {Promise} resolves to the a
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    there are no pending requests in those states. If there are multiple
   *    requests in those states, an arbitrary one is chosen.
   */
-    getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
+    getOutgoingRoomKeyRequestByState(wantedStates: Array<number>): Promise<any>;
     /**
   *
-  * @param {number} wantedState
+  * @param {Number} wantedState
   * @return {Promise.<Array.<*>>} All elements in a given state
   */
-    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<any[]>;
+    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<Array<any>>;
     getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): Promise<any[]>;
     /**
   * Look for an existing room key request by id and state, and update it if
@@ -82,7 +82,7 @@ export class Backend {
     getSecretStorePrivateKey(txn: any, func: any, type: any): void;
     storeCrossSigningKeys(txn: any, keys: any): void;
     storeSecretStorePrivateKey(txn: any, type: any, key: any): void;
-    countEndToEndSessions(txn: any, func: any): number;
+    countEndToEndSessions(txn: any, func: any): void;
     getEndToEndSessions(deviceKey: any, txn: any, func: any): void;
     getEndToEndSession(deviceKey: any, sessionId: any, txn: any, func: any): void;
     getAllEndToEndSessions(txn: any, func: any): void;
@@ -106,3 +106,4 @@ export class Backend {
     doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
 import { OutgoingRoomKeyRequest } from "./base";
+import { RoomKeyRequestBody } from "..";

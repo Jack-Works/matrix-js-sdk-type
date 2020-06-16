@@ -4,7 +4,7 @@
   */
 /**
   *
-  * @implements {{}}
+  * @implements {CryptoStore}
   */
 export class MemoryCryptoStore {
     _outgoingRoomKeyRequests: any[];
@@ -48,28 +48,28 @@ export class MemoryCryptoStore {
       *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
       *    not found
       */
-    getOutgoingRoomKeyRequest(requestBody: object): Promise<any>;
+    getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): Promise<any>;
     /**
       * Looks for existing room key request, and returns the result synchronously.
       * @internal
       * @param {RoomKeyRequestBody} requestBody existing request to look for
       * @return {OutgoingRoomKeyRequest?} the matching request, or null if not found
       */
-    _getOutgoingRoomKeyRequest(requestBody: object): OutgoingRoomKeyRequest | null;
+    _getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): OutgoingRoomKeyRequest | null;
     /**
       * Look for room key requests by state
-      * @param {Array.<number>} wantedStates list of acceptable states
+      * @param {Array.<Number>} wantedStates list of acceptable states
       * @return {Promise} resolves to the a
       *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
       *    there are no pending requests in those states
       */
-    getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
+    getOutgoingRoomKeyRequestByState(wantedStates: Array<number>): Promise<any>;
     /**
       *
-      * @param {number} wantedState
+      * @param {Number} wantedState
       * @return {Promise.<Array.<*>>} All OutgoingRoomKeyRequests in state
       */
-    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<any[]>;
+    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<Array<any>>;
     getOutgoingRoomKeyRequestsByTarget(userId: any, deviceId: any, wantedStates: any): Promise<any[]>;
     /**
       * Look for an existing room key request by id and state, and update it if
@@ -124,3 +124,4 @@ export class MemoryCryptoStore {
     doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
 import { OutgoingRoomKeyRequest } from "./base";
+import { RoomKeyRequestBody } from "..";

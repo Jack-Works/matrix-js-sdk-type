@@ -50,7 +50,7 @@
   *     the client secret for that session
   * @param {string?} opts.emailSid If returning from having completed m.login.email.identity
   *     auth, the sid for the email verification session.
-  * @param {((...args: any[]) => any)?} opts.requestEmailToken A function that takes the email address (string),
+  * @param {function?} opts.requestEmailToken A function that takes the email address (string),
   *     clientSecret (string), attempt number (int) and sessionId (string) and calls the
   *     relevant requestToken function and returns the promise returned by that function.
   *     If the resulting promise rejects, the rejection will propagate through to the
@@ -140,14 +140,118 @@ export class InteractiveAuth {
     _requestCallback: any;
     _busyChangedCallback: any;
     _stateUpdatedCallback: any;
-    _resolveFunc: any;
-    _rejectFunc: any;
+    _resolveFunc: ((value?: any) => void) | null;
+    _rejectFunc: ((reason?: any) => void) | null;
     _inputs: any;
     _requestEmailTokenCallback: any;
     _clientSecret: any;
     _emailSid: any;
     _requestingEmailToken: boolean;
-    _chosenFlow: any;
-    _currentStage: any;
-    _submitPromise: any;
+    _chosenFlow: object | null;
+    _currentStage: string | null;
+    _submitPromise: void | null;
+    /**
+      * begin the authentication process.
+      * @return {Promise} which resolves to the response on success,
+      * or rejects with the error on failure. Rejects with NoAuthFlowFoundError if
+      *     no suitable authentication flow can be found
+      */
+    attemptAuth(): Promise<any>;
+    async: any;
+    /**
+     * Poll to check if the auth session or current stage has been
+     * completed out-of-band. If so, the attemptAuth promise will
+     * be resolved.
+     */
+    poll(): void;
+    /**
+      * get the auth session ID
+      * @return {string} session id
+      */
+    getSessionId(): string;
+    /**
+      * get the client secret used for validation sessions
+      * with the ID server.
+      * @return {string} client secret
+      */
+    getClientSecret(): string;
+    /**
+      * get the server params for a given stage
+      * @param {string} loginType login type for the stage
+      * @return {object?} any parameters from the server for this stage
+      */
+    getStageParams(loginType: string): object | null;
+    getChosenFlow(): object | null;
+    /**
+  * submit a new auth dict and fire off the request. This will either
+  * make attemptAuth resolve/reject, or cause the startAuthStage callback
+  * to be called for a new stage.
+  * @param {object} authData new auth dict to send to the server. Should
+  *    include a `type` propterty denoting the login type, as well as any
+  *    other params for that stage.
+  * @param {boolean} background If true, this request failing will not result
+  *    in the attemptAuth promise being rejected. This can be set to true
+  *    for requests that just poll to see if auth has been completed elsewhere.
+  */
+    submitAuthDict(authData: object, background: boolean): void;
+    /**
+      * Gets the sid for the email validation session
+      * Specific to m.login.email.identity
+      * @returns {string} The sid of the email auth session
+      */
+    getEmailSid(): string;
+    /**
+      * Sets the sid for the email validation session
+      * This must be set in order to successfully poll for completion
+      * of the email validation.
+      * Specific to m.login.email.identity
+      * @param {string} sid The sid for the email validation session
+      */
+    setEmailSid(sid: string): void;
+    /**
+  * Fire off a request, and either resolve the promise, or call
+  * startAuthStage.
+  * @private
+  * @param {object?} auth new auth dict, including session id
+  * @param {boolean?} background If true, this request is a background poll, so it
+  *    failing will not result in the attemptAuth promise being rejected.
+  *    This can be set to true for requests that just poll to see if auth has
+  *    been completed elsewhere.
+  */
+    private _doRequest;
+    /**
+      * Pick the next stage and call the callback
+      * @private
+      * @throws {NoAuthFlowFoundError} If no suitable authentication flow can be found
+      */
+    private _startNextAuthStage;
+    /**
+      * Pick the next auth stage
+      * @private
+      * @return {string?} login type
+      * @throws {NoAuthFlowFoundError} If no suitable authentication flow can be found
+      */
+    private _chooseStage;
+    /**
+      * Pick one of the flows from the returned list
+      * If a flow using all of the inputs is found, it will
+      * be returned, otherwise, null will be returned.
+      *
+      * Only flows using all given inputs are chosen because it
+      * is likley to be surprising if the user provides a
+      * credential and it is not used. For example, for registration,
+      * this could result in the email not being used which would leave
+      * the account with no means to reset a password.
+      * @private
+      * @return {object} flow
+      * @throws {NoAuthFlowFoundError} If no suitable authentication flow can be found
+      */
+    private _chooseFlow;
+    /**
+      * Get the first uncompleted stage in the given flow
+      * @private
+      * @param {object} flow
+      * @return {string} login type
+      */
+    private _firstUncompletedStage;
 }

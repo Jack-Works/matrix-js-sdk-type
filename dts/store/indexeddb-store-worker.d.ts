@@ -16,12 +16,12 @@
 export class IndexedDBStoreWorker {
     /**
       *
-      * @param postMessage The web worker postMessage function that
+      * @param {function} postMessage The web worker postMessage function that
       * should be used to communicate back to the main script.
       */
-    constructor(postMessage: any);
+    constructor(postMessage: Function);
     backend: LocalIndexedDBStoreBackend | null;
-    postMessage: any;
+    postMessage: Function;
     /**
   * Passes a message event from the main script into the class. This method
   * can be directly assigned to the web worker `onmessage` variable.

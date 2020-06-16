@@ -9,9 +9,9 @@
   * @prop {string} avatarUrl The 'avatar_url' of the user if known.
   * @prop {string} presence The presence enum if known.
   * @prop {string} presenceStatusMsg The presence status message if known.
-  * @prop {number} lastActiveAgo The time elapsed in ms since the user interacted
+  * @prop {Number} lastActiveAgo The time elapsed in ms since the user interacted
   *                proactively with the server, or we saw a message from the user
-  * @prop {number} lastPresenceTs Timestamp (ms since the epoch) for when we last
+  * @prop {Number} lastPresenceTs Timestamp (ms since the epoch) for when we last
   *                received presence data for this user.  We can subtract
   *                lastActiveAgo from this to approximate an absolute value for
   *                when a user was last active.
@@ -73,7 +73,7 @@ export class User {
       * @fires module:client~MatrixClient#event:"User.displayName"
       * @fires module:client~MatrixClient#event:"User.avatarUrl"
       */
-    setPresenceEvent(event: any): void;
+    setPresenceEvent(event: MatrixEvent): void;
     /**
       * Manually set this user's display name. No event is emitted in response to this
       * as there is no underlying MatrixEvent to emit with.
@@ -115,5 +115,6 @@ export class User {
       * @param {MatrixEvent} event The <code>im.vector.user_status</code> event.
       * @fires module:client~MatrixClient#event:"User._unstable_statusMessage"
       */
-    _unstable_updateStatusMessage(event: any): void;
+    _unstable_updateStatusMessage(event: MatrixEvent): void;
 }
+import { MatrixEvent } from "./event";

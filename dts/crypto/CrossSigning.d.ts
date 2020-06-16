@@ -3,7 +3,7 @@ export function createCryptoStoreCacheCallbacks(store: any): {
     storeCrossSigningKeyCache: (type: any, key: any) => any;
 };
 export class CrossSigningInfo extends EventEmitter {
-    static fromStorage(obj: any, userId: any): any;
+    static fromStorage(obj: any, userId: any): CrossSigningInfo;
     /**
   * Store private keys in secret storage for use by other devices. This is
   * typically called in conjunction with the creation of new cross-signing
@@ -11,7 +11,7 @@ export class CrossSigningInfo extends EventEmitter {
   * @param {object} keys The keys to store
   * @param {SecretStorage} secretStorage The secret store using account data
   */
-    static storeInSecretStorage(keys: object, secretStorage: any): Promise<void>;
+    static storeInSecretStorage(keys: object, secretStorage: SecretStorage): Promise<void>;
     /**
   * Get private keys from secret storage created by some other device. This
   * also passes the private keys to the app-specific callback.
@@ -20,7 +20,7 @@ export class CrossSigningInfo extends EventEmitter {
   * @param {SecretStorage} secretStorage The secret store using account data
   * @return {Uint8Array} The private key
   */
-    static getFromSecretStorage(type: string, secretStorage: any): Uint8Array;
+    static getFromSecretStorage(type: string, secretStorage: SecretStorage): Uint8Array;
     /**
       * Information about a user's cross-signing keys
       * @class
@@ -40,7 +40,7 @@ export class CrossSigningInfo extends EventEmitter {
   * @param {string} type The key type ("master", "self_signing", or "user_signing")
   * @param {string} expectedPubkey The matching public key or undefined to use
   *     the stored public key for the given key type.
-  * @returns {Array} An array with [ public key, Olm.PkSigning ]
+  * @returns {Array} An array with [ public key, any ]
   */
     getCrossSigningKey(type: string, expectedPubkey: string): any[];
     toStorage(): {
@@ -57,7 +57,7 @@ export class CrossSigningInfo extends EventEmitter {
   *     with, or null if it is not present or not encrypted with a trusted
   *     key
   */
-    isStoredInSecretStorage(secretStorage: any): object;
+    isStoredInSecretStorage(secretStorage: SecretStorage): object;
     /**
   * Get the ID used to identify the user. This can also be used to test for
   * the existence of a given key type.
@@ -72,11 +72,7 @@ export class CrossSigningInfo extends EventEmitter {
   * `saveCrossSigningKeys` application callback.
   * @param {CrossSigningLevel} level The key types to reset
   */
-    resetKeys(level: {
-        MASTER: number;
-        USER_SIGNING: number;
-        SELF_SIGNING: number;
-    }): Promise<void>;
+    resetKeys(level: CrossSigningLevel): Promise<void>;
     /**
      * unsets the keys, used when another session has reset the keys, to disable cross-signing
      */
@@ -107,10 +103,10 @@ export class CrossSigningInfo extends EventEmitter {
   */
     getCacheCallbacks(): object;
 }
-export namespace CrossSigningLevel {
-    export const MASTER: number;
-    export const USER_SIGNING: number;
-    export const SELF_SIGNING: number;
+export enum CrossSigningLevel {
+    MASTER = 4,
+    USER_SIGNING = 2,
+    SELF_SIGNING = 1
 }
 /**
  * Represents the ways in which we trust a user
@@ -175,3 +171,4 @@ export class DeviceTrustLevel {
     isTofu(): boolean;
 }
 import { EventEmitter } from "events";
+import { SecretStorage } from "./SecretStorage";

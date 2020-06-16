@@ -38,6 +38,13 @@
  * @constructor
  */
 export class EventTimeline {
+    /**
+      * Static helper method to set sender and target properties
+      * @param {MatrixEvent} event the event whose metadata is to be set
+      * @param {RoomState} stateContext the room state to be queried
+      * @param {boolean} toStartOfTimeline if true the event's forwardLooking flag is set false
+      */
+    static setEventMetadata(event: MatrixEvent, stateContext: RoomState, toStartOfTimeline: boolean): void;
     constructor(eventTimelineSet: any);
     _eventTimelineSet: any;
     _roomId: any;
@@ -60,7 +67,7 @@ export class EventTimeline {
       * state with.
       * @throws {Error} if an attempt is made to call this after addEvent is called.
       */
-    initialiseState(stateEvents: any[]): void;
+    initialiseState(stateEvents: Array<MatrixEvent>): void;
     /**
       * Forks the (live) timeline, taking ownership of the existing directional state of this timeline.
       * All attached listeners will keep receiving state updates from the new live timeline state.
@@ -89,12 +96,12 @@ export class EventTimeline {
       * Get the filter for this timeline's timelineSet (if any)
       * @return {Filter} filter
       */
-    getFilter(): any;
+    getFilter(): Filter;
     /**
       * Get the timelineSet for this timeline
       * @return {EventTimelineSet} timelineSet
       */
-    getTimelineSet(): any;
+    getTimelineSet(): EventTimelineSet;
     /**
       * Get the base index.
       *
@@ -110,7 +117,7 @@ export class EventTimeline {
       * Get the list of events in this context
       * @return {Array.<MatrixEvent>} An array of MatrixEvents
       */
-    getEvents(): any[];
+    getEvents(): Array<MatrixEvent>;
     /**
       * Get the room state at the start/end of the timeline
       * @param {string} direction EventTimeline.BACKWARDS to get the state at the
@@ -157,13 +164,13 @@ export class EventTimeline {
       * @param {MatrixEvent} event new event
       * @param {boolean} atStart true to insert new event at the start
       */
-    addEvent(event: any, atStart: boolean): void;
+    addEvent(event: MatrixEvent, atStart: boolean): void;
     /**
       * Remove an event from the timeline
       * @param {string} eventId ID of event to be removed
       * @return {?MatrixEvent} removed event, or null if not found
       */
-    removeEvent(eventId: string): any;
+    removeEvent(eventId: string): MatrixEvent | null;
     /**
       * Return a string to identify this timeline, for debugging
       * @return {string} name for this timeline
@@ -171,14 +178,10 @@ export class EventTimeline {
     toString(): string;
 }
 export namespace EventTimeline {
-    /**
-      * Static helper method to set sender and target properties
-      * @param {MatrixEvent} event the event whose metadata is to be set
-      * @param {RoomState} stateContext the room state to be queried
-      * @param {boolean} toStartOfTimeline if true the event's forwardLooking flag is set false
-      */
-    export function setEventMetadata(event: any, stateContext: RoomState, toStartOfTimeline: boolean): void;
-    export const BACKWARDS: string;
-    export const FORWARDS: string;
+    const BACKWARDS: string;
+    const FORWARDS: string;
 }
 import { RoomState } from "./room-state";
+import { MatrixEvent } from "./event";
+import { Filter } from "../filter";
+import { EventTimelineSet } from "./event-timeline-set";

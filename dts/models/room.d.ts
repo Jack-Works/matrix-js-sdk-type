@@ -24,7 +24,7 @@
   * @param {*} opts.storageToken Optional. The token which a data store can use
   * to remember the state of the room. What this means is dependent on the store
   * implementation.
-  * @param {string=} opts.pendingEventOrdering Controls where pending messages
+  * @param {String=} opts.pendingEventOrdering Controls where pending messages
   * appear in a room's timeline. If "<b>chronological</b>", messages will appear
   * in the timeline when the call to <code>sendEvent</code> was made. If
   * "<b>detached</b>", pending messages will appear in a separate list,
@@ -132,7 +132,7 @@ export class Room {
     _notificationCounts: {};
     _timelineSets: EventTimelineSet[];
     _filteredTimelineSets: {};
-    _pendingEventList: any[];
+    _pendingEventList: any[] | undefined;
     _blacklistUnverifiedDevices: boolean | null;
     _selfMembership: string | null;
     _summaryHeroes: any[] | null;
@@ -172,7 +172,7 @@ export class Room {
     };
     /**
       * Determines whether the given user is permitted to perform a room upgrade
-      * @param {string} userId The ID of the user to test against
+      * @param {String} userId The ID of the user to test against
       * @returns {boolean} True if the given user is permitted to upgrade the room
       */
     userMayUpgradeRoom(userId: string): boolean;
@@ -182,7 +182,7 @@ export class Room {
       * waiting for remote echo.
       * @throws If <code>opts.pendingEventOrdering</code> was not 'detached'
       */
-    getPendingEvents(): MatrixEvent[];
+    getPendingEvents(): Array<MatrixEvent>;
     /**
       * Check whether the pending event list contains a given event by ID.
       * @param {string} eventId The event ID to check for.
@@ -262,9 +262,9 @@ export class Room {
       * @private
       */
     private _fixUpLegacyTimelineFields;
-    timeline: any[] | undefined;
-    oldState: import("./room-state").RoomState | undefined;
-    currentState: import("./room-state").RoomState | undefined;
+    timeline: MatrixEvent[] | undefined;
+    oldState: RoomState | undefined;
+    currentState: RoomState | undefined;
     /**
       * Returns whether there are any devices in the room that are unverified
       *
@@ -278,7 +278,7 @@ export class Room {
       * Return the timeline sets for this room.
       * @return {Array.<EventTimelineSet>} array of timeline sets for this room
       */
-    getTimelineSets(): EventTimelineSet[];
+    getTimelineSets(): Array<EventTimelineSet>;
     /**
       * Helper to return the main unfiltered timeline set for this room
       * @return {EventTimelineSet} room's unfiltered timeline set
@@ -304,15 +304,15 @@ export class Room {
     findEventById(eventId: string): MatrixEvent | null;
     /**
       * Get one of the notification counts for this room
-      * @param {string} type The type of notification count to get. default: 'total'
-      * @return {number} The notification count, or undefined if there is no count
+      * @param {String} type The type of notification count to get. default: 'total'
+      * @return {Number} The notification count, or undefined if there is no count
       *                  for this type.
       */
     getUnreadNotificationCount(type: string): number;
     /**
       * Set one of the notification counts for this room
-      * @param {string} type The type of notification count to set.
-      * @param {number} count The new count
+      * @param {String} type The type of notification count to set.
+      * @param {Number} count The new count
       */
     setUnreadNotificationCount(type: string, count: number): void;
     setSummary(summary: any): void;
@@ -330,10 +330,10 @@ export class Room {
     getBlacklistUnverifiedDevices(): boolean;
     /**
       * Get the avatar URL for a room if one was set.
-      * @param {string} baseUrl The homeserver base URL. See
+      * @param {String} baseUrl The homeserver base URL. See
       * {@link module:client~MatrixClient#getHomeserverUrl}.
-      * @param {number} width The desired width of the thumbnail.
-      * @param {number} height The desired height of the thumbnail.
+      * @param {Number} width The desired width of the thumbnail.
+      * @param {Number} height The desired height of the thumbnail.
       * @param {string} resizeMethod The thumbnail resize method to use, either
       * "crop" or "scale".
       * @param {boolean} allowDefault True to allow an identicon for this room if an
@@ -345,9 +345,9 @@ export class Room {
       * Get the aliases this room has according to the room's state
       * The aliases returned by this function may not necessarily
       * still point to this room.
-      * @return {Array} The room's alias as an array of strings
+      * @return {array} The room's alias as an array of strings
       */
-    getAliases(): any[];
+    getAliases(): any;
     /**
       * Get this room's canonical alias
       * The alias returned by this function may not necessarily
@@ -357,9 +357,9 @@ export class Room {
     getCanonicalAlias(): string | null;
     /**
       * Get this room's alternative aliases
-      * @return {Array} The room's alternative aliases, or an empty array
+      * @return {array} The room's alternative aliases, or an empty array
       */
-    getAltAliases(): any[];
+    getAltAliases(): any;
     /**
       * Add events to a timeline
       *
@@ -373,7 +373,7 @@ export class Room {
       * @param {string=} paginationToken token for the next batch of events
       * @fires module:client~MatrixClient#event:"Room.timeline"
       */
-    addEventsToTimeline(events: MatrixEvent[], toStartOfTimeline: boolean, timeline: EventTimeline, paginationToken?: string | undefined): void;
+    addEventsToTimeline(events: Array<MatrixEvent>, toStartOfTimeline: boolean, timeline: EventTimeline, paginationToken?: string | undefined): void;
     /**
       * Get a member from the current room state.
       * @param {string} userId The user ID of the member.
@@ -384,7 +384,7 @@ export class Room {
       * Get a list of members whose membership state is "join".
       * @return {Array.<RoomMember>} A list of currently joined members.
       */
-    getJoinedMembers(): RoomMember[];
+    getJoinedMembers(): Array<RoomMember>;
     /**
       * Returns the number of joined members in this room
       * This method caches the result.
@@ -408,13 +408,13 @@ export class Room {
       * @param {string} membership The membership state.
       * @return {Array.<RoomMember>} A list of members with the given membership state.
       */
-    getMembersWithMembership(membership: string): RoomMember[];
+    getMembersWithMembership(membership: string): Array<RoomMember>;
     /**
       * Get a list of members we should be encrypting for in this room
       * @return {Promise.<Array.<RoomMember>>} A list of members who
       * we should encrypt messages for in this room.
       */
-    getEncryptionTargetMembers(): Promise<RoomMember[]>;
+    getEncryptionTargetMembers(): Promise<Array<RoomMember>>;
     /**
       * Determine whether we should encrypt messages for invited users in this room
       * @return {boolean} if we should encrypt messages for invited users
@@ -440,12 +440,12 @@ export class Room {
       * @param {Filter} filter The filter to be applied to this timelineSet
       * @return {EventTimelineSet} The timelineSet
       */
-    getOrCreateFilteredTimelineSet(filter: any): EventTimelineSet;
+    getOrCreateFilteredTimelineSet(filter: Filter): EventTimelineSet;
     /**
       * Forget the timelineSet for this room with the given filter
       * @param {Filter} filter the filter whose timelineSet is to be forgotten
       */
-    removeFilteredTimelineSet(filter: any): void;
+    removeFilteredTimelineSet(filter: Filter): void;
     /**
       * Add an event to the end of this room's live timelines. Will fire
       * "Room.timeline".
@@ -505,7 +505,7 @@ export class Room {
       *    newStatus == EventStatus.SENT.
       * @fires module:client~MatrixClient#event:"Room.localEchoUpdated"
       */
-    updatePendingEvent(event: MatrixEvent, newStatus: string, newEventId: string): void;
+    updatePendingEvent(event: MatrixEvent, newStatus: EventStatus, newEventId: string): void;
     _revertRedactionLocalEcho(redactionEvent: any): void;
     /**
       * Add some events to this room. This can include state events, message
@@ -521,20 +521,20 @@ export class Room {
       * @param {boolean} fromCache whether the sync response came from cache
       * @throws If <code>duplicateStrategy</code> is not falsey, 'replace' or 'ignore'.
       */
-    addLiveEvents(events: MatrixEvent[], duplicateStrategy: string, fromCache: boolean): void;
+    addLiveEvents(events: Array<MatrixEvent>, duplicateStrategy: string, fromCache: boolean): void;
     /**
       * Adds/handles ephemeral events such as typing notifications and read receipts.
       * @param {Array.<MatrixEvent>} events A list of events to process
       */
-    addEphemeralEvents(events: MatrixEvent[]): void;
+    addEphemeralEvents(events: Array<MatrixEvent>): void;
     /**
       * Removes events from this room.
-      * @param {Array.<string>} eventIds A list of eventIds to remove.
+      * @param {Array.<String>} eventIds A list of eventIds to remove.
       */
-    removeEvents(eventIds: string[]): void;
+    removeEvents(eventIds: Array<string>): void;
     /**
       * Removes a single event from this room.
-      * @param {string} eventId The id of the event to remove
+      * @param {String} eventId The id of the event to remove
       * @return {boolean} true if the event was removed from any of the room's timeline sets
       */
     removeEvent(eventId: string): boolean;
@@ -548,25 +548,25 @@ export class Room {
     /**
       * Get a list of user IDs who have <b>read up to</b> the given event.
       * @param {MatrixEvent} event the event to get read receipts for.
-      * @return {Array.<string>} A list of user IDs.
+      * @return {Array.<String>} A list of user IDs.
       */
-    getUsersReadUpTo(event: MatrixEvent): string[];
+    getUsersReadUpTo(event: MatrixEvent): Array<string>;
     /**
       * Get the ID of the event that a given user has read up to, or null if we
       * have received no read receipts from them.
-      * @param {string} userId The user ID to get read receipt event ID for
+      * @param {String} userId The user ID to get read receipt event ID for
       * @param {Boolean} ignoreSynthesized If true, return only receipts that have been
       *                                    sent by the server, not implicit ones generated
       *                                    by the JS SDK.
-      * @return {string} ID of the latest event that the given user has read, or null.
+      * @return {String} ID of the latest event that the given user has read, or null.
       */
     getEventReadUpTo(userId: string, ignoreSynthesized: boolean): string;
     /**
       * Determines if the given user has read a particular event ID with the known
       * history of the room. This is not a definitive check as it relies only on
       * what is available to the room at the time of execution.
-      * @param {string} userId The user ID to check the read state of.
-      * @param {string} eventId The event ID to check if the user read.
+      * @param {String} userId The user ID to check the read state of.
+      * @param {String} eventId The event ID to check if the user read.
       * @returns {Boolean} True if the user has read the event, false otherwise.
       */
     hasUserReadEvent(userId: string, eventId: string): boolean;
@@ -576,7 +576,7 @@ export class Room {
       * @return {Array.<object>} A list of receipts with a userId, type and data keys or
       * an empty list.
       */
-    getReceiptsForEvent(event: MatrixEvent): object[];
+    getReceiptsForEvent(event: MatrixEvent): Array<object>;
     /**
       * Add a receipt event to the room.
       * @param {MatrixEvent} event The m.receipt event.
@@ -612,7 +612,7 @@ export class Room {
       * Update the account_data events for this room, overwriting events of the same type.
       * @param {Array.<MatrixEvent>} events an array of account_data events to add
       */
-    addAccountData(events: MatrixEvent[]): void;
+    addAccountData(events: Array<MatrixEvent>): void;
     /**
       * Access account_data event of given event type for this room
       * @param {string} type the type of account_data event to be accessed
@@ -632,3 +632,6 @@ import { EventTimelineSet } from "./event-timeline-set";
 import { MatrixEvent } from "./event";
 import { EventTimeline } from "./event-timeline";
 import { RoomMember } from "./room-member";
+import { RoomState } from "./room-state";
+import { Filter } from "../filter";
+import { EventStatus } from "./event";

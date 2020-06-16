@@ -9,13 +9,13 @@
 export class Relations extends EventEmitter {
     /**
       *
-      * @param {string} relationType The type of relation involved, such as "m.annotation", "m.reference",
+      * @param {String} relationType The type of relation involved, such as "m.annotation", "m.reference",
       * "m.replace", etc.
-      * @param {string} eventType The relation event's type, such as "m.reaction", etc.
+      * @param {String} eventType The relation event's type, such as "m.reaction", etc.
       * @param {?Room} room Room for this container. May be null for non-room cases, such as the
       * notification timeline.
       */
-    constructor(relationType: string, eventType: string, room: any);
+    constructor(relationType: string, eventType: string, room: Room | null);
     relationType: string;
     eventType: string;
     _relations: Set<any>;
@@ -27,18 +27,18 @@ export class Relations extends EventEmitter {
   * Add relation events to this collection.
   * @param {MatrixEvent} event The new relation event to be added.
   */
-    addEvent(event: any): void;
+    addEvent(event: MatrixEvent): void;
     /**
   * Remove relation event from this collection.
   * @param {MatrixEvent} event The relation event to remove.
   */
-    _removeEvent(event: any): void;
+    _removeEvent(event: MatrixEvent): void;
     /**
   * Listens for event status changes to remove cancelled events.
   * @param {MatrixEvent} event The event whose status has changed
   * @param {EventStatus} status The new status
   */
-    _onEventStatus: (event: any, status: string) => void;
+    _onEventStatus: (event: MatrixEvent, status: EventStatus) => void;
     /**
   * Get all relation events in this collection.
   *
@@ -59,7 +59,7 @@ export class Relations extends EventEmitter {
   *   - before the original event has been marked redacted in the client
   * @param {MatrixEvent} redactedEvent The original relation event that is about to be redacted.
   */
-    _onBeforeRedaction: (redactedEvent: any) => void;
+    _onBeforeRedaction: (redactedEvent: MatrixEvent) => void;
     /**
   * Get all events in this collection grouped by key and sorted by descending
   * event count in each group.
@@ -84,7 +84,10 @@ export class Relations extends EventEmitter {
   * once the target event is known, see `addEvent`.
   * @return {MatrixEvent?}
   */
-    getLastReplacement(): any;
+    getLastReplacement(): MatrixEvent | null;
     setTargetEvent(event: any): void;
 }
 import { EventEmitter } from "events";
+import { MatrixEvent } from "./event";
+import { EventStatus } from "./event";
+import { Room } from "./room";

@@ -68,28 +68,28 @@ export class EventTimelineSet {
     constructor(room: any, opts: any);
     room: any;
     _timelineSupport: boolean;
-    _liveTimeline: any;
+    _liveTimeline: EventTimeline;
     _unstableClientRelationAggregation: boolean;
-    _timelines: any[];
+    _timelines: EventTimeline[];
     _eventIdToTimeline: {};
     _filter: any;
-    _relations: {};
+    _relations: {} | undefined;
     /**
       * Get all the timelines in this set
       * @return {Array.<EventTimeline>} the timelines in this set
       */
-    getTimelines(): EventTimeline[];
+    getTimelines(): Array<EventTimeline>;
     /**
       * Get the filter object this timeline set is filtered on, if any
       * @return {?Filter} the optional filter for this timelineSet
       */
-    getFilter(): any;
+    getFilter(): Filter | null;
     /**
       * Set the filter object this timeline set is filtered on
       * (passed to the server when paginating via /messages).
       * @param {Filter} filter the filter for this timelineSet
       */
-    setFilter(filter: any): void;
+    setFilter(filter: Filter): void;
     /**
       * Get the list of pending sent events for this timelineSet's room, filtered
       * by the timelineSet's filter if appropriate.
@@ -97,7 +97,7 @@ export class EventTimelineSet {
       * waiting for remote echo.
       * @throws If <code>opts.pendingEventOrdering</code> was not 'detached'
       */
-    getPendingEvents(): MatrixEvent[];
+    getPendingEvents(): Array<MatrixEvent>;
     /**
       * Get the live timeline for this room.
       * @return {EventTimeline} live timeline
@@ -105,15 +105,15 @@ export class EventTimelineSet {
     getLiveTimeline(): EventTimeline;
     /**
       * Return the timeline (if any) this event is in.
-      * @param {string} eventId the eventId being sought
+      * @param {String} eventId the eventId being sought
       * @return {EventTimeline} timeline
       */
     eventIdToTimeline(eventId: string): EventTimeline;
     /**
       * Track a new event as if it were in the same timeline as an old event,
       * replacing it.
-      * @param {string} oldEventId event ID of the original event
-      * @param {string} newEventId event ID of the replacement event
+      * @param {String} oldEventId event ID of the original event
+      * @param {String} newEventId event ID of the replacement event
       */
     replaceEventId(oldEventId: string, newEventId: string): void;
     /**
@@ -157,7 +157,7 @@ export class EventTimelineSet {
       * @param {string=} paginationToken token for the next batch of events
       * @fires module:client~MatrixClient#event:"Room.timeline"
       */
-    addEventsToTimeline(events: MatrixEvent[], toStartOfTimeline: boolean, timeline: EventTimeline, paginationToken?: string | undefined): void;
+    addEventsToTimeline(events: Array<MatrixEvent>, toStartOfTimeline: boolean, timeline: EventTimeline, paginationToken?: string | undefined): void;
     /**
       * Add an event to the end of this live timeline.
       * @param {MatrixEvent} event Event to be added
@@ -181,14 +181,14 @@ export class EventTimelineSet {
       * Replaces event with ID oldEventId with one with newEventId, if oldEventId is
       * recognised.  Otherwise, add to the live timeline.  Used to handle remote echos.
       * @param {MatrixEvent} localEvent the new event to be added to the timeline
-      * @param {string} oldEventId the ID of the original event
+      * @param {String} oldEventId the ID of the original event
       * @param {boolean} newEventId the ID of the replacement event
       * @fires module:client~MatrixClient#event:"Room.timeline"
       */
     handleRemoteEcho(localEvent: MatrixEvent, oldEventId: string, newEventId: boolean): void;
     /**
       * Removes a single event from this room.
-      * @param {string} eventId The id of the event to remove
+      * @param {String} eventId The id of the event to remove
       * @return {?MatrixEvent} the removed event, or null if the event was not found
       * in this room.
       */
@@ -206,10 +206,10 @@ export class EventTimelineSet {
     compareEventOrdering(eventId1: string, eventId2: string): number | null;
     /**
       * Get a collection of relations to a given event in this timeline set.
-      * @param {string} eventId The ID of the event that you'd like to access relation events for.
+      * @param {String} eventId The ID of the event that you'd like to access relation events for.
       * For example, with annotations, this would be the ID of the event being annotated.
-      * @param {string} relationType The type of relation involved, such as "m.annotation", "m.reference", "m.replace", etc.
-      * @param {string} eventType The relation event's type, such as "m.reaction", etc.
+      * @param {String} relationType The type of relation involved, such as "m.annotation", "m.reference", "m.replace", etc.
+      * @param {String} eventType The relation event's type, such as "m.reaction", etc.
       * @throws If <code>eventId</code>, <code>relationType</code> or <code>eventType</code>
       * are not valid.
       * @returns {?Relations} A container for relation events or undefined if there are no relation events for
@@ -228,5 +228,6 @@ export class EventTimelineSet {
     aggregateRelations(event: MatrixEvent): void;
 }
 import { EventTimeline } from "./event-timeline";
+import { Filter } from "../filter";
 import { MatrixEvent } from "./event";
 import { Relations } from "./relations";

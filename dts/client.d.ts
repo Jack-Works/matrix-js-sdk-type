@@ -11,7 +11,7 @@ export const CRYPTO_ENABLED: boolean;
   * HTTP API.
   * @param {string} opts.idBaseUrl Optional. The base identity server URL for
   * identity server requests.
-  * @param {((...args: any[]) => any)} opts.request Required. The function to invoke for HTTP
+  * @param {Function} opts.request Required. The function to invoke for HTTP
   * requests. The value of this property is typically <code>require("request")
   * </code> as it returns a function which meets the required interface. See
   * {@link requestFunction} for more information.
@@ -36,7 +36,7 @@ export const CRYPTO_ENABLED: boolean;
   *    migrated out of here to `cryptoStore` instead. If not specified,
   *    end-to-end crypto will be disabled. The `createClient` helper
   *    _will not_ create this store at the moment.
-  * @param {{}} opts.cryptoStore A store to be used for end-to-end crypto session data. If not specified,
+  * @param {store.base.CryptoStore} opts.cryptoStore A store to be used for end-to-end crypto session data. If not specified,
   *    end-to-end crypto will be disabled. The `createClient` helper will create
   *    a default store if needed.
   * @param {string=} opts.deviceId A unique identifier for this device; used for
@@ -49,7 +49,7 @@ export const CRYPTO_ENABLED: boolean;
   * @param {object} opts.queryParams Optional. Extra query parameters to append
   * to all requests with this client. Useful for application services which require
   * <code>?user_id=</code>.
-  * @param {number=} opts.localTimeoutMs Optional. The default maximum amount of
+  * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
   * time to wait before timing out HTTP requests. If not specified, there is no timeout.
   * @param {boolean=} opts.useAuthorizationHeader Set to true to use
   * Authorization header instead of query param to send the access token to the server.
@@ -71,7 +71,7 @@ export const CRYPTO_ENABLED: boolean;
   * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
   * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
   *     The cross-signing API is currently UNSTABLE and may change without notice.
-  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
+  * @param {function=} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
   * Secure Secret Storage will be used by default if this is unset.
   * Args:
   *    {string} type The type of key needed.  Will be one of "master",
@@ -82,13 +82,13 @@ export const CRYPTO_ENABLED: boolean;
   *        requested.
   *   Should return a promise that resolves with the private key as a
   *   UInt8Array or rejects with an error.
-  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.saveCrossSigningKeys Optional. Called when new private keys for cross-signing need to be saved.
+  * @param {function=} opts.cryptoCallbacks.saveCrossSigningKeys Optional. Called when new private keys for cross-signing need to be saved.
   * Secure Secret Storage will be used by default if this is unset.
   * Args:
   *   {object} keys the private keys to save. Map of key name to private key
   *       as a UInt8Array. The getPrivateKey callback above will be called
   *       with the corresponding key name when the keys are required again.
-  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.shouldUpgradeDeviceVerifications Optional. Called when there are device-to-device verifications that can be
+  * @param {function=} opts.cryptoCallbacks.shouldUpgradeDeviceVerifications Optional. Called when there are device-to-device verifications that can be
   * upgraded into cross-signing verifications.
   * Args:
   *   {object} users The users whose device verifications can be
@@ -98,7 +98,7 @@ export const CRYPTO_ENABLED: boolean;
   *     user's cross-signing information)
   * Should return a promise which resolves with an array of the user IDs who
   * should be cross-signed.
-  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.getSecretStorageKey Optional. Function called when an encryption key for secret storage
+  * @param {function=} opts.cryptoCallbacks.getSecretStorageKey Optional. Function called when an encryption key for secret storage
   *     is required. One or more keys will be described in the keys object.
   *     The callback function should return a promise with an array of:
   *     [<key name>, <UInt8Array private key>] or null if it cannot provide
@@ -113,7 +113,7 @@ export const CRYPTO_ENABLED: boolean;
   *           }
   *       }
   *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
-  * @param {((...args: any[]) => any)=} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
+  * @param {function=} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
   * device.
   * Args:
   *   {string} name The name of the secret being requested.
@@ -173,7 +173,7 @@ export const CRYPTO_ENABLED: boolean;
  *    end-to-end crypto will be disabled. The `createClient` helper
  *    _will not_ create this store at the moment.
  *
- * @param {{}} opts.cryptoStore
+ * @param {any} opts.cryptoStore
  *    A store to be used for end-to-end crypto session data. If not specified,
  *    end-to-end crypto will be disabled. The `createClient` helper will create
  *    a default store if needed.
@@ -309,7 +309,7 @@ export class MatrixClient extends EventEmitter {
     _ongoingScrollbacks: {};
     timelineSupport: boolean;
     urlPreviewCache: {};
-    _notifTimelineSet: any;
+    _notifTimelineSet: EventTimelineSet | null;
     unstableClientRelationAggregation: boolean;
     _crypto: Crypto | null;
     _cryptoStore: any;
@@ -413,12 +413,12 @@ export class MatrixClient extends EventEmitter {
       * Return the global notification EventTimelineSet, if any
       * @return {EventTimelineSet} the globl notification EventTimelineSet
       */
-    getNotifTimelineSet(): any;
+    getNotifTimelineSet(): EventTimelineSet;
     /**
       * Set the global notification EventTimelineSet
       * @param {EventTimelineSet} notifTimelineSet
       */
-    setNotifTimelineSet(notifTimelineSet: any): void;
+    setNotifTimelineSet(notifTimelineSet: EventTimelineSet): void;
     /**
       * Gets the capabilities of the homeserver. Always returns an object of
       * capability keys and their options, which may be empty.
@@ -527,7 +527,7 @@ export class MatrixClient extends EventEmitter {
       * @param {string} roomId the room to use for verification
       * @returns {?} the VerificationRequest that is in progress, if any
       */
-    findVerificationRequestDMInProgress(roomId: string): any;
+    findVerificationRequestDMInProgress(roomId: string): unknown;
     /**
       * Request a key verification from another user.
       * @param {string} userId the user to request verification with
@@ -580,13 +580,13 @@ export class MatrixClient extends EventEmitter {
       * @param {MatrixEvent} event event to be checked
       * @returns {DeviceTrustLevel}
       */
-    checkEventSenderTrust(event: MatrixEvent): any;
+    checkEventSenderTrust(event: MatrixEvent): DeviceTrustLevel;
     /**
       * Get e2e information on the device that sent an event
       * @param {MatrixEvent} event event to be checked
       * @return {Promise.<?>}
       */
-    getEventSenderDeviceInfo(event: MatrixEvent): Promise<any>;
+    getEventSenderDeviceInfo(event: MatrixEvent): Promise<unknown>;
     /**
       * Check if the sender of an event is verified
       * @param {MatrixEvent} event event to be checked
@@ -636,12 +636,12 @@ export class MatrixClient extends EventEmitter {
       * Import a list of room keys previously exported by exportRoomKeys
       * @param {Array.<object>} keys a list of session export objects
       * @param {object} opts
-      * @param {((...args: any[]) => any)} opts.progressCallback called with an object that has a "stage" param
+      * @param {Function} opts.progressCallback called with an object that has a "stage" param
       * @return {Promise} a promise which resolves when the keys
       *    have been imported
       */
-    importRoomKeys(keys: object[], opts: {
-        progressCallback: (...args: any[]) => any;
+    importRoomKeys(keys: Array<object>, opts: {
+        progressCallback: Function;
     }): Promise<any>;
     /**
       * Force a re-check of the local key backup status against
@@ -827,12 +827,12 @@ export class MatrixClient extends EventEmitter {
       * @param {string} groupId The group ID
       * @return {Group} The Group or null if the group is not known or there is no data store.
       */
-    getGroup(groupId: string): any;
+    getGroup(groupId: string): Group;
     /**
       * Retrieve all known groups.
       * @return {Array.<Group>} A list of groups, or an empty list if there is no data store.
       */
-    getGroups(): any[];
+    getGroups(): Array<Group>;
     /**
       * Get the config for the media repository.
       * @param {callback} callback Optional.
@@ -847,12 +847,12 @@ export class MatrixClient extends EventEmitter {
       * @param {string} roomId The room ID
       * @return {Room} The Room or null if it doesn't exist or there is no data store.
       */
-    getRoom(roomId: string): any;
+    getRoom(roomId: string): Room;
     /**
       * Retrieve all known rooms.
       * @return {Array.<Room>} A list of rooms, or an empty list if there is no data store.
       */
-    getRooms(): any[];
+    getRooms(): Array<Room>;
     /**
       * Retrieve all rooms that should be displayed to the user
       * This is essentially getRooms() with some rooms filtered out, eg. old versions
@@ -860,7 +860,7 @@ export class MatrixClient extends EventEmitter {
       * marked at the protocol level as not to be displayed to the user.
       * @return {Array.<Room>} A list of rooms, or an empty list if there is no data store.
       */
-    getVisibleRooms(): any[];
+    getVisibleRooms(): Array<Room>;
     /**
       * Retrieve a user.
       * @param {string} userId The user ID to retrieve.
@@ -872,7 +872,7 @@ export class MatrixClient extends EventEmitter {
       * Retrieve all known users.
       * @return {Array.<User>} A list of users, or an empty list if there is no data store.
       */
-    getUsers(): User[];
+    getUsers(): Array<User>;
     /**
       * Set account data event for the current user.
       * It will retry the request up to 5 times.
@@ -903,7 +903,7 @@ export class MatrixClient extends EventEmitter {
       * Gets the users that are ignored by this client
       * @returns {Array.<string>} The array of users that are ignored (empty if none)
       */
-    getIgnoredUsers(): string[];
+    getIgnoredUsers(): Array<string>;
     /**
       * Sets the users that the current user should ignore.
       * @param {Array.<string>} userIds the user IDs to ignore
@@ -911,7 +911,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: Account data event
       * @return {MatrixError} Rejects: with an error response.
       */
-    setIgnoredUsers(userIds: string[], callback?: callback | undefined): Promise<any>;
+    setIgnoredUsers(userIds: Array<string>, callback?: callback | undefined): Promise<any>;
     /**
       * Gets whether or not a specific user is being ignored by this client.
       * @param {string} userId the user ID to check
@@ -936,7 +936,7 @@ export class MatrixClient extends EventEmitter {
     joinRoom(roomIdOrAlias: string, opts: {
         syncRoom: boolean;
         inviteSignUrl: boolean;
-        viaServers: string[];
+        viaServers: Array<string>;
     }, callback: callback): Promise<any>;
     /**
       * Resend an event.
@@ -946,7 +946,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    resendEvent(event: MatrixEvent, room: any): Promise<any>;
+    resendEvent(event: MatrixEvent, room: Room): Promise<any>;
     /**
       * Cancel a queued or unsent event.
       * @param {MatrixEvent} event Event to cancel
@@ -1012,7 +1012,7 @@ export class MatrixClient extends EventEmitter {
       * Set a user's power level.
       * @param {string} roomId
       * @param {string} userId
-      * @param {number} powerLevel
+      * @param {Number} powerLevel
       * @param {MatrixEvent} event
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
@@ -1191,7 +1191,7 @@ export class MatrixClient extends EventEmitter {
       * Attributes may be synthesized where actual OG metadata is lacking.
       * Caches results to prevent hammering the server.
       * @param {string} url The URL to get preview data for
-      * @param {number} ts The preferred point in time that the preview should
+      * @param {Number} ts The preferred point in time that the preview should
       * describe (ms since epoch).  The preview returned will either be the most
       * recent one preceding this timestamp if available, or failing that the next
       * most recent available preview.
@@ -1205,7 +1205,7 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} roomId
       * @param {boolean} isTyping
-      * @param {number} timeoutMs
+      * @param {Number} timeoutMs
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
@@ -1225,7 +1225,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Array.<Room>} An array of rooms representing the upgrade
       * history.
       */
-    getRoomUpgradeHistory(roomId: string, verifyLinks?: boolean): any[];
+    getRoomUpgradeHistory(roomId: string, verifyLinks?: boolean): Array<Room>;
     /**
       *
       * @param {string} roomId
@@ -1349,8 +1349,8 @@ export class MatrixClient extends EventEmitter {
       * Turn an MXC URL into an HTTP one. <strong>This method is experimental and
       * may change.</strong>
       * @param {string} mxcUrl The MXC URL
-      * @param {number} width The desired width of the thumbnail.
-      * @param {number} height The desired height of the thumbnail.
+      * @param {Number} width The desired width of the thumbnail.
+      * @param {Number} height The desired height of the thumbnail.
       * @param {string} resizeMethod The thumbnail resize method to use, either
       * "crop" or "scale".
       * @param {Boolean} allowDirectLinks If true, return any non-mxc URLs
@@ -1395,7 +1395,7 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    inviteToPresenceList(callback: callback, userIds: string[]): Promise<any>;
+    inviteToPresenceList(callback: callback, userIds: Array<string>): Promise<any>;
     /**
       * Drop users from the current user presence list.
       * @param {callback} callback Optional.
@@ -1404,7 +1404,7 @@ export class MatrixClient extends EventEmitter {
       * @return {MatrixError} Rejects: with an error response.
       * *
       */
-    dropFromPresenceList(callback: callback, userIds: string[]): Promise<any>;
+    dropFromPresenceList(callback: callback, userIds: Array<string>): Promise<any>;
     /**
       * Retrieve older messages from the given room and put them in the timeline.
       *
@@ -1421,7 +1421,7 @@ export class MatrixClient extends EventEmitter {
       * <code>null</code>.
       * @return {MatrixError} Rejects: with an error response.
       */
-    scrollback(room: any, limit: any, callback: callback): Promise<any>;
+    scrollback(room: Room, limit: any, callback: callback): Promise<any>;
     /**
       * Get an EventTimeline for the given event
       *
@@ -1434,7 +1434,7 @@ export class MatrixClient extends EventEmitter {
       *    {@link module:models/event-timeline~EventTimeline} including the given
       *    event
       */
-    getEventTimeline(timelineSet: any, eventId: string): Promise<any>;
+    getEventTimeline(timelineSet: EventTimelineSet, eventId: string): Promise<any>;
     /**
       * Makes a request to /messages with the appropriate lazy loading filter set.
       * XXX: if we do get rid of scrollback (as it's not used at the moment),
@@ -1468,7 +1468,7 @@ export class MatrixClient extends EventEmitter {
     /**
       * Peek into a room and receive updates about the room. This only works if the
       * history visibility for the room is world_readable.
-      * @param {string} roomId The room to attempt to peek into.
+      * @param {String} roomId The room to attempt to peek into.
       * @return {Promise} Resolves: Room object
       * @return {MatrixError} Rejects: with an error response.
       */
@@ -1692,7 +1692,7 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} filterName
       * @param {Filter} filter
-      * @return {Promise.<string>} Filter ID
+      * @return {Promise.<String>} Filter ID
       */
     getOrCreateFilter(filterName: string, filter: Filter): Promise<string>;
     /**
@@ -1714,7 +1714,7 @@ export class MatrixClient extends EventEmitter {
       * Get the TURN servers for this home server.
       * @return {Array.<object>} The servers or an empty list.
       */
-    getTurnServers(): object[];
+    getTurnServers(): Array<object>;
     /**
       * Set whether to allow a fallback ICE server should be used for negotiating a
       * WebRTC connection if the homeserver doesn't provide any servers. Defaults to
@@ -1758,20 +1758,20 @@ export class MatrixClient extends EventEmitter {
       * via {@link module:client~MatrixClient#on}. Alternatively, listen for specific
       * state change events.
       * @param {object=} opts Options to apply when syncing.
-      * @param {number=} opts.initialSyncLimit The event <code>limit=</code> to apply
+      * @param {Number=} opts.initialSyncLimit The event <code>limit=</code> to apply
       * to initial sync. Default: 8.
       * @param {Boolean=} opts.includeArchivedRooms True to put <code>archived=true</code>
       * on the <code>/initialSync</code> request. Default: false.
       * @param {Boolean=} opts.resolveInvitesToProfiles True to do /profile requests
       * on every invite event if the displayname/avatar_url is not known for this user ID.
       * Default: false.
-      * @param {string=} opts.pendingEventOrdering Controls where pending messages
+      * @param {String=} opts.pendingEventOrdering Controls where pending messages
       * appear in a room's timeline. If "<b>chronological</b>", messages will appear
       * in the timeline when the call to <code>sendEvent</code> was made. If
       * "<b>detached</b>", pending messages will appear in a separate list,
       * accessbile via {@link module:models/room#getPendingEvents}. Default:
       * "chronological".
-      * @param {number=} opts.pollTimeout The number of milliseconds to wait on /sync.
+      * @param {Number=} opts.pollTimeout The number of milliseconds to wait on /sync.
       * Default: 30000 (30 seconds).
       * @param {Filter=} opts.filter The filter to apply to /sync calls. This will override
       * the opts.initialSyncLimit, which would normally result in a timeline limit filter.
@@ -1852,15 +1852,15 @@ export class MatrixClient extends EventEmitter {
       * are other references to the timelines for this room, e.g because the client is
       * actively viewing events in this room.
       * Default: returns false.
-      * @param {((...args: any[]) => any)} cb The callback which will be invoked.
+      * @param {Function} cb The callback which will be invoked.
       */
-    setCanResetTimelineCallback(cb: (...args: any[]) => any): void;
-    _canResetTimelineCallback: ((...args: any[]) => any) | undefined;
+    setCanResetTimelineCallback(cb: Function): void;
+    _canResetTimelineCallback: Function | undefined;
     /**
       * Get the callback set via `setCanResetTimelineCallback`.
-      * @return {?((...args: any[]) => any)} The callback or null
+      * @return {?Function} The callback or null
       */
-    getCanResetTimelineCallback(): ((...args: any[]) => any) | null;
+    getCanResetTimelineCallback(): Function | null;
     /**
       * Returns relations for a given event. Handles encryption transparently,
       * with the caveat that the amount of events returned might be 0, even though you get a nextBatch.
@@ -1880,9 +1880,9 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {object=} options
       * @param {boolean} options.preventReEmit don't reemit events emitted on an event mapped by this mapper on the client
-      * @return {((...args: any[]) => any)}
+      * @return {Function}
       */
-    getEventMapper(options?: object | undefined): (...args: any[]) => any;
+    getEventMapper(options?: object | undefined): Function;
     /**
       * The app may wish to see if we have a key cached without
       * triggering a user interaction.
@@ -1897,7 +1897,7 @@ export class MatrixClient extends EventEmitter {
     generateClientSecret(): string;
 }
 export namespace MatrixClient {
-    export const RESTORE_BACKUP_ERROR_BAD_KEY: string;
+    const RESTORE_BACKUP_ERROR_BAD_KEY: string;
 }
 /**
  * The standard MatrixClient callback interface. Functions which accept this
@@ -1907,11 +1907,15 @@ export namespace MatrixClient {
 export type callback = (err: object, data: object) => any;
 import { ReEmitter } from "./ReEmitter";
 import { SyncApi } from "./sync";
+import { EventTimelineSet } from "./models/event-timeline-set";
 import { Crypto } from "./crypto";
 import { RoomList } from "./crypto/RoomList";
 import { PushProcessor } from "./pushprocessor";
 import { MatrixScheduler } from "./scheduler";
 import { MatrixEvent } from "./models/event";
+import { DeviceTrustLevel } from "./crypto/CrossSigning";
+import { Group } from "./models/group";
+import { Room } from "./models/room";
 import { User } from "./models/user";
 import { PushAction } from "./pushprocessor";
 import { Filter } from "./filter";

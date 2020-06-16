@@ -5,9 +5,10 @@
 /**
   * An implementation of CryptoStore, which is normally backed by an indexeddb,
   * but with fallback to MemoryCryptoStore.
-  * @implements {{}}
+  * @implements {CryptoStore}
   */
 export class IndexedDBCryptoStore {
+    static exists(indexedDB: any, dbName: any): boolean;
     /**
       * Create a new IndexedDBCryptoStore
       * @param {IDBFactory} indexedDB global indexedDB instance
@@ -48,32 +49,32 @@ export class IndexedDBCryptoStore {
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    not found
   */
-    getOutgoingRoomKeyRequest(requestBody: object): Promise<any>;
+    getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): Promise<any>;
     /**
   * Look for room key requests by state
-  * @param {Array.<number>} wantedStates list of acceptable states
+  * @param {Array.<Number>} wantedStates list of acceptable states
   * @return {Promise} resolves to the a
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    there are no pending requests in those states. If there are multiple
   *    requests in those states, an arbitrary one is chosen.
   */
-    getOutgoingRoomKeyRequestByState(wantedStates: number[]): Promise<any>;
+    getOutgoingRoomKeyRequestByState(wantedStates: Array<number>): Promise<any>;
     /**
   * Look for room key requests by state –
   * unlike above, return a list of all entries in one state.
-  * @param {number} wantedState
+  * @param {Number} wantedState
   * @return {Promise.<Array.<*>>} Returns an array of requests in the given state
   */
-    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<any[]>;
+    getAllOutgoingRoomKeyRequestsByState(wantedState: number): Promise<Array<any>>;
     /**
   * Look for room key requests by target device and state
   * @param {string} userId Target user ID
   * @param {string} deviceId Target device ID
-  * @param {Array.<number>} wantedStates list of acceptable states
+  * @param {Array.<Number>} wantedStates list of acceptable states
   * @return {Promise} resolves to a list of all the
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}
   */
-    getOutgoingRoomKeyRequestsByTarget(userId: string, deviceId: string, wantedStates: number[]): Promise<any>;
+    getOutgoingRoomKeyRequestsByTarget(userId: string, deviceId: string, wantedStates: Array<number>): Promise<any>;
     /**
   * Look for an existing room key request by id and state, and update it if
   * found
@@ -267,14 +268,14 @@ export class IndexedDBCryptoStore {
   * @param {*} txn An active transaction. See doTxn(). (optional)
   * @returns {Promise} resolves when the sessions are unmarked
   */
-    unmarkSessionsNeedingBackup(sessions: object[], txn: any): Promise<any>;
+    unmarkSessionsNeedingBackup(sessions: Array<object>, txn: any): Promise<any>;
     /**
   * Mark sessions as needing to be backed up.
   * @param {Array.<object>} sessions The sessions that need to be backed up.
   * @param {*} txn An active transaction. See doTxn(). (optional)
   * @returns {Promise} resolves when the sessions are marked
   */
-    markSessionsNeedingBackup(sessions: object[], txn: any): Promise<any>;
+    markSessionsNeedingBackup(sessions: Array<object>, txn: any): Promise<any>;
     /**
   * Perform a transaction on the crypto store. Any store methods
   * that require a transaction (txn) object to be passed in may
@@ -295,16 +296,16 @@ export class IndexedDBCryptoStore {
   *     reject with that exception. On synchronous backends, the
   *     exception will propagate to the caller of the getFoo method.
   */
-    doTxn(mode: string, stores: string[], func: (arg0: any) => any): Promise<any>;
+    doTxn(mode: string, stores: Array<string>, func: (arg0: any) => any): Promise<any>;
 }
 export namespace IndexedDBCryptoStore {
-    export function exists(indexedDB: any, dbName: any): boolean;
-    export const STORE_ACCOUNT: string;
-    export const STORE_SESSIONS: string;
-    export const STORE_INBOUND_GROUP_SESSIONS: string;
-    export const STORE_INBOUND_GROUP_SESSIONS_WITHHELD: string;
-    export const STORE_DEVICE_DATA: string;
-    export const STORE_ROOMS: string;
-    export const STORE_BACKUP: string;
+    const STORE_ACCOUNT: string;
+    const STORE_SESSIONS: string;
+    const STORE_INBOUND_GROUP_SESSIONS: string;
+    const STORE_INBOUND_GROUP_SESSIONS_WITHHELD: string;
+    const STORE_DEVICE_DATA: string;
+    const STORE_ROOMS: string;
+    const STORE_BACKUP: string;
 }
 import { OutgoingRoomKeyRequest } from "./base";
+import { RoomKeyRequestBody } from "..";

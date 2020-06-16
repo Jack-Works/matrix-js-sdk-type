@@ -13,10 +13,10 @@ export class PushProcessor {
       * Convert a list of actions into a object with the actions as keys and their values
       * eg. [ 'notify', { set_tweak: 'sound', value: 'default' } ]
       *     becomes { notify: true, tweaks: { sound: 'default' } }
-      * @param {Array} actionlist The actions list
+      * @param {array} actionlist The actions list
       * @return {object} A object with key 'notify' (true or false) and an object of actions
       */
-    static actionListToActionsObject(actionlist: any[]): object;
+    static actionListToActionsObject(actionlist: any): object;
     /**
       * Rewrites conditions on a client's push rules to match the defaults
       * where applicable. Useful for upgrading push rules to more strict
@@ -49,15 +49,7 @@ export type PushAction = {
      * How this event should be notified.
      */
     tweaks: {
-        /**
-         * Whether this event should be highlighted
-         * on the UI.
-         */
         highlight: boolean;
-        /**
-         * Whether this notification should produce a
-         * noise.
-         */
         sound: boolean;
     };
 };

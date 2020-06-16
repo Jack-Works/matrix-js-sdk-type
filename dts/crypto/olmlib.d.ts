@@ -32,7 +32,7 @@ export function getExistingOlmSessions(olmDevice: any, baseApis: MatrixBaseApis,
   * @param {object.<string, Array.<>>} devicesByUser map from userid to list of devices to ensure sessions for
   * @param {boolean=} force If true, establish a new session even if one
   *     already exists.
-  * @param {number=} otkTimeout The timeout in milliseconds when requesting
+  * @param {Number=} otkTimeout The timeout in milliseconds when requesting
   *     one-time keys for establishing new olm sessions.
   * @param {Array=} failedServers An array to fill with remote servers that
   *     failed to respond to one-time-key requests.
@@ -57,13 +57,13 @@ export function verifySignature(olmDevice: any, obj: object, signingUserId: stri
   * Sign a JSON object using public key cryptography
   * @param {object} obj Object to sign.  The object will be modified to include
   *     the new signature
-  * @param {(Olm.PkSigning | Uint8Array)} key the signing object or the private key
+  * @param {(any | Uint8Array)} key the signing object or the private key
   * seed
   * @param {string} userId The user ID who owns the signing key
   * @param {string} pubkey The public key (ignored if key is a seed)
   * @returns {string} the signature for the object
   */
-export function pkSign(obj: object, key: any, userId: string, pubkey: string): string;
+export function pkSign(obj: object, key: (any | Uint8Array), userId: string, pubkey: string): string;
 /**
   * Verify a signed JSON object
   * @param {object} obj Object to verify

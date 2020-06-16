@@ -105,13 +105,13 @@ export class RoomState {
       * Get all RoomMembers in this room.
       * @return {Array.<RoomMember>} A list of RoomMembers.
       */
-    getMembers(): RoomMember[];
+    getMembers(): Array<RoomMember>;
     /**
       * Get all RoomMembers in this room, excluding the user IDs provided.
       * @param {Array.<string>} excludedIds The user IDs to exclude.
       * @return {Array.<RoomMember>} A list of RoomMembers.
       */
-    getMembersExcept(excludedIds: string[]): RoomMember[];
+    getMembersExcept(excludedIds: Array<string>): Array<RoomMember>;
     /**
       * Get a room member by their user ID.
       * @param {string} userId The room member's user ID.
@@ -137,7 +137,7 @@ export class RoomState {
       * @return {(Array.<MatrixEvent> | MatrixEvent)} A list of events if state_key was
       * <code>undefined</code>, else a single event (or null if no match found).
       */
-    getStateEvents(eventType: string, stateKey: string): any;
+    getStateEvents(eventType: string, stateKey: string): (Array<MatrixEvent> | MatrixEvent);
     /**
       * Creates a copy of this room state so that mutations to either won't affect the other.
       * @return {RoomState} the copy of the room state
@@ -150,7 +150,7 @@ export class RoomState {
       * of the chunk can be set with this method.
       * @param {Array.<MatrixEvent>} events state events to prepend
       */
-    setUnknownStateEvents(events: any[]): void;
+    setUnknownStateEvents(events: Array<MatrixEvent>): void;
     /**
       * Add an array of one or more state MatrixEvents, overwriting
       * any existing state with the same {type, stateKey} tuple. Will fire
@@ -161,7 +161,7 @@ export class RoomState {
       * @fires module:client~MatrixClient#event:"RoomState.newMember"
       * @fires module:client~MatrixClient#event:"RoomState.events"
       */
-    setStateEvents(stateEvents: any[]): void;
+    setStateEvents(stateEvents: Array<MatrixEvent>): void;
     /**
       * Looks up a member by the given userId, and if it doesn't exist,
       * create it and emit the `RoomState.newMember` event.
@@ -172,7 +172,7 @@ export class RoomState {
       * @fires module:client~MatrixClient#event:"RoomState.newMember"
       * @returns {RoomMember} the member, existing or newly created.
       */
-    _getOrCreateMember(userId: string, event: any): RoomMember;
+    _getOrCreateMember(userId: string, event: MatrixEvent): RoomMember;
     _setStateEvent(event: any): void;
     _updateMember(member: any): void;
     /**
@@ -199,23 +199,23 @@ export class RoomState {
       * Sets the loaded out-of-band members.
       * @param {Array.<MatrixEvent>} stateEvents array of membership state events
       */
-    setOutOfBandMembers(stateEvents: any[]): void;
+    setOutOfBandMembers(stateEvents: Array<MatrixEvent>): void;
     /**
       * Sets a single out of band member, used by both setOutOfBandMembers and clone
       * @param {MatrixEvent} stateEvent membership state event
       */
-    _setOutOfBandMember(stateEvent: any): void;
+    _setOutOfBandMember(stateEvent: MatrixEvent): void;
     /**
       * Set the current typing event for this room.
       * @param {MatrixEvent} event The typing event
       */
-    setTypingEvent(event: any): void;
+    setTypingEvent(event: MatrixEvent): void;
     /**
       * Get the m.room.member event which has the given third party invite token.
       * @param {string} token The token
       * @return {?MatrixEvent} The m.room.member event or null
       */
-    getInviteForThreePidToken(token: string): any;
+    getInviteForThreePidToken(token: string): MatrixEvent | null;
     /**
      * Update the last modified time to the current time.
      */
@@ -232,7 +232,7 @@ export class RoomState {
       * @param {string} displayName The display name to get user IDs from.
       * @return {Array.<string>} An array of user IDs or an empty array.
       */
-    getUserIdsWithDisplayName(displayName: string): string[];
+    getUserIdsWithDisplayName(displayName: string): Array<string>;
     /**
       * Returns true if userId is in room, event is not redacted and either sender of
       * mxEvent or has power level sufficient to redact events other than their own.
@@ -240,7 +240,7 @@ export class RoomState {
       * @param {string} userId The user ID of the user to test permission for
       * @return {boolean} true if the given used ID can redact given event
       */
-    maySendRedactionForEvent(mxEvent: any, userId: string): boolean;
+    maySendRedactionForEvent(mxEvent: MatrixEvent, userId: string): boolean;
     /**
       * Returns true if the given power level is sufficient for action
       * @param {string} action The type of power level to check
@@ -274,7 +274,7 @@ export class RoomState {
       *                        the given type of state event into this room,
       *                        according to the room's state.
       */
-    mayClientSendStateEvent(stateEventType: string, cli: any): boolean;
+    mayClientSendStateEvent(stateEventType: string, cli: MatrixClient): boolean;
     /**
       * Returns true if the given user ID has permission to send a state
       * event of type `stateEventType` into this room.
@@ -309,3 +309,5 @@ export class RoomState {
     mayTriggerNotifOfType(notifLevelKey: string, userId: string): boolean;
 }
 import { RoomMember } from "./room-member";
+import { MatrixEvent } from "./event";
+import { MatrixClient } from "../client";

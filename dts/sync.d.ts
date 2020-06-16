@@ -5,7 +5,7 @@
   * @param {MatrixClient} client The matrix client instance to use.
   * @param {object} opts Config options
   * @param {=} opts.crypto Crypto manager
-  * @param {((...args: any[]) => any)=} opts.canResetEntireTimeline A function which is called
+  * @param {Function=} opts.canResetEntireTimeline A function which is called
   * with a room ID and returns a boolean. It should return 'true' if the SDK can
   * SAFELY remove events from this room. It may not be safe to remove events if
   * there are other references to the timelines for this room.
@@ -98,7 +98,7 @@ export class SyncApi {
     /**
       * Returns the current state of this sync object
       * @see module:client~MatrixClient#event:"sync"
-      * @return {?string}
+      * @return {?String}
       */
     getSyncState(): string | null;
     /**
@@ -167,9 +167,9 @@ export class SyncApi {
       * @param {number} delay How long to delay until the first poll.
       *        defaults to a short, randomised interval (to prevent
       *        tightlooping if /versions succeeds but /sync etc. fail).
-      * @return {Promise} which resolves once the connection returns
+      * @return {promise} which resolves once the connection returns
       */
-    _startKeepAlives(delay: number): Promise<any>;
+    _startKeepAlives(delay: number): any;
     /**
       * Make a dummy call to /_matrix/client/versions, to see if the HS is
       * reachable.
@@ -190,14 +190,14 @@ export class SyncApi {
       * @param {object} obj
       * @return {Array.<object>}
       */
-    _mapSyncResponseToRoomArray(obj: object): object[];
+    _mapSyncResponseToRoomArray(obj: object): Array<object>;
     /**
       *
       * @param {object} obj
       * @param {Room} room
       * @return {Array.<MatrixEvent>}
       */
-    _mapSyncEventsFormat(obj: object, room: Room): any[];
+    _mapSyncEventsFormat(obj: object, room: Room): Array<MatrixEvent>;
     /**
       *
       * @param {Room} room
@@ -212,7 +212,7 @@ export class SyncApi {
       * @param {boolean=} fromCache whether the sync response came from cache
       * is earlier in time. Higher index is later.
       */
-    _processRoomEvents(room: Room, stateEventList: any[], timelineEventList?: any[] | undefined, fromCache?: boolean | undefined): void;
+    _processRoomEvents(room: Room, stateEventList: Array<MatrixEvent>, timelineEventList?: Array<MatrixEvent> | undefined, fromCache?: boolean | undefined): void;
     /**
       * Takes a list of timelineEvents and adds and adds to _notifEvents
       * as appropriate.
@@ -221,7 +221,7 @@ export class SyncApi {
       * @param {Array.<MatrixEvent>=} timelineEventList A list of timeline events. Lower index
       * is earlier in time. Higher index is later.
       */
-    _processEventsForNotifs(room: Room, timelineEventList?: any[] | undefined): void;
+    _processEventsForNotifs(room: Room, timelineEventList?: Array<MatrixEvent> | undefined): void;
     /**
       *
       * @return {string}
@@ -229,7 +229,7 @@ export class SyncApi {
     _getGuestFilter(): string;
     /**
       * Sets the sync state and emits an event to say so
-      * @param {string} newState The new state string
+      * @param {String} newState The new state string
       * @param {object} data Object of additional data to emit in the event
       */
     _updateSyncState(newState: string, data: object): void;
@@ -243,3 +243,4 @@ export class SyncApi {
 }
 import { Room } from "./models/room";
 import { Group } from "./models/group";
+import { MatrixEvent } from "./models/event";

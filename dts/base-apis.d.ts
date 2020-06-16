@@ -6,7 +6,7 @@
   * HTTP API.
   * @param {string} opts.idBaseUrl Optional. The base identity server URL for
   * identity server requests.
-  * @param {((...args: any[]) => any)} opts.request Required. The function to invoke for HTTP
+  * @param {Function} opts.request Required. The function to invoke for HTTP
   * requests. The value of this property is typically <code>require("request")
   * </code> as it returns a function which meets the required interface. See
   * {@link requestFunction} for more information.
@@ -18,7 +18,7 @@
   * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
   * replace the previous approach of manual access tokens params with this
   * callback throughout the SDK.
-  * @param {number=} opts.localTimeoutMs Optional. The default maximum amount of
+  * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
   * time to wait before timing out HTTP requests. If not specified, there is no
   * timeout.
   * @param {object} opts.queryParams Optional. Extra query parameters to append
@@ -92,7 +92,7 @@ export class MatrixBaseApis {
     setIdentityServerUrl(url: string): void;
     /**
       * Get the access token associated with this account.
-      * @return {?string} The access_token or null
+      * @return {?String} The access_token or null
       */
     getAccessToken(): string | null;
     /**
@@ -253,7 +253,7 @@ export class MatrixBaseApis {
     createRoom(options: {
         room_alias_name: string;
         visibility: string;
-        invite: string[];
+        invite: Array<string>;
         name: string;
         topic: string;
     }, callback: callback): Promise<any>;
@@ -499,7 +499,7 @@ export class MatrixBaseApis {
       *     }
       * @return {MatrixError} Rejects: with an error response.
       */
-    getPublicisedGroups(userIds: string[]): Promise<any>;
+    getPublicisedGroups(userIds: Array<string>): Promise<any>;
     /**
       *
       * @param {string} groupId
@@ -532,7 +532,7 @@ export class MatrixBaseApis {
     /**
       *
       * @param {string} roomId
-      * @param {number} limit
+      * @param {Number} limit
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
@@ -699,10 +699,10 @@ export class MatrixBaseApis {
       *   rather than the whole body. Defaults to false (except on browsers,
       *   where it defaults to true for backwards compatibility). Ignored if
       *   opts.rawResponse is true.
-      * @param {((...args: any[]) => any)=} opts.callback Deprecated. Optional. The callback to
+      * @param {Function=} opts.callback Deprecated. Optional. The callback to
       *    invoke on success/failure. See the promise return values for more
       *    information.
-      * @param {((...args: any[]) => any)=} opts.progressHandler Optional. Called when a chunk of
+      * @param {Function=} opts.progressHandler Optional. Called when a chunk of
       *    data has been uploaded, with an object containing the fields `loaded`
       *    (number of bytes transferred) and `total` (total size, if known).
       * @return {Promise} Resolves to response object, as
@@ -715,8 +715,8 @@ export class MatrixBaseApis {
         type?: string | undefined;
         rawResponse?: boolean | undefined;
         onlyContentUri?: boolean | undefined;
-        callback?: ((...args: any[]) => any) | undefined;
-        progressHandler?: ((...args: any[]) => any) | undefined;
+        callback?: Function | undefined;
+        progressHandler?: Function | undefined;
     }): Promise<any>;
     /**
       * Cancel a file upload in progress
@@ -726,13 +726,13 @@ export class MatrixBaseApis {
     cancelUpload(promise: Promise<any>): boolean;
     /**
       * Get a list of all file uploads in progress
-      * @return {Array} Array of objects representing current uploads.
+      * @return {array} Array of objects representing current uploads.
       * Currently in progress is element 0. Keys:
       *  - promise: The promise associated with the upload
       *  - loaded: Number of bytes uploaded
       *  - total: Total number of bytes to upload
       */
-    getCurrentUploads(): any[];
+    getCurrentUploads(): any;
     /**
       *
       * @param {string} userId
@@ -848,7 +848,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object
       * @return {MatrixError} Rejects: with an error response.
       */
-    deleteMultipleDevices(devices: string[], auth: object): Promise<any>;
+    deleteMultipleDevices(devices: Array<string>, auth: object): Promise<any>;
     /**
       * Gets all pushers registered for the logged-in user
       * @param {callback} callback Optional.
@@ -908,12 +908,12 @@ export class MatrixBaseApis {
       * @param {string} scope
       * @param {string} kind
       * @param {string} ruleId
-      * @param {Array} actions
+      * @param {array} actions
       * @param {callback} callback Optional.
       * @return {Promise} Resolves: result object
       * @return {MatrixError} Rejects: with an error response.
       */
-    setPushRuleActions(scope: string, kind: string, ruleId: string, actions: any[], callback: callback): Promise<any>;
+    setPushRuleActions(scope: string, kind: string, ruleId: string, actions: any, callback: callback): Promise<any>;
     /**
       * Perform a server-side search.
       * @param {object} opts
@@ -937,7 +937,7 @@ export class MatrixBaseApis {
       *     an error response ({@link module:http-api.MatrixError}).
       */
     uploadKeysRequest(content: object, opts?: object | undefined, callback?: callback | undefined): Promise<any>;
-    uploadKeySignatures(content: any): any;
+    uploadKeySignatures(content: any): Promise<any>;
     /**
       * Download device keys
       * @param {Array.<string>} userIds list of users to get keys for
@@ -947,7 +947,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object. Rejects: with
       *     an error response ({@link module:http-api.MatrixError}).
       */
-    downloadKeysForUsers(userIds: string[], opts?: object | undefined): Promise<any>;
+    downloadKeysForUsers(userIds: Array<string>, opts?: object | undefined): Promise<any>;
     /**
       * Claim one-time keys
       * @param {Array.<string>} devices a list of [userId, deviceId] pairs
@@ -957,7 +957,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: result object. Rejects: with
       *     an error response ({@link module:http-api.MatrixError}).
       */
-    claimOneTimeKeys(devices: string[], key_algorithm?: string | undefined, timeout?: number | undefined): Promise<any>;
+    claimOneTimeKeys(devices: Array<string>, key_algorithm?: string | undefined, timeout?: number | undefined): Promise<any>;
     /**
       * Ask the server for a list of users who have changed their device lists
       * between a pair of sync tokens
@@ -967,7 +967,7 @@ export class MatrixBaseApis {
       *     an error response ({@link module:http-api.MatrixError}).
       */
     getKeyChanges(oldToken: string, newToken: string): Promise<any>;
-    uploadDeviceSigningKeys(auth: any, keys: any): any;
+    uploadDeviceSigningKeys(auth: any, keys: any): Promise<any>;
     /**
       * Register with an Identity Server using the OpenID token from the user's
       * Homeserver, which can be retrieved via
@@ -1082,10 +1082,10 @@ export class MatrixBaseApis {
       * @returns {Promise.<Array.<{address, mxid}>>} A collection of address mappings to
       * found MXIDs. Results where no user could be found will not be listed.
       */
-    identityHashedLookup(addressPairs: string[][], identityAccessToken: string): Promise<{
-        address: any;
-        mxid: any;
-    }[]>;
+    identityHashedLookup(addressPairs: string[][], identityAccessToken: string): Promise<Array<{
+        address;
+        mxid;
+    }>>;
     /**
       * Looks up the public Matrix ID mapping for a given 3rd party
       * identifier from the Identity Server
@@ -1109,7 +1109,7 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves: Lookup results from IS.
       * @return {MatrixError} Rejects: with an error response.
       */
-    bulkLookupThreePids(query: string[][], identityAccessToken: string): Promise<any>;
+    bulkLookupThreePids(query: Array<Array<string>>, identityAccessToken: string): Promise<any>;
     /**
       * Get account info from the Identity Server. This is useful as a neutral check
       * to verify that other APIs are likely to approve access by testing that the
@@ -1153,8 +1153,8 @@ export class MatrixBaseApis {
       * @return {Promise} Resolves to the result object
       */
     getThirdpartyUser(protocol: string, params: object): Promise<any>;
-    getTerms(serviceType: any, baseUrl: any): any;
-    agreeToTerms(serviceType: any, baseUrl: any, accessToken: any, termsUrls: any): any;
+    getTerms(serviceType: any, baseUrl: any): Promise<any>;
+    agreeToTerms(serviceType: any, baseUrl: any, accessToken: any, termsUrls: any): Promise<any>;
     /**
       * Reports an event as inappropriate to the server, which may then notify the appropriate people.
       * @param {string} roomId The room in which the event being reported is located.

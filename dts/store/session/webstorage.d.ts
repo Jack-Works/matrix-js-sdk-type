@@ -19,4 +19,67 @@
 export class WebStorageSessionStore {
     constructor(webStore: any);
     store: any;
+    /**
+     * Remove the stored end to end account for the logged-in user.
+     */
+    removeEndToEndAccount(): void;
+    /**
+      * Load the end to end account for the logged-in user.
+      * Note that the end-to-end account is now stored in the
+      * crypto store rather than here: this remains here so
+      * old sessions can be migrated out of the session store.
+      * @return {?string} Base64 encoded account.
+      */
+    getEndToEndAccount(): string | null;
+    /**
+      * Retrieves the known devices for all users.
+      * @return {object} A map from user ID to map of device ID to keys for the device.
+      */
+    getAllEndToEndDevices(): object;
+    getEndToEndDeviceTrackingStatus(): any;
+    /**
+      * Get the sync token corresponding to the device list.
+      * @return {String?} token
+      */
+    getEndToEndDeviceSyncToken(): string | null;
+    /**
+     * Removes all end to end device data from the store
+     */
+    removeEndToEndDeviceData(): void;
+    /**
+      * Retrieve the end-to-end sessions between the logged-in user and another
+      * device.
+      * @param {string} deviceKey The public key of the other device.
+      * @return {object} A map from sessionId to Base64 end-to-end session.
+      */
+    getEndToEndSessions(deviceKey: string): object;
+    /**
+      * Retrieve all end-to-end sessions between the logged-in user and other
+      * devices.
+      * @return {object} A map of {deviceKey -> {sessionId -> session pickle}}
+      */
+    getAllEndToEndSessions(): object;
+    /**
+     * Remove all end-to-end sessions from the store
+     * This is used after migrating sessions awat from the sessions store.
+     */
+    removeAllEndToEndSessions(): void;
+    /**
+      * Retrieve a list of all known inbound group sessions
+      * @return {{senderKey: string, sessionId: string}}
+      */
+    getAllEndToEndInboundGroupSessionKeys(): {
+        senderKey: string;
+        sessionId: string;
+    };
+    getEndToEndInboundGroupSession(senderKey: any, sessionId: any): any;
+    removeAllEndToEndInboundGroupSessions(): void;
+    /**
+      * Get the end-to-end state for all rooms
+      * @return {object} roomId -> object with the end-to-end info for the room.
+      */
+    getAllEndToEndRooms(): object;
+    removeAllEndToEndRooms(): void;
+    setLocalTrustedBackupPubKey(pubkey: any): void;
+    getLocalTrustedBackupPubKey(): any;
 }

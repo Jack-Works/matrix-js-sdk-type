@@ -6,8 +6,8 @@ export const SCAN_QR_CODE_METHOD: "m.qr_code.scan.v1";
   * @extends
   */
 export class ReciprocateQRCode {
-    static factory(...args: any[]): any;
-    static get NAME(): string;
+    static factory(...args: any[]): ReciprocateQRCode;
+    static get NAME(): "m.reciprocate.v1";
     _doVerification(): Promise<void>;
     reciprocateQREvent: {
         confirm: (value?: any) => void;

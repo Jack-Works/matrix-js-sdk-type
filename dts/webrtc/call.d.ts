@@ -29,7 +29,7 @@ export function setVideoInput(deviceId?: string | undefined): void;
   * since it's only possible to set this option on outbound calls.
   * @return {MatrixCall} the call or null if the browser doesn't support calling.
   */
-export function createNewMatrixCall(client: any, roomId: string, options: object | null): MatrixCall;
+export function createNewMatrixCall(client: MatrixClient, roomId: string, options: object | null): MatrixCall;
 /**
   * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
   * <p>
@@ -189,7 +189,7 @@ export class MatrixCall {
       * @protected
       * @param {MatrixEvent} event The m.call.invite event
       */
-    protected _initWithInvite(event: any): void;
+    protected _initWithInvite(event: MatrixEvent): void;
     msg: any;
     peerConn: any;
     direction: string | undefined;
@@ -198,7 +198,7 @@ export class MatrixCall {
       * @protected
       * @param {MatrixEvent} event The m.call.hangup event
       */
-    protected _initWithHangup(event: any): void;
+    protected _initWithHangup(event: MatrixEvent): void;
     /**
      * Answer a call.
      */
@@ -359,11 +359,13 @@ export class MatrixCall {
     protected _onAnsweredElsewhere(msg: object): void;
 }
 export namespace MatrixCall {
-    export const CALL_TIMEOUT_MS: number;
-    export const FALLBACK_ICE_SERVER: string;
-    export const ERR_LOCAL_OFFER_FAILED: string;
-    export const ERR_NO_USER_MEDIA: string;
-    export const ERR_UNKNOWN_DEVICES: string;
-    export const ERR_SEND_INVITE: string;
-    export const ERR_SEND_ANSWER: string;
+    const CALL_TIMEOUT_MS: number;
+    const FALLBACK_ICE_SERVER: string;
+    const ERR_LOCAL_OFFER_FAILED: string;
+    const ERR_NO_USER_MEDIA: string;
+    const ERR_UNKNOWN_DEVICES: string;
+    const ERR_SEND_INVITE: string;
+    const ERR_SEND_ANSWER: string;
 }
+import { MatrixClient } from "../client";
+import { MatrixEvent } from "../models/event";

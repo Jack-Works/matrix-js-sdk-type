@@ -27,10 +27,10 @@
  */
 export type ROOM_KEY_REQUEST_STATES = number;
 export namespace ROOM_KEY_REQUEST_STATES {
-    export const UNSENT: number;
-    export const SENT: number;
-    export const CANCELLATION_PENDING: number;
-    export const CANCELLATION_PENDING_AND_WILL_RESEND: number;
+    const UNSENT: number;
+    const SENT: number;
+    const CANCELLATION_PENDING: number;
+    const CANCELLATION_PENDING_AND_WILL_RESEND: number;
 }
 export class OutgoingRoomKeyRequestManager {
     constructor(baseApis: any, deviceId: any, cryptoStore: any);
@@ -67,17 +67,17 @@ export class OutgoingRoomKeyRequestManager {
       *    pending list (or we have established that a similar request already
       *    exists)
       */
-    queueRoomKeyRequest(requestBody: object, recipients: {
+    queueRoomKeyRequest(requestBody: RoomKeyRequestBody, recipients: Array<{
         userId: string;
         deviceId: string;
-    }[], resend?: boolean): Promise<any>;
+    }>, resend?: boolean): Promise<any>;
     /**
       * Cancel room key requests, if any match the given requestBody
       * @param {RoomKeyRequestBody} requestBody
       * @returns {Promise} resolves when the request has been updated in our
       *    pending list.
       */
-    cancelRoomKeyRequest(requestBody: object): Promise<any>;
+    cancelRoomKeyRequest(requestBody: RoomKeyRequestBody): Promise<any>;
     /**
       * Look for room key requests by target device and state
       * @param {string} userId Target user ID
@@ -100,3 +100,4 @@ export class OutgoingRoomKeyRequestManager {
     _sendOutgoingRoomKeyRequestCancellation(req: any, andResend: any): any;
     _sendMessageToDevices(message: any, recipients: any, txnId: any): any;
 }
+import { RoomKeyRequestBody } from ".";

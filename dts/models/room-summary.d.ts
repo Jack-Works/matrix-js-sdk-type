@@ -11,9 +11,9 @@
   * @param {string} info.title The title of the room (e.g. <code>m.room.name</code>)
   * @param {string} info.desc The description of the room (e.g.
   * <code>m.room.topic</code>)
-  * @param {number} info.numMembers The number of joined users.
+  * @param {Number} info.numMembers The number of joined users.
   * @param {Array.<string>} info.aliases The list of aliases for this room.
-  * @param {number} info.timestamp The timestamp for this room.
+  * @param {Number} info.timestamp The timestamp for this room.
   */
 /**
   *
@@ -28,9 +28,9 @@
   * @param {string} info.title The title of the room (e.g. <code>m.room.name</code>)
   * @param {string} info.desc The description of the room (e.g.
   * <code>m.room.topic</code>)
-  * @param {number} info.numMembers The number of joined users.
+  * @param {Number} info.numMembers The number of joined users.
   * @param {Array.<string>} info.aliases The list of aliases for this room.
-  * @param {number} info.timestamp The timestamp for this room.
+  * @param {Number} info.timestamp The timestamp for this room.
   */
 export class RoomSummary {
     constructor(roomId: any, info: any);

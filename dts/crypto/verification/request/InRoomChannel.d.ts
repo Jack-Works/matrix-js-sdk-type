@@ -15,7 +15,7 @@ export class InRoomChannel {
   * @param {MatrixEvent} event the event
   * @returns {string} the transaction id
   */
-    static getTransactionId(event: any): string;
+    static getTransactionId(event: MatrixEvent): string;
     /**
   * Checks whether this event is a well-formed key verification event.
   * This only does checks that don't rely on the current state of a potentially already channel
@@ -25,7 +25,7 @@ export class InRoomChannel {
   * @param {MatrixClient} client the client to get the current user and device id from
   * @returns {boolean} whether the event is valid and should be passed to handleEvent
   */
-    static validateEvent(event: any, client: any): boolean;
+    static validateEvent(event: MatrixEvent, client: MatrixClient): boolean;
     /**
   * As m.key.verification.request events are as m.room.message events with the InRoomChannel
   * to have a fallback message in non-supporting clients, we map the real event type
@@ -33,15 +33,15 @@ export class InRoomChannel {
   * @param {MatrixEvent} event the event to get the type of
   * @returns {string} the "symbolic" event type
   */
-    static getEventType(event: any): string;
+    static getEventType(event: MatrixEvent): string;
     /**
       *
       * @param {MatrixClient} client the matrix client, to send messages with and get current user & device from.
       * @param {string} roomId id of the room where verification events should be posted in, should be a DM with the given user.
       * @param {string} userId id of user that the verification request is directed at, should be present in the room.
       */
-    constructor(client: any, roomId: string, userId?: string);
-    _client: any;
+    constructor(client: MatrixClient, roomId: string, userId?: string);
+    _client: MatrixClient;
     _roomId: string;
     userId: string;
     _requestEventId: any;
@@ -54,7 +54,7 @@ export class InRoomChannel {
   * @param {MatrixEvent} event the event to get the timestamp of
   * @return {number} the timestamp when the event was sent
   */
-    getTimestamp(event: any): number;
+    getTimestamp(event: MatrixEvent): number;
     /**
   * Changes the state of the channel, request, and verifier in response to a key verification event.
   * @param {MatrixEvent} event to handle
@@ -62,7 +62,7 @@ export class InRoomChannel {
   * @param {boolean} isLiveEvent whether this is an even received through sync or not
   * @returns {Promise} a promise that resolves when any requests as an anwser to the passed-in event are sent.
   */
-    handleEvent(event: any, request: VerificationRequest, isLiveEvent: boolean): Promise<any>;
+    handleEvent(event: MatrixEvent, request: VerificationRequest, isLiveEvent: boolean): Promise<any>;
     /**
   * Adds the transaction id (relation) back to a received event
   * so it has the same format as returned by `completeContent` before sending.
@@ -71,7 +71,7 @@ export class InRoomChannel {
   * @param {MatrixEvent} event the received event
   * @returns {object} the content object with the relation added again
   */
-    completedContentFromEvent(event: any): object;
+    completedContentFromEvent(event: MatrixEvent): object;
     /**
   * Add all the fields to content needed for sending it over this channel.
   * This is public so verification methods (SAS uses this) can get the exact
@@ -108,4 +108,6 @@ export class InRoomRequests {
     removeRequest(event: any): void;
     findRequestInProgress(roomId: any): any;
 }
+import { MatrixClient } from "../../../client";
+import { MatrixEvent } from "../../../models/event";
 import { VerificationRequest } from "./VerificationRequest";

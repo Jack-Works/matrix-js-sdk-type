@@ -15,13 +15,22 @@
  * @prop {?string} filterId The filter ID
  */
 export class Filter {
+    /**
+      * Create a filter from existing data.
+      * @static
+      * @param {string} userId
+      * @param {string} filterId
+      * @param {object} jsonObj
+      * @return {Filter}
+      */
+    static fromJson(userId: string, filterId: string, jsonObj: object): Filter;
     constructor(userId: any, filterId: any);
     userId: any;
     filterId: any;
     definition: {};
     /**
       * Get the ID of this filter on your homeserver (if known)
-      * @return {?number} The filter ID
+      * @return {?Number} The filter ID
       */
     getFilterId(): number | null;
     /**
@@ -48,10 +57,10 @@ export class Filter {
       * @param {Array.<MatrixEvent>} events the list of events being filtered
       * @return {Array.<MatrixEvent>} the list of events which match the filter
       */
-    filterRoomTimeline(events: any[]): any[];
+    filterRoomTimeline(events: Array<MatrixEvent>): Array<MatrixEvent>;
     /**
       * Set the max number of events to return for each room's timeline.
-      * @param {number} limit The max number of events to return for each room.
+      * @param {Number} limit The max number of events to return for each room.
       */
     setTimelineLimit(limit: number): void;
     setLazyLoadMembers(enabled: any): void;
@@ -63,17 +72,9 @@ export class Filter {
     setIncludeLeaveRooms(includeLeave: boolean): void;
 }
 export namespace Filter {
-    /**
-      * Create a filter from existing data.
-      * @static
-      * @param {string} userId
-      * @param {string} filterId
-      * @param {object} jsonObj
-      * @return {Filter}
-      */
-    export function fromJson(userId: string, filterId: string, jsonObj: object): Filter;
-    export namespace LAZY_LOADING_MESSAGES_FILTER {
-        export const lazy_load_members: boolean;
+    namespace LAZY_LOADING_MESSAGES_FILTER {
+        const lazy_load_members: boolean;
     }
 }
 import { FilterComponent } from "./filter-component";
+import { MatrixEvent } from "./models/event";

@@ -42,23 +42,23 @@ export class MemoryStore {
       * Store the given room.
       * @param {Group} group The group to be stored
       */
-    storeGroup(group: any): void;
+    storeGroup(group: Group): void;
     /**
       * Retrieve a group by its group ID.
       * @param {string} groupId The group ID.
       * @return {Group} The group or null.
       */
-    getGroup(groupId: string): any;
+    getGroup(groupId: string): Group;
     /**
       * Retrieve all known groups.
       * @return {Array.<Group>} A list of groups, which may be empty.
       */
-    getGroups(): any[];
+    getGroups(): Array<Group>;
     /**
       * Store the given room.
       * @param {Room} room The room to be stored. All properties must be stored.
       */
-    storeRoom(room: any): void;
+    storeRoom(room: Room): void;
     /**
       * Called when a room member in a room being tracked by this store has been
       * updated.
@@ -66,18 +66,18 @@ export class MemoryStore {
       * @param {RoomState} state
       * @param {RoomMember} member
       */
-    _onRoomMember(event: any, state: any, member: any): void;
+    _onRoomMember(event: MatrixEvent, state: RoomState, member: RoomMember): void;
     /**
       * Retrieve a room by its' room ID.
       * @param {string} roomId The room ID.
       * @return {Room} The room or null.
       */
-    getRoom(roomId: string): any;
+    getRoom(roomId: string): Room;
     /**
       * Retrieve all known rooms.
       * @return {Array.<Room>} A list of rooms, which may be empty.
       */
-    getRooms(): any[];
+    getRooms(): Array<Room>;
     /**
       * Permanently delete a room.
       * @param {string} roomId
@@ -87,7 +87,7 @@ export class MemoryStore {
       * Retrieve a summary of all the rooms.
       * @return {Array.<RoomSummary>} A summary of each room.
       */
-    getRoomSummaries(): any[];
+    getRoomSummaries(): Array<RoomSummary>;
     /**
       * Store a User.
       * @param {User} user The user to store.
@@ -103,7 +103,7 @@ export class MemoryStore {
       * Retrieve all known users.
       * @return {Array.<User>} A list of users, which may be empty.
       */
-    getUsers(): User[];
+    getUsers(): Array<User>;
     /**
       * Retrieve scrollback for this room.
       * @param {Room} room The matrix room
@@ -111,7 +111,7 @@ export class MemoryStore {
       * @return {Array.<object>} An array of objects which will be at most 'limit'
       * length and at least 0. The objects are the raw event JSON.
       */
-    scrollback(room: any, limit: number): object[];
+    scrollback(room: Room, limit: number): Array<object>;
     /**
       * Store events for a room. The events have already been added to the timeline
       * @param {Room} room The room to store events for.
@@ -119,19 +119,19 @@ export class MemoryStore {
       * @param {string} token The token associated with these events.
       * @param {boolean} toStart True if these are paginated results.
       */
-    storeEvents(room: any, events: any[], token: string, toStart: boolean): void;
+    storeEvents(room: Room, events: Array<MatrixEvent>, token: string, toStart: boolean): void;
     /**
       * Store a filter.
       * @param {Filter} filter
       */
-    storeFilter(filter: any): void;
+    storeFilter(filter: Filter): void;
     /**
       * Retrieve a filter.
       * @param {string} userId
       * @param {string} filterId
       * @return {?Filter} A filter or null.
       */
-    getFilter(userId: string, filterId: string): any;
+    getFilter(userId: string, filterId: string): Filter | null;
     /**
       * Retrieve a filter ID with the given name.
       * @param {string} filterName The filter name.
@@ -150,13 +150,13 @@ export class MemoryStore {
       * events with the same type will replace each other.
       * @param {Array.<MatrixEvent>} events The events to store.
       */
-    storeAccountDataEvents(events: any[]): void;
+    storeAccountDataEvents(events: Array<MatrixEvent>): void;
     /**
       * Get account data event by event type
       * @param {string} eventType The event type being queried
       * @return {?MatrixEvent} the user account_data event of given type, if any
       */
-    getAccountData(eventType: string): any;
+    getAccountData(eventType: string): MatrixEvent | null;
     /**
       * setSyncData does nothing as there is no backing data store.
       * @param {object} syncData The sync data
@@ -201,21 +201,28 @@ export class MemoryStore {
       * Returns the out-of-band membership events for this room that
       * were previously loaded.
       * @param {string} roomId
-      * @returns {Array.<event>} the events, potentially an empty array if OOB loading didn't yield any new members
+      * @returns {Array.<any>} the events, potentially an empty array if OOB loading didn't yield any new members
       * @returns {null} in case the members for this room haven't been stored yet
       */
-    getOutOfBandMembers(roomId: string): (Event | undefined)[];
+    getOutOfBandMembers(roomId: string): Array<any>;
     /**
       * Stores the out-of-band membership events for this room. Note that
       * it still makes sense to store an empty array as the OOB status for the room is
       * marked as fetched, and getOutOfBandMembers will return an empty array instead of null
       * @param {string} roomId
-      * @param {Array.<event>} membershipEvents the membership events to store
+      * @param {Array.<any>} membershipEvents the membership events to store
       * @returns {Promise} when all members have been stored
       */
-    setOutOfBandMembers(roomId: string, membershipEvents: (Event | undefined)[]): Promise<any>;
+    setOutOfBandMembers(roomId: string, membershipEvents: Array<any>): Promise<any>;
     clearOutOfBandMembers(): Promise<void>;
     getClientOptions(): Promise<{}>;
     storeClientOptions(options: any): Promise<void>;
 }
+import { Group } from "../models/group";
+import { Room } from "../models/room";
+import { MatrixEvent } from "../models/event";
+import { RoomState } from "../models/room-state";
+import { RoomMember } from "../models/room-member";
+import { RoomSummary } from "../models/room-summary";
 import { User } from "../models/user";
+import { Filter } from "../filter";

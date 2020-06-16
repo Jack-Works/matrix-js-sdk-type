@@ -32,7 +32,7 @@
   */
 export class EventContext {
     constructor(ourEvent: any);
-    _timeline: any;
+    _timeline: any[];
     _ourEventIndex: number;
     _paginateTokens: {
         b: null;
@@ -48,7 +48,7 @@ export class EventContext {
       * This is a convenience function for getTimeline()[getOurEventIndex()].
       * @return {MatrixEvent} The event at the centre of this context.
       */
-    getEvent(): any;
+    getEvent(): MatrixEvent;
     /**
       * Get the list of events in this context
       * @return {Array} An array of MatrixEvents
@@ -56,7 +56,7 @@ export class EventContext {
     getTimeline(): any[];
     /**
       * Get the index in the timeline of our event
-      * @return {number}
+      * @return {Number}
       */
     getOurEventIndex(): number;
     /**
@@ -82,3 +82,4 @@ export class EventContext {
       */
     addEvents(events: any[], atStart: boolean): void;
 }
+import { MatrixEvent } from "./event";

@@ -126,7 +126,7 @@ export class TimelineWindow {
       * Get a list of the events currently in the window
       * @return {Array.<MatrixEvent>} the events in the window
       */
-    getEvents(): any[];
+    getEvents(): Array<MatrixEvent>;
 }
 /**
   * a thing which contains a timeline reference, and an index into it.
@@ -173,3 +173,4 @@ export class TimelineIndex {
       */
     retreat(delta: number): number;
 }
+import { MatrixEvent } from "./models/event";

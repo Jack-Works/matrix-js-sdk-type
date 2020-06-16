@@ -2,13 +2,13 @@
   * The type of object we use for importing and exporting megolm session data.
   * @typedef {Object} module:crypto/OlmDevice __auto_generated__
   * @typedef {object} module:crypto/OlmDevice.MegolmSessionData
-  * @property {string} sender_key Sender's Curve25519 device key
-  * @property {Array.<string>} forwarding_curve25519_key_chain Devices which forwarded
+  * @property {String} sender_key Sender's Curve25519 device key
+  * @property {Array.<String>} forwarding_curve25519_key_chain Devices which forwarded
   *     this session to us (normally empty).
   * @property {object.<string, string>} sender_claimed_keys Other keys the sender claims.
-  * @property {string} room_id Room this session is used in
-  * @property {string} session_id Unique id for the session
-  * @property {string} session_key Base64'ed key data
+  * @property {String} room_id Room this session is used in
+  * @property {String} session_id Unique id for the session
+  * @property {String} session_key Base64'ed key data
   */
 /**
   * Manages the olm cryptography functions. Each OlmDevice has a single
@@ -50,9 +50,9 @@
 export class OlmDevice {
     /**
       *
-      * @return {Array} The version of Olm.
+      * @return {array} The version of Olm.
       */
-    static getOlmVersion(): any[];
+    static getOlmVersion(): any;
     constructor(cryptoStore: any);
     _cryptoStore: any;
     _pickleKey: string;
@@ -94,7 +94,7 @@ export class OlmDevice {
       * This function requires a live transaction object from cryptoStore.doTxn()
       * and therefore may only be called in a doTxn() callback.
       * @param {*} txn Opaque transaction object from cryptoStore.doTxn()
-      * @param {((...args: any[]) => any)} func
+      * @param {function} func
       * @private
       */
     private _getAccount;
@@ -113,7 +113,7 @@ export class OlmDevice {
       * @param {string} deviceKey
       * @param {string} sessionId
       * @param {*} txn Opaque transaction object from cryptoStore.doTxn()
-      * @param {((...args: any[]) => any)} func
+      * @param {function} func
       * @private
       */
     private _getSession;
@@ -122,7 +122,7 @@ export class OlmDevice {
       * function with it. The session object is destroyed once the function
       * returns.
       * @param {object} sessionInfo
-      * @param {((...args: any[]) => any)} func
+      * @param {function} func
       * @private
       */
     private _unpickleSession;
@@ -136,7 +136,7 @@ export class OlmDevice {
     private _saveSession;
     /**
       * get an OlmUtility and call the given function
-      * @param {((...args: any[]) => any)} func
+      * @param {function} func
       * @return {object} result of func
       * @private
       */
@@ -198,7 +198,7 @@ export class OlmDevice {
       *     remote device
       * @return {Promise.<Array.<string>>} a list of known session ids for the device
       */
-    getSessionIdsForDevice(theirDeviceIdentityKey: string): Promise<string[]>;
+    getSessionIdsForDevice(theirDeviceIdentityKey: string): Promise<Array<string>>;
     /**
       * Get the right olm session id for encrypting messages to the given identity key
       * @param {string} theirDeviceIdentityKey Curve25519 identity key for the
@@ -222,10 +222,10 @@ export class OlmDevice {
       *     that marked the session as being in-progress.
       * @return {Array.<{sessionId: string, hasReceivedMessage: Boolean}>}
       */
-    getSessionInfoForDevice(deviceIdentityKey: string, nowait: boolean): {
+    getSessionInfoForDevice(deviceIdentityKey: string, nowait: boolean): Array<{
         sessionId: string;
         hasReceivedMessage: boolean;
-    }[];
+    }>;
     /**
       * Encrypt an outgoing message using an existing session
       * @param {string} theirDeviceIdentityKey Curve25519 identity key for the
@@ -269,7 +269,7 @@ export class OlmDevice {
       * extract an OutboundGroupSession from _outboundGroupSessionStore and call the
       * given function
       * @param {string} sessionId
-      * @param {((...args: any[]) => any)} func
+      * @param {function} func
       * @return {object} result of func
       * @private
       */
@@ -336,7 +336,7 @@ export class OlmDevice {
       * @param {boolean} exportFormat true if the megolm keys are in export format
       *    (ie, they lack an ed25519 signature)
       */
-    addInboundGroupSession(roomId: string, senderKey: string, forwardingCurve25519KeyChain: string[], sessionId: string, sessionKey: string, keysClaimed: any, exportFormat: boolean): Promise<void>;
+    addInboundGroupSession(roomId: string, senderKey: string, forwardingCurve25519KeyChain: Array<string>, sessionId: string, sessionKey: string, keysClaimed: any, exportFormat: boolean): Promise<void>;
     /**
       * Record in the data store why an inbound group session was withheld.
       * @param {string} roomId room that the session belongs to
@@ -353,7 +353,7 @@ export class OlmDevice {
       * @param {string} sessionId session identifier
       * @param {string} body base64-encoded body of the encrypted message
       * @param {string} eventId ID of the event being decrypted
-      * @param {number} timestamp timestamp of the event being decrypted
+      * @param {Number} timestamp timestamp of the event being decrypted
       * @return {null} the sessionId is unknown
       * @return {Promise.<{result: string, senderKey: string, forwardingCurve25519KeyChain: Array.<string>, keysClaimed: object.<string, string>}>}
       */
@@ -381,7 +381,7 @@ export class OlmDevice {
     getInboundGroupSessionKey(roomId: string, senderKey: string, sessionId: string, chainIndex: number): Promise<{
         chain_index: number;
         key: string;
-        forwarding_curve25519_key_chain: string[];
+        forwarding_curve25519_key_chain: Array<string>;
         sender_claimed_ed25519_key: string;
     }>;
     /**

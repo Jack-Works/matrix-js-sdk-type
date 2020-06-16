@@ -16,17 +16,18 @@ export type OutgoingRoomKeyRequest = {
     /**
      * list of recipients for the request
      */
-    recipients: {
+    recipients: Array<{
         userId: string;
         deviceId: string;
-    }[];
+    }>;
     /**
      * parameters for the request.
      */
-    requestBody: object;
+    requestBody: RoomKeyRequestBody;
     /**
      * current state of this request (states are defined
      * in {@link module:crypto/OutgoingRoomKeyRequestManager~ROOM_KEY_REQUEST_STATES})
      */
     state: number;
 };
+import { RoomKeyRequestBody } from "..";

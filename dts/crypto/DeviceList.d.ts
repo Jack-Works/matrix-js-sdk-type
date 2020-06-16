@@ -16,7 +16,7 @@ export class DeviceList extends EventEmitter {
     _savePromise: any;
     _resolveSavePromise: ((value?: any) => void) | null;
     _savePromiseTime: any;
-    _saveTimer: NodeJS.Timeout | null;
+    _saveTimer: any;
     _hasFetched: boolean | null;
     /**
      * Load the device tracking state from storage
@@ -68,19 +68,19 @@ export class DeviceList extends EventEmitter {
       * @param {Array.<string>} userIds the list of users to list keys for.
       * @return {object} userId->deviceId->{@link module:crypto/deviceinfo|DeviceInfo}.
       */
-    _getDevicesFromStore(userIds: string[]): object;
+    _getDevicesFromStore(userIds: Array<string>): object;
     /**
       * Returns a list of all user IDs the DeviceList knows about
-      * @return {Array} All known user IDs
+      * @return {array} All known user IDs
       */
-    getKnownUserIds(): any[];
+    getKnownUserIds(): any;
     /**
       * Get the stored device keys for a user id
       * @param {string} userId the user to list keys for.
       * @return {(Array.<> | null)} list of devices, or null if we haven't
       * managed to get a list of devices for this user yet.
       */
-    getStoredDevicesForUser(userId: string): any[] | null;
+    getStoredDevicesForUser(userId: string): (any[] | null);
     /**
       * Get the stored device data for a user, in raw object form
       * @param {string} userId the user to get data for
@@ -88,7 +88,7 @@ export class DeviceList extends EventEmitter {
       * there is no data for this user.
       */
     getRawStoredDevicesForUser(userId: string): object;
-    getStoredCrossSigningForUser(userId: any): any;
+    getStoredCrossSigningForUser(userId: any): CrossSigningInfo | null;
     storeCrossSigningForUser(userId: any, info: any): void;
     /**
       * Get the stored keys for a single device
@@ -97,7 +97,7 @@ export class DeviceList extends EventEmitter {
       * @return {?} device, or undefined
       * if we don't know about this device
       */
-    getStoredDevice(userId: string, deviceId: string): any;
+    getStoredDevice(userId: string, deviceId: string): unknown;
     /**
       * Get a user ID by one of their device's curve25519 identity key
       * @param {string} algorithm encryption algorithm
@@ -111,7 +111,7 @@ export class DeviceList extends EventEmitter {
       * @param {string} senderKey curve25519 key to match
       * @return {?}
       */
-    getDeviceByIdentityKey(algorithm: string, senderKey: string): any;
+    getDeviceByIdentityKey(algorithm: string, senderKey: string): unknown;
     /**
       * Replaces the list of devices for a user with the given device list
       * @param {string} u The user ID
@@ -124,7 +124,7 @@ export class DeviceList extends EventEmitter {
       * This will mean that a subsequent call to refreshOutdatedDeviceLists()
       * will download the device list for the user, and that subsequent calls to
       * invalidateUserDeviceList will trigger more updates.
-      * @param {string} userId
+      * @param {String} userId
       */
     startTrackingDeviceList(userId: string): void;
     /**
@@ -133,7 +133,7 @@ export class DeviceList extends EventEmitter {
       * This won't affect any in-progress downloads, which will still go on to
       * complete; it will just mean that we don't think that we have an up-to-date
       * list for future calls to downloadKeys.
-      * @param {string} userId
+      * @param {String} userId
       */
     stopTrackingDeviceList(userId: string): void;
     /**
@@ -151,7 +151,7 @@ export class DeviceList extends EventEmitter {
       *
       * This doesn't actually set off an update, so that several users can be
       * batched together. Call refreshOutdatedDeviceLists() for that.
-      * @param {string} userId
+      * @param {String} userId
       */
     invalidateUserDeviceList(userId: string): void;
     /**
@@ -172,12 +172,12 @@ export class DeviceList extends EventEmitter {
       * Fire off download update requests for the given users, and update the
       * device list tracking status for them, and the
       * _keyDownloadsInProgressByUser map for them.
-      * @param {Array.<string>} users list of userIds
+      * @param {Array.<String>} users list of userIds
       * @return {Promise} resolves when all the users listed have
       *     been updated. rejects if there was a problem updating any of the
       *     users.
       */
-    _doKeyDownload(users: string[]): Promise<any>;
+    _doKeyDownload(users: Array<string>): Promise<any>;
 }
 import { EventEmitter } from "events";
 /**
@@ -204,15 +204,16 @@ declare class DeviceListUpdateSerialiser {
     _syncToken: string | null;
     /**
   * Make a key query request for the given users
-  * @param {Array.<string>} users list of user ids
-  * @param {string} syncToken sync token to pass in the query request, to
+  * @param {Array.<String>} users list of user ids
+  * @param {String} syncToken sync token to pass in the query request, to
   *     help the HS give the most recent results
   * @return {Promise} resolves when all the users listed have
   *     been updated. rejects if there was a problem updating any of the
   *     users.
   */
-    updateDevicesForUsers(users: string[], syncToken: string): Promise<any>;
+    updateDevicesForUsers(users: Array<string>, syncToken: string): Promise<any>;
     _doQueuedQueries(): Promise<unknown>;
     _processQueryResponseForUser(userId: any, dkResponse: any, crossSigningResponse: any): Promise<void>;
 }
+import { CrossSigningInfo } from "./CrossSigning";
 export {};

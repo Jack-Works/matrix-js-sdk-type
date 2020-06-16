@@ -11,8 +11,8 @@
   * disambiguated with a suffix of " (@user_id:matrix.org)" if another member shares the
   * same displayname.
   * @prop {string} rawDisplayName The ambiguous displayname of this room member.
-  * @prop {number} powerLevel The power level for this room member.
-  * @prop {number} powerLevelNorm The normalised power level (0-100) for this
+  * @prop {Number} powerLevel The power level for this room member.
+  * @prop {Number} powerLevelNorm The normalised power level (0-100) for this
   * room member.
   * @prop {User} user The User object for this room member, if one exists.
   * @prop {string} membership The membership state for this room member e.g. 'join'.
@@ -77,7 +77,7 @@ export class RoomMember {
       * @fires module:client~MatrixClient#event:"RoomMember.name"
       * @fires module:client~MatrixClient#event:"RoomMember.membership"
       */
-    setMembershipEvent(event: any, roomState: any): void;
+    setMembershipEvent(event: MatrixEvent, roomState: RoomState): void;
     /**
       * Update this room member's power level event. May fire
       * "RoomMember.powerLevel" if this event updates this member's power levels.
@@ -85,14 +85,14 @@ export class RoomMember {
       * event
       * @fires module:client~MatrixClient#event:"RoomMember.powerLevel"
       */
-    setPowerLevelEvent(powerLevelEvent: any): void;
+    setPowerLevelEvent(powerLevelEvent: MatrixEvent): void;
     /**
       * Update this room member's typing event. May fire "RoomMember.typing" if
       * this event changes this member's typing state.
       * @param {MatrixEvent} event The typing event
       * @fires module:client~MatrixClient#event:"RoomMember.typing"
       */
-    setTypingEvent(event: any): void;
+    setTypingEvent(event: MatrixEvent): void;
     /**
      * Update the last modified time to the current time.
      */
@@ -116,8 +116,8 @@ export class RoomMember {
       * Get the avatar URL for a room member.
       * @param {string} baseUrl The base homeserver URL See
       * {@link module:client~MatrixClient#getHomeserverUrl}.
-      * @param {number} width The desired width of the thumbnail.
-      * @param {number} height The desired height of the thumbnail.
+      * @param {Number} width The desired width of the thumbnail.
+      * @param {Number} height The desired height of the thumbnail.
       * @param {string} resizeMethod The thumbnail resize method to use, either
       * "crop" or "scale".
       * @param {Boolean} allowDefault (optional) Passing false causes this method to
@@ -137,3 +137,5 @@ export class RoomMember {
       */
     getMxcAvatarUrl(): string;
 }
+import { MatrixEvent } from "./event";
+import { RoomState } from "./room-state";

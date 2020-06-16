@@ -5,7 +5,11 @@ export const SECRET_STORAGE_ALGORITHM_V1_CURVE25519: "m.secret_storage.v1.curve2
   * @module crypto/SecretStorage
   */
 export class SecretStorage extends EventEmitter {
-    static _calculateKeyCheck(key: any, iv: any): Promise<any>;
+    static _calculateKeyCheck(key: any, iv: any): Promise<{
+        iv: string;
+        ciphertext: any;
+        mac: any;
+    }>;
     constructor(baseApis: any, cryptoCallbacks: any, crossSigningInfo: any);
     _baseApis: any;
     _cryptoCallbacks: any;
@@ -90,7 +94,7 @@ export class SecretStorage extends EventEmitter {
       * @param {Array.<string>} devices the devices to request the secret from
       * @return {string} the contents of the secret
       */
-    request(name: string, devices: string[]): string;
+    request(name: string, devices: Array<string>): string;
     _onRequestReceived(event: any): Promise<void>;
     _onSecretReceived(event: any): void;
     _getSecretStorageKey(keys: any, name: any): Promise<any[]>;
