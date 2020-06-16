@@ -41,6 +41,7 @@ export class VerificationRequest extends EventEmitter {
     _cancelled: boolean;
     _chosenMethod: any;
     _qrCodeData: QRCodeData | null;
+    _requestReceivedAt: number | null;
     get invalid(): boolean;
     /** returns whether the phase is PHASE_REQUESTED */
     get requested(): boolean;
@@ -56,6 +57,7 @@ export class VerificationRequest extends EventEmitter {
     get methods(): any[];
     /** the method picked in the .start event */
     get chosenMethod(): any;
+    calculateEventTimeout(event: any): number;
     /** The current remaining amount of ms before the request should be automatically cancelled */
     get timeout(): number;
     /**

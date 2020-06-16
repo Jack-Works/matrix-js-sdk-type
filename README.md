@@ -2,7 +2,7 @@
 
 this package is generated from the `matrix-js-sdk` code base by [generate-matrix-js-sdk-type](https://github.com/Jack-Works/generate-matrix-js-sdk-type).
 
-Current commit hash of matrix-js-sdk: [683fc98fdc8ce5f9654a2b8c41749b0b235973b2](https://github.com/matrix-org/matrix-js-sdk/commit/683fc98fdc8ce5f9654a2b8c41749b0b235973b2) (v5.2.0+)
+Current commit hash of matrix-js-sdk: [50591552](https://github.com/matrix-org/matrix-js-sdk/commit/50591552) (v6.2.1+)
 
 Please don't modify any file by hand in the `dts` folder.
 

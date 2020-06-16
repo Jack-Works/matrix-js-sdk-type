@@ -1,6 +1,6 @@
-export function createCryptoStoreCacheCallbacks(store: any): {
+export function createCryptoStoreCacheCallbacks(store: any, olmdevice: any): {
     getCrossSigningKeyCache: (type: any, _expectedPublicKey: any) => Promise<any>;
-    storeCrossSigningKeyCache: (type: any, key: any) => any;
+    storeCrossSigningKeyCache: (type: any, key: any) => Promise<any>;
 };
 export class CrossSigningInfo extends EventEmitter {
     static fromStorage(obj: any, userId: any): CrossSigningInfo;

@@ -212,7 +212,6 @@ export class Crypto {
     }): Promise<void>;
     addSecretStorageKey(algorithm: any, opts: any, keyID: any): string;
     hasSecretStorageKey(keyID: any): boolean;
-    secretStorageKeyNeedsUpgrade(keyID: any): Promise<boolean>;
     getSecretStorageKey(keyID: any): any[] | null;
     storeSecret(name: any, secret: any, keys: any): Promise<void>;
     getSecret(name: any): string;

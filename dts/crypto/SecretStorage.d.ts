@@ -1,5 +1,4 @@
 export const SECRET_STORAGE_ALGORITHM_V1_AES: "m.secret_storage.v1.aes-hmac-sha2";
-export const SECRET_STORAGE_ALGORITHM_V1_CURVE25519: "m.secret_storage.v1.curve25519-aes-sha2";
 /**
   * Implements Secure Secret Storage and Sharing (MSC1946)
   * @module crypto/SecretStorage
@@ -10,10 +9,9 @@ export class SecretStorage extends EventEmitter {
         ciphertext: any;
         mac: any;
     }>;
-    constructor(baseApis: any, cryptoCallbacks: any, crossSigningInfo: any);
+    constructor(baseApis: any, cryptoCallbacks: any);
     _baseApis: any;
     _cryptoCallbacks: any;
-    _crossSigningInfo: any;
     _requests: {};
     _incomingRequests: {};
     getDefaultKeyId(): Promise<any>;
@@ -29,12 +27,6 @@ export class SecretStorage extends EventEmitter {
       */
     addKey(algorithm: string, opts: object, keyId?: string | undefined): string;
     /**
-      * Signs a given secret storage key with the cross-signing master key.
-      * @param {string=} keyId The ID of the key to sign.
-      *     Defaults to the default key ID if not provided.
-      */
-    signKey(keyId?: string | undefined): Promise<void>;
-    /**
       * Get the key information for a given ID.
       * @param {string=} keyId The ID of the key to check
       *     for. Defaults to the default key ID if not provided.
@@ -49,7 +41,6 @@ export class SecretStorage extends EventEmitter {
       * @return {boolean} Whether we have the key.
       */
     hasKey(keyId?: string | undefined): boolean;
-    keyNeedsUpgrade(keyId: any): Promise<boolean>;
     /**
       * Check whether a key matches what we expect based on the key info
       * @param {Uint8Array} key the key to check

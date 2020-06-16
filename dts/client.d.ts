@@ -22,6 +22,8 @@ export const CRYPTO_ENABLED: boolean;
   *     Should only be useful for devices with end-to-end crypto enabled.
   *     If provided, opts.deviceId and opts.userId should **NOT** be provided
   *     (they are present in the exported data).
+  * @param {string} opts.pickleKey Key used to pickle olm objects or other
+  *     sensitive data.
   * @param {IdentityServerProvider=} opts.identityServer Optional. A provider object with one function `getAccessToken`, which is a
   * callback that returns a Promise<String> of an identity access token to supply
   * with identity requests. If the object is unset, no access token will be
@@ -152,6 +154,9 @@ export const CRYPTO_ENABLED: boolean;
  *     Should only be useful for devices with end-to-end crypto enabled.
  *     If provided, opts.deviceId and opts.userId should **NOT** be provided
  *     (they are present in the exported data).
+ *
+ * @param {string} opts.pickleKey Key used to pickle olm objects or other
+ *     sensitive data.
  *
  * @param {IdentityServerProvider} [opts.identityServer]
  * Optional. A provider object with one function `getAccessToken`, which is a
@@ -298,6 +303,7 @@ export class MatrixClient extends EventEmitter {
         userId: any;
     };
     _exportedOlmDeviceToImport: any;
+    pickleKey: any;
     scheduler: any;
     clientRunning: boolean;
     callList: {};
@@ -1382,30 +1388,6 @@ export class MatrixClient extends EventEmitter {
         status_msg: string;
     }, callback: callback): Promise<any>;
     /**
-      * Retrieve current user presence list.
-      * @param {callback} callback Optional.
-      * @return {Promise} Resolves: TODO
-      * @return {MatrixError} Rejects: with an error response.
-      */
-    getPresenceList(callback: callback): Promise<any>;
-    /**
-      * Add users to the current user presence list.
-      * @param {callback} callback Optional.
-      * @param {Array.<string>} userIds
-      * @return {Promise} Resolves: TODO
-      * @return {MatrixError} Rejects: with an error response.
-      */
-    inviteToPresenceList(callback: callback, userIds: Array<string>): Promise<any>;
-    /**
-      * Drop users from the current user presence list.
-      * @param {callback} callback Optional.
-      * @param {Array.<string>} userIds
-      * @return {Promise} Resolves: TODO
-      * @return {MatrixError} Rejects: with an error response.
-      * *
-      */
-    dropFromPresenceList(callback: callback, userIds: Array<string>): Promise<any>;
-    /**
       * Retrieve older messages from the given room and put them in the timeline.
       *
       * If this is called multiple times whilst a request is ongoing, the <i>same</i>
@@ -1780,9 +1762,16 @@ export class MatrixClient extends EventEmitter {
       * @param {Boolean=} opts.lazyLoadMembers True to not load all membership events during
       * initial sync but fetch them when needed by calling `loadOutOfBandMembers`
       * This will override the filter option at this moment.
+      * @param {Number=} opts.clientWellKnownPollPeriod The number of seconds between polls
+      * to /.well-known/matrix/client, undefined to disable. This should be in the order of hours.
+      * Default: undefined.
       */
     startClient(opts?: object | undefined): Promise<void>;
     _clientOpts: object | undefined;
+    _clientWellKnownIntervalID: NodeJS.Timeout | undefined;
+    _fetchClientWellKnown(): Promise<void>;
+    _clientWellKnown: object | undefined;
+    getClientWellKnown(): object | undefined;
     /**
       * store client options with boolean/string/numeric values
       * to know in the next session what flags the sync data was

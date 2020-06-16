@@ -12,6 +12,8 @@ export class SAS {
     _sendStart(): Promise<any>;
     _doSendVerification(): Promise<void>;
     _waitingForAccept: boolean | undefined;
+    ourSASPubKey: any;
+    theirSASPubKey: any;
     sasEvent: {
         sas: {};
         confirm: () => Promise<void>;
