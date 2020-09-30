@@ -128,7 +128,7 @@ export declare function deepCompare(x: any, y: any): boolean;
  *
  * @return {Object} target
  */
-export declare function extend(): any;
+export declare function extend(...restParams: any[]): any;
 /**
  * Run polyfills to add Array.map and Array.filter if they are missing.
  */

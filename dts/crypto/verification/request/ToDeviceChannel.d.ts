@@ -95,6 +95,7 @@ export class ToDeviceRequests {
     setRequestBySenderAndTxnId(sender: any, txnId: any, request: any): void;
     removeRequest(event: any): void;
     findRequestInProgress(userId: any, devices: any): any;
+    getRequestsInProgress(userId: any): any[];
 }
 import { MatrixEvent } from "../../../models/event";
 import { VerificationRequest } from "./VerificationRequest";

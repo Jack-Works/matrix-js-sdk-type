@@ -15,7 +15,7 @@
   * callback that returns a Promise<String> of an identity access token to supply
   * with identity requests. If the object is unset, no access token will be
   * supplied.
-  * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+  * See also https://github.com/vector-im/element-web/issues/10615 which seeks to
   * replace the previous approach of manual access tokens params with this
   * callback throughout the SDK.
   * @param {Number=} opts.localTimeoutMs Optional. The default maximum amount of
@@ -52,7 +52,7 @@
  * callback that returns a Promise<String> of an identity access token to supply
  * with identity requests. If the object is unset, no access token will be
  * supplied.
- * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * See also https://github.com/vector-im/element-web/issues/10615 which seeks to
  * replace the previous approach of manual access tokens params with this
  * callback throughout the SDK.
  *

@@ -28,7 +28,7 @@ export const CRYPTO_ENABLED: boolean;
   * callback that returns a Promise<String> of an identity access token to supply
   * with identity requests. If the object is unset, no access token will be
   * supplied.
-  * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+  * See also https://github.com/vector-im/element-web/issues/10615 which seeks to
   * replace the previous approach of manual access tokens params with this
   * callback throughout the SDK.
   * @param {object=} opts.store The data store used for sync data from the homeserver. If not specified,
@@ -71,6 +71,9 @@ export const CRYPTO_ENABLED: boolean;
   * @param {boolean=} opts.forceTURN Optional. Whether relaying calls through a TURN server should be forced.
   * @param {boolean=} opts.fallbackICEServerAllowed Optional. Whether to allow a fallback ICE server should be used for negotiating a
   * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
+  * @param {boolean=} opts.usingExternalCrypto Optional. Whether to allow sending messages to encrypted rooms when encryption
+  * is not available internally within this SDK. This is useful if you are using an external
+  * E2E proxy, for example. Defaults to false.
   * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
   *     The cross-signing API is currently UNSTABLE and may change without notice.
   * @param {function=} opts.cryptoCallbacks.getCrossSigningKey Optional. Function to call when a cross-signing private key is needed.
@@ -115,16 +118,22 @@ export const CRYPTO_ENABLED: boolean;
   *           }
   *       }
   *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
+  * @param {function=} opts.cryptoCallbacks.cacheSecretStorageKey Optional. Function called when a new encryption key for secret storage
+  * has been created. This allows the application a chance to cache this key if
+  * desired to avoid user prompts.
+  * Args:
+  *   {string} keyId the ID of the new key
+  *   {Uint8Array} key the new private key
   * @param {function=} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
   * device.
   * Args:
   *   {string} name The name of the secret being requested.
-  *   {string} user_id (string) The user ID of the client requesting
-  *   {string} device_id The device ID of the client requesting the secret.
-  *   {string} request_id The ID of the request. Used to match a
+  *   {string} userId The user ID of the client requesting
+  *   {string} deviceId The device ID of the client requesting the secret.
+  *   {string} requestId The ID of the request. Used to match a
   *     corresponding `crypto.secrets.request_cancelled`. The request ID will be
   *     unique per sender, device pair.
-  *   {DeviceTrustLevel} device_trust: The trust status of the device requesting
+  *   {DeviceTrustLevel} deviceTrust: The trust status of the device requesting
   *     the secret as returned by {@link module:client~MatrixClient#checkDeviceTrust}.
   */
 /**
@@ -163,7 +172,7 @@ export const CRYPTO_ENABLED: boolean;
  * callback that returns a Promise<String> of an identity access token to supply
  * with identity requests. If the object is unset, no access token will be
  * supplied.
- * See also https://github.com/vector-im/riot-web/issues/10615 which seeks to
+ * See also https://github.com/vector-im/element-web/issues/10615 which seeks to
  * replace the previous approach of manual access tokens params with this
  * callback throughout the SDK.
  *
@@ -226,6 +235,11 @@ export const CRYPTO_ENABLED: boolean;
  * Optional. Whether to allow a fallback ICE server should be used for negotiating a
  * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
  *
+ * @param {boolean} [opts.usingExternalCrypto]
+ * Optional. Whether to allow sending messages to encrypted rooms when encryption
+ * is not available internally within this SDK. This is useful if you are using an external
+ * E2E proxy, for example. Defaults to false.
+ *
  * @param {object} opts.cryptoCallbacks Optional. Callbacks for crypto and cross-signing.
  *     The cross-signing API is currently UNSTABLE and may change without notice.
  *
@@ -279,17 +293,25 @@ export const CRYPTO_ENABLED: boolean;
  *       }
  *   {string} name the name of the value we want to read out of SSSS, for UI purposes.
  *
+ * @param {function} [opts.cryptoCallbacks.cacheSecretStorageKey]
+ * Optional. Function called when a new encryption key for secret storage
+ * has been created. This allows the application a chance to cache this key if
+ * desired to avoid user prompts.
+ * Args:
+ *   {string} keyId the ID of the new key
+ *   {Uint8Array} key the new private key
+ *
  * @param {function} [opts.cryptoCallbacks.onSecretRequested]
  * Optional. Function called when a request for a secret is received from another
  * device.
  * Args:
  *   {string} name The name of the secret being requested.
- *   {string} user_id (string) The user ID of the client requesting
- *   {string} device_id The device ID of the client requesting the secret.
- *   {string} request_id The ID of the request. Used to match a
+ *   {string} userId The user ID of the client requesting
+ *   {string} deviceId The device ID of the client requesting the secret.
+ *   {string} requestId The ID of the request. Used to match a
  *     corresponding `crypto.secrets.request_cancelled`. The request ID will be
  *     unique per sender, device pair.
- *   {DeviceTrustLevel} device_trust: The trust status of the device requesting
+ *   {DeviceTrustLevel} deviceTrust: The trust status of the device requesting
  *     the secret as returned by {@link module:client~MatrixClient#checkDeviceTrust}.
  */
 import {EventEmitter} from "events";
@@ -297,6 +319,7 @@ export class MatrixClient extends EventEmitter {
     constructor(opts: any);
     olmVersion: string | null;
     reEmitter: ReEmitter;
+    usingExternalCrypto: any;
     store: any;
     deviceId: any;
     credentials: {
@@ -326,11 +349,13 @@ export class MatrixClient extends EventEmitter {
     _fallbackICEServerAllowed: any;
     _roomList: RoomList;
     _pushProcessor: PushProcessor;
-    _serverVersionsCache: any;
+    _serverVersionsPromise: any;
     _cachedCapabilities: {
         capabilities: any;
         expiration: number;
     } | null;
+    _clientWellKnown: object | undefined;
+    _clientWellKnownPromise: Promise<object> | undefined;
     exportDevice(): Promise<{
         userId: any;
         deviceId: any;
@@ -535,6 +560,12 @@ export class MatrixClient extends EventEmitter {
       */
     findVerificationRequestDMInProgress(roomId: string): unknown;
     /**
+      * Returns all to-device verification requests that are already in progress for the given user id
+      * @param {string} userId the ID of the user to query
+      * @returns {Array.<>} the VerificationRequests that are in progress
+      */
+    getVerificationRequestsToDeviceInProgress(userId: string): any[];
+    /**
       * Request a key verification from another user.
       * @param {string} userId the user to request verification with
       * @param {Array} devices array of device IDs to send requests to.  Defaults to
@@ -580,13 +611,6 @@ export class MatrixClient extends EventEmitter {
       * This API is currently UNSTABLE and may change or be removed without notice.
       */
     getGlobalErrorOnUnknownDevices(): boolean;
-    /**
-      * Check if the sender of an event is verified
-      * The cross-signing API is currently UNSTABLE and may change without notice.
-      * @param {MatrixEvent} event event to be checked
-      * @returns {DeviceTrustLevel}
-      */
-    checkEventSenderTrust(event: MatrixEvent): DeviceTrustLevel;
     /**
       * Get e2e information on the device that sent an event
       * @param {MatrixEvent} event event to be checked
@@ -1052,11 +1076,12 @@ export class MatrixClient extends EventEmitter {
       * @param {string} eventId
       * @param {string=} txnId transaction id. One will be made up if not
       *    supplied.
-      * @param {callback=} callback Optional.
+      * @param {(object | callback)=} callbackOrOpts Options to pass on, may contain `reason`.
+      *    Can be callback for backwards compatibility.
       * @return {Promise} Resolves: TODO
       * @return {MatrixError} Rejects: with an error response.
       */
-    redactEvent(roomId: string, eventId: string, txnId?: string | undefined, callback?: callback | undefined): Promise<any>;
+    redactEvent(roomId: string, eventId: string, txnId?: string | undefined, callbackOrOpts?: object | callback | undefined): Promise<any>;
     /**
       *
       * @param {string} roomId
@@ -1770,8 +1795,8 @@ export class MatrixClient extends EventEmitter {
     _clientOpts: object | undefined;
     _clientWellKnownIntervalID: NodeJS.Timeout | undefined;
     _fetchClientWellKnown(): Promise<void>;
-    _clientWellKnown: object | undefined;
     getClientWellKnown(): object | undefined;
+    waitForClientWellKnown(): Promise<object> | undefined;
     /**
       * store client options with boolean/string/numeric values
       * to know in the next session what flags the sync data was
@@ -1829,6 +1854,14 @@ export class MatrixClient extends EventEmitter {
       * @return {Promise.<boolean>} true if the feature is supported
       */
     doesServerSupportUnstableFeature(feature: string): Promise<boolean>;
+    /**
+      * Query the server to see if it is forcing encryption to be enabled for
+      * a given room preset, based on the /versions response.
+      * @param {string} presetName The name of the preset to check.
+      * @returns {Promise.<boolean>} true if the server is forcing encryption
+      * for the preset.
+      */
+    doesServerForceEncryptionForPreset(presetName: string): Promise<boolean>;
     /**
       * Get if lazy loading members is being used.
       * @return {boolean} Whether or not members are lazy loaded by this client
@@ -1902,7 +1935,6 @@ import { RoomList } from "./crypto/RoomList";
 import { PushProcessor } from "./pushprocessor";
 import { MatrixScheduler } from "./scheduler";
 import { MatrixEvent } from "./models/event";
-import { DeviceTrustLevel } from "./crypto/CrossSigning";
 import { Group } from "./models/group";
 import { Room } from "./models/room";
 import { User } from "./models/user";

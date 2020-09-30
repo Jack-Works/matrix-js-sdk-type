@@ -69,7 +69,7 @@ export class RoomState {
     constructor(roomId: any, oobMemberFlags?: any);
     roomId: any;
     members: {};
-    events: {};
+    events: Map<any, any>;
     paginationToken: any;
     _sentinels: {};
     _displayNameToUserIds: {};
@@ -174,6 +174,7 @@ export class RoomState {
       */
     _getOrCreateMember(userId: string, event: MatrixEvent): RoomMember;
     _setStateEvent(event: any): void;
+    _getStateEventMatching(event: any): any;
     _updateMember(member: any): void;
     /**
       * Get the out-of-band members loading state, whether loading is needed or not.

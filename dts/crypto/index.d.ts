@@ -150,14 +150,12 @@ export class Crypto {
     createRecoveryKeyFromPassphrase(password: string): Promise<object>;
     /**
       * Checks whether cross signing:
-      * - is enabled on this account
-      * - is trusted by this device
-      * - has private keys stored in secret storage
-      * and that the account has a secret storage key
+      * - is enabled on this account and trusted by this device
+      * - has private keys either cached locally or stored in secret storage
       *
-      * If this function returns false, bootstrapSecretStorage() can be used
+      * If this function returns false, bootstrapCrossSigning() can be used
       * to fix things such that it returns true. That is to say, after
-      * bootstrapSecretStorage() completes sucessfully, this function should
+      * bootstrapCrossSigning() completes successfully, this function should
       * return true.
       *
       * The cross-signing API is currently UNSTABLE and may change without notice.
@@ -165,10 +163,48 @@ export class Crypto {
       */
     isCrossSigningReady(): boolean;
     /**
-      * Bootstrap Secure Secret Storage if needed by creating a default key and
-      * signing it with the cross-signing master key. If everything is already set
-      * up, then no changes are made, so this is safe to run to ensure secret storage
-      * is ready for use.
+      * Checks whether secret storage:
+      * - is enabled on this account
+      * - is storing cross-signing private keys
+      * - is storing session backup key (if enabled)
+      *
+      * If this function returns false, bootstrapSecretStorage() can be used
+      * to fix things such that it returns true. That is to say, after
+      * bootstrapSecretStorage() completes successfully, this function should
+      * return true.
+      *
+      * The Secure Secret Storage API is currently UNSTABLE and may change without notice.
+      * @return {boolean} True if secret storage is ready to be used on this device
+      */
+    isSecretStorageReady(): boolean;
+    /**
+      * Bootstrap cross-signing by creating keys if needed. If everything is already
+      * set up, then no changes are made, so this is safe to run to ensure
+      * cross-signing is ready for use.
+      *
+      * This function:
+      * - creates new cross-signing keys if they are not found locally cached nor in
+      *   secret storage (if it has been setup)
+      *
+      * The cross-signing API is currently UNSTABLE and may change without notice.
+      * @param {Object} opts __auto_generated__
+      * @param {function} opts.authUploadDeviceSigningKeys Function
+      * called to await an interactive auth flow when uploading device signing keys.
+      * @param {boolean=} opts.setupNewCrossSigning Optional. Reset even if keys
+      * already exist.
+      * Args:
+      *     {function} A function that makes the request requiring auth. Receives the
+      *     auth data as an object. Can be called multiple times, first with an empty
+      *     authDict, to obtain the flows.
+      */
+    bootstrapCrossSigning({ authUploadDeviceSigningKeys, setupNewCrossSigning, }?: {
+        authUploadDeviceSigningKeys: Function;
+        setupNewCrossSigning?: boolean | undefined;
+    }): Promise<void>;
+    /**
+      * Bootstrap Secure Secret Storage if needed by creating a default key. If everything is
+      * already set up, then no changes are made, so this is safe to run to ensure secret
+      * storage is ready for use.
       *
       * This function
       * - creates a new Secure Secret Storage key if no default key exists
@@ -177,12 +213,9 @@ export class Crypto {
       * - creates a backup if none exists, and one is requested
       * - migrates Secure Secret Storage to use the latest algorithm, if an outdated
       *   algorithm is found
+      *
+      * The Secure Secret Storage API is currently UNSTABLE and may change without notice.
       * @param {Object} opts __auto_generated__
-      * @param {function=} opts.authUploadDeviceSigningKeys Optional. Function
-      * called to await an interactive auth flow when uploading device signing keys.
-      * Args:
-      *     {function} A function that makes the request requiring auth. Receives the
-      *     auth data as an object.
       * @param {function=} opts.createSecretStorageKey Optional. Function
       * called to await a secret storage key creation flow.
       * Returns:
@@ -202,8 +235,7 @@ export class Crypto {
       *     {Promise} A promise which resolves to key creation data for
       *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
       */
-    bootstrapSecretStorage({ authUploadDeviceSigningKeys, createSecretStorageKey, keyBackupInfo, setupNewKeyBackup, setupNewSecretStorage, getKeyBackupPassphrase, }?: {
-        authUploadDeviceSigningKeys?: Function | undefined;
+    bootstrapSecretStorage({ createSecretStorageKey, keyBackupInfo, setupNewKeyBackup, setupNewSecretStorage, getKeyBackupPassphrase, }?: {
         createSecretStorageKey?: Function | undefined;
         keyBackupInfo?: object | undefined;
         setupNewKeyBackup?: boolean | undefined;
@@ -249,21 +281,6 @@ export class Crypto {
       * @returns {boolean} true if the key matches, otherwise false
       */
     checkCrossSigningPrivateKey(privateKey: Uint8Array, expectedPublicKey: string): boolean;
-    /**
-      * Generate new cross-signing keys.
-      * @param {CrossSigningLevel=} level the level of cross-signing to reset.  New
-      * keys will be created for the given level and below.  Defaults to
-      * regenerating all keys.
-      * @param {Object} opts __auto_generated__
-      * @param {function=} opts.authUploadDeviceSigningKeys Optional. Function
-      * called to await an interactive auth flow when uploading device signing keys.
-      * Args:
-      *     {function} A function that makes the request requiring auth. Receives the
-      *     auth data as an object.
-      */
-    resetCrossSigningKeys(level?: CrossSigningLevel | undefined, { authUploadDeviceSigningKeys, }?: {
-        authUploadDeviceSigningKeys?: Function | undefined;
-    }): Promise<void>;
     /**
      * Run various follow-up actions after cross-signing keys have changed locally
      * (either by resetting the keys for the account or by getting them from secret
@@ -486,6 +503,7 @@ export class Crypto {
       */
     setDeviceVerification(userId: string, deviceId: string, verified: boolean | null, blocked: boolean | null, known: boolean | null): Promise<any>;
     findVerificationRequestDMInProgress(roomId: any): any;
+    getVerificationRequestsToDeviceInProgress(userId: any): any[];
     requestVerificationDM(userId: any, roomId: any): Promise<any>;
     requestVerification(userId: any, devices: any): Promise<any>;
     _requestVerificationWithChannel(userId: any, channel: any, requestsMap: any): Promise<VerificationRequest>;
@@ -510,6 +528,21 @@ export class Crypto {
       * @return {?}
       */
     getEventSenderDeviceInfo(event: MatrixEvent): unknown;
+    /**
+      * Get information about the encryption of an event
+      * @param {MatrixEvent} event event to be checked
+      * @return {object} An object with the fields:
+      *    - encrypted: whether the event is encrypted (if not encrypted, some of the
+      *      other properties may not be set)
+      *    - senderKey: the sender's key
+      *    - algorithm: the algorithm used to encrypt the event
+      *    - authenticated: whether we can be sure that the owner of the senderKey
+      *      sent the event
+      *    - sender: the sender's device information, if available
+      *    - mismatchedSender: if the event's ed25519 and curve25519 keys don't match
+      *      (only meaningful if `sender` is set)
+      */
+    getEventEncryptionInfo(event: MatrixEvent): object;
     /**
       * Forces the current outbound group session to be discarded such
       * that another one will be created next time an event is sent.
@@ -586,9 +619,15 @@ export class Crypto {
     /**
       * Marks all group sessions as needing to be backed up without scheduling
       * them to upload in the background.
-      * @returns {Promise.<number>} Resolves to the number of sessions requiring a backup.
+      * @returns {Promise.<number>} Resolves to the number of sessions now requiring a backup
+      *     (which will be equal to the number of sessions in the store).
       */
     flagAllGroupSessionsForBackup(): Promise<number>;
+    /**
+      * Counts the number of end to end session keys that are waiting to be backed up
+      * @returns {Promise.<number>} Resolves to the number of sessions requiring backup
+      */
+    countSessionsNeedingBackup(): Promise<number>;
     /**
       * Perform any background tasks that can be done before a message is ready to
       * send, in order to speed up sending of the message.
@@ -818,7 +857,6 @@ import { ToDeviceRequests } from "./verification/request/ToDeviceChannel";
 import { InRoomRequests } from "./verification/request/InRoomChannel";
 import { CrossSigningInfo } from "./CrossSigning";
 import { SecretStorage } from "./SecretStorage";
-import { CrossSigningLevel } from "./CrossSigning";
 import { DeviceInfo } from "./deviceinfo";
 import { UserTrustLevel } from "./CrossSigning";
 import { DeviceTrustLevel } from "./CrossSigning";

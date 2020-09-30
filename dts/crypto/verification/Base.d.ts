@@ -3,7 +3,6 @@ export class SwitchStartEventError extends Error {
     startEvent: any;
 }
 export class VerificationBase extends EventEmitter {
-    static keyRequestTimeoutMs: number;
     /**
       * Base class for verification methods.
       *

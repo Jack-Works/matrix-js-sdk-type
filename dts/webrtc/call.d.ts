@@ -96,6 +96,7 @@ export class MatrixCall {
     mediaPromises: any;
     screenSharingStream: any;
     _answerContent: any;
+    _sentEndOfCandidates: boolean;
     /**
       * Place a voice call to this room.
       * @throws If you have not specified a listener for 'error' events.
@@ -267,6 +268,7 @@ export class MatrixCall {
       * @param {object} event
       */
     private _gotLocalIceCandidate;
+    _onIceGatheringStateChange(event: any): void;
     /**
       * Used by MatrixClient.
       * @protected

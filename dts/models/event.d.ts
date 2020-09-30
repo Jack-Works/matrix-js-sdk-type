@@ -69,7 +69,9 @@ export class MatrixEvent {
     _senderCurve25519Key: any;
     _claimedEd25519Key: any;
     _forwardingCurve25519KeyChain: any[];
+    _untrusted: any;
     _decryptionPromise: any;
     _retryDecryption: boolean;
     verificationRequest: any;
+    _txnId: any;
 }

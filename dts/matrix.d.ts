@@ -64,10 +64,44 @@ declare type CryptoStore = MemoryCryptoStore | LocalStorageCryptoStore | Indexed
 export declare function setCryptoStoreFactory(fac: any): void;
 interface ICreateClientOpts {
     baseUrl: string;
+    idBaseUrl?: string;
     store?: Store;
     cryptoStore?: CryptoStore;
     scheduler?: MatrixScheduler;
     request?: Request;
+    userId?: string;
+    deviceId?: string;
+    accessToken?: string;
+    identityServer?: any;
+    localTimeoutMs?: number;
+    useAuthorizationHeader?: boolean;
+    queryParams?: Record<string, unknown>;
+    deviceToImport?: {
+        olmDevice: {
+            pickledAccount: string;
+            sessions: Array<Record<string, any>>;
+            pickleKey: string;
+        };
+        userId: string;
+        deviceId: string;
+    };
+    sessionStore?: any;
+    unstableClientRelationAggregation?: boolean;
+    verificationMethods?: Array<any>;
+    forceTURN?: boolean;
+    fallbackICEServerAllowed?: boolean;
+    cryptoCallbacks?: {
+        getCrossSigningKey?: (keyType: string, pubKey: Uint8Array) => Promise<Uint8Array>;
+        saveCrossSigningKeys?: (keys: Record<string, Uint8Array>) => unknown;
+        shouldUpgradeDeviceVerifications?: (users: Record<string, any>) => Promise<Array<string>>;
+        getSecretStorageKey?: (keys: {
+            keys: Record<string, {
+                pubkey: Uint8Array;
+            }>;
+        }, name: string) => Promise<[string, Uint8Array] | null>;
+        cacheSecretStorageKey?: (keyId: string, key: Uint8Array) => unknown;
+        onSecretRequested?: (name: string, userId: string, deviceId: string, requestId: string, deviceTrust: any) => Promise<string>;
+    };
 }
 /**
  * Construct a Matrix Client. Similar to {@link module:client.MatrixClient}
@@ -119,13 +153,13 @@ export declare function createClient(opts: ICreateClientOpts | string): MatrixCl
  * @param {requestCallback} callback The request callback.
  */
 /**
- * The request callback interface for performing HTTP requests. This matches the
- * API for the {@link https://github.com/request/request#requestoptions-callback|
- * request NPM module}. The SDK will implement a callback which meets this
- * interface in order to handle the HTTP response.
- * @callback requestCallback
- * @param {Error} err The error if one occurred, else falsey.
- * @param {Object} response The HTTP response which consists of
- * <code>{statusCode: {Number}, headers: {Object}}</code>
- * @param {Object} body The parsed HTTP response body.
- */
+  * The request callback interface for performing HTTP requests. This matches the
+  * API for the {@link https://github.com/request/request#requestoptions-callback|
+  * request NPM module}. The SDK will implement a callback which meets this
+  * interface in order to handle the HTTP response.
+  * @callback requestCallback
+  * @param {Error} err The error if one occurred, else falsey.
+  * @param {Object} response The HTTP response which consists of
+  * <code>{statusCode: {Number}, headers: {Object}}</code>
+  * @param {Object} body The parsed HTTP response body.
+  */

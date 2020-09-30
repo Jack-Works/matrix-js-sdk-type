@@ -335,8 +335,9 @@ export class OlmDevice {
       * @param {object.<string, string>} keysClaimed Other keys the sender claims.
       * @param {boolean} exportFormat true if the megolm keys are in export format
       *    (ie, they lack an ed25519 signature)
+      * @param {object=} extraSessionData any other data to be include with the session
       */
-    addInboundGroupSession(roomId: string, senderKey: string, forwardingCurve25519KeyChain: Array<string>, sessionId: string, sessionKey: string, keysClaimed: any, exportFormat: boolean): Promise<void>;
+    addInboundGroupSession(roomId: string, senderKey: string, forwardingCurve25519KeyChain: Array<string>, sessionId: string, sessionKey: string, keysClaimed: any, exportFormat: boolean, extraSessionData?: object | undefined): Promise<void>;
     /**
       * Record in the data store why an inbound group session was withheld.
       * @param {string} roomId room that the session belongs to

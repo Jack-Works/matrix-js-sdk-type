@@ -2,16 +2,23 @@ export function createCryptoStoreCacheCallbacks(store: any, olmdevice: any): {
     getCrossSigningKeyCache: (type: any, _expectedPublicKey: any) => Promise<any>;
     storeCrossSigningKeyCache: (type: any, key: any) => Promise<any>;
 };
+/**
+  * Request cross-signing keys from another device during verification.
+  * @param {MatrixBaseApis} baseApis base Matrix API interface
+  * @param {string} userId The user ID being verified
+  * @param {string} deviceId The device ID being verified
+  */
+export function requestKeysDuringVerification(baseApis: MatrixBaseApis, userId: string, deviceId: string): Promise<any>;
 export class CrossSigningInfo extends EventEmitter {
     static fromStorage(obj: any, userId: any): CrossSigningInfo;
     /**
   * Store private keys in secret storage for use by other devices. This is
   * typically called in conjunction with the creation of new cross-signing
   * keys.
-  * @param {object} keys The keys to store
+  * @param {Map} keys The keys to store
   * @param {SecretStorage} secretStorage The secret store using account data
   */
-    static storeInSecretStorage(keys: object, secretStorage: SecretStorage): Promise<void>;
+    static storeInSecretStorage(keys: Map<any, any>, secretStorage: SecretStorage): Promise<void>;
     /**
   * Get private keys from secret storage created by some other device. This
   * also passes the private keys to the app-specific callback.
@@ -35,6 +42,11 @@ export class CrossSigningInfo extends EventEmitter {
     keys: {};
     firstUse: boolean;
     crossSigningVerifiedBefore: boolean;
+    toStorage(): {
+        keys: {};
+        firstUse: boolean;
+        crossSigningVerifiedBefore: boolean;
+    };
     /**
   * Calls the app callback to ask for a private key
   * @param {string} type The key type ("master", "self_signing", or "user_signing")
@@ -43,11 +55,6 @@ export class CrossSigningInfo extends EventEmitter {
   * @returns {Array} An array with [ public key, any ]
   */
     getCrossSigningKey(type: string, expectedPubkey: string): any[];
-    toStorage(): {
-        keys: {};
-        firstUse: boolean;
-        crossSigningVerifiedBefore: boolean;
-    };
     /**
   * Check whether the private keys exist in secret storage.
   * XXX: This could be static, be we often seem to have an instance when we
@@ -58,6 +65,18 @@ export class CrossSigningInfo extends EventEmitter {
   *     key
   */
     isStoredInSecretStorage(secretStorage: SecretStorage): object;
+    /**
+  * Check whether the private keys exist in the local key cache.
+  * @param {string=} type The type of key to get. One of "master",
+  * "self_signing", or "user_signing". Optional, will check all by default.
+  * @returns {boolean} True if all keys are stored in the local cache.
+  */
+    isStoredInKeyCache(type?: string | undefined): boolean;
+    /**
+  * Get cross-signing private keys from the local cache.
+  * @returns {Map} A map from key type (string) to private key (Uint8Array)
+  */
+    getCrossSigningKeysFromCache(): Map<any, any>;
     /**
   * Get the ID used to identify the user. This can also be used to test for
   * the existence of a given key type.
@@ -170,5 +189,6 @@ export class DeviceTrustLevel {
       */
     isTofu(): boolean;
 }
+import { MatrixBaseApis } from "../base-apis";
 import { EventEmitter } from "events";
 import { SecretStorage } from "./SecretStorage";

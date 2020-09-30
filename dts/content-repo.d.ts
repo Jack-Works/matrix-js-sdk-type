@@ -13,13 +13,3 @@
   * @return {string} The complete URL to the content.
   */
 export function getHttpUriForMxc(baseUrl: string, mxc: string, width: number, height: number, resizeMethod: string, allowDirectLinks: boolean): string;
-/**
-  * Get an identicon URL from an arbitrary string.
-  * @param {string} baseUrl The base homeserver url which has a content repo.
-  * @param {string} identiconString The string to create an identicon for.
-  * @param {Number} width The desired width of the image in pixels. Default: 96.
-  * @param {Number} height The desired height of the image in pixels. Default: 96.
-  * @return {string} The complete URL to the identicon.
-  * @deprecated This is no longer in the specification.
-  */
-export function getIdenticonUri(baseUrl: string, identiconString: string, width: number, height: number): string;
