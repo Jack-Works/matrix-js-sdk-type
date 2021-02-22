@@ -170,6 +170,12 @@ export class OlmDevice {
       */
     generateOneTimeKeys(numKeys: number): Promise<any>;
     /**
+      * Generate a new fallback keys
+      * @return {Promise} Resolved once the account is saved back having generated the key
+      */
+    generateFallbackKey(): Promise<any>;
+    getFallbackKey(): Promise<undefined>;
+    /**
       * Generate a new outbound session
       *
       * The new session will be stored in the cryptoStore.

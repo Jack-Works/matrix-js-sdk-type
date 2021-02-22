@@ -195,9 +195,10 @@ export class MatrixBaseApis {
       *     authenticates with the SSO.
       * @param {string} loginType The type of SSO login we are doing (sso or cas).
       *     Defaults to 'sso'.
+      * @param {string} idpId The ID of the Identity Provider being targeted, optional.
       * @return {string} The HS URL to hit to begin the SSO login process.
       */
-    getSsoLoginUrl(redirectUrl: string, loginType: string): string;
+    getSsoLoginUrl(redirectUrl: string, loginType: string, idpId: string): string;
     /**
       *
       * @param {string} token Login token previously received from homeserver

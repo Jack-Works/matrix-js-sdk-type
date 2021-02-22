@@ -1,11 +1,7 @@
-/**
-  *
-  * @module
-  */
-export class ReEmitter {
-    constructor(target: any);
-    target: any;
-    boundHandlers: {};
-    _handleEvent(eventName: any, ...args: any[]): void;
-    reEmit(source: any, eventNames: any): void;
+/// <reference types="node" />
+import { EventEmitter } from "events";
+export declare class ReEmitter {
+    private target;
+    constructor(target: EventEmitter);
+    reEmit(source: EventEmitter, eventNames: string[]): void;
 }

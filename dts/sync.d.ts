@@ -32,7 +32,7 @@ export class SyncApi {
     constructor(client: any, opts: any);
     client: any;
     opts: any;
-    _peekRoomId: string | null;
+    _peekRoom: Room | null;
     _currentSyncRequest: any;
     _syncState: string | null;
     _syncStateData: object | null;
@@ -92,9 +92,9 @@ export class SyncApi {
     /**
       * Do a peek room poll.
       * @param {Room} peekRoom
-      * @param {string} token from= token
+      * @param {string?} token from= token
       */
-    _peekPoll(peekRoom: Room, token: string): void;
+    _peekPoll(peekRoom: Room, token: string | null): void;
     /**
       * Returns the current state of this sync object
       * @see module:client~MatrixClient#event:"sync"

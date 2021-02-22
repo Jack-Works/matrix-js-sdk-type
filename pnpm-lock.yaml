@@ -2,7 +2,7 @@ dependencies:
   '@types/node': 12.12.62
   '@types/request': 2.48.5
   loglevel: 1.7.0
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /@types/caseless/0.12.2:
     dev: false

@@ -160,7 +160,7 @@ declare class SSSSCryptoCallbacks {
     getSecretStorageKey({ keys }: {
         keys: any;
     }, name: any): Promise<any>;
-    addPrivateKey(keyId: any, privKey: any): void;
+    addPrivateKey(keyId: any, keyInfo: any, privKey: any): void;
 }
 import { Crypto } from ".";
 import { EventEmitter } from "events";

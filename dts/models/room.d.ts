@@ -185,11 +185,17 @@ export class Room {
     getPendingEvents(): Array<MatrixEvent>;
     /**
       * Check whether the pending event list contains a given event by ID.
+      * If pending event ordering is not "detached" then this returns false.
       * @param {string} eventId The event ID to check for.
       * @return {boolean}
-      * @throws If <code>opts.pendingEventOrdering</code> was not 'detached'
       */
     hasPendingEvent(eventId: string): boolean;
+    /**
+      * Get a specific event from the pending event list, if configured, null otherwise.
+      * @param {string} eventId The event ID to check for.
+      * @return {MatrixEvent}
+      */
+    getPendingEvent(eventId: string): MatrixEvent;
     /**
       * Get the live unfiltered timeline for this room.
       * @return {EventTimeline} live timeline
@@ -620,11 +626,22 @@ export class Room {
       */
     getAccountData(type: string): MatrixEvent | null;
     /**
-      * Returns wheter the syncing user has permission to send a message in the room
+      * Returns whether the syncing user has permission to send a message in the room
       * @return {boolean} true if the user should be permitted to send
       *                   message events into the room.
       */
     maySendMessage(): boolean;
+    /**
+      * Returns whether the given user has permissions to issue an invite for this room.
+      * @param {string} userId the ID of the Matrix user to check permissions for
+      * @returns {boolean} true if the user should be permitted to issue invites for this room.
+      */
+    canInvite(userId: string): boolean;
+    /**
+      * Returns the join rule based on the m.room.join_rule state event, defaulting to `invite`.
+      * @returns {string} the join_rule applied to this room
+      */
+    getJoinRule(): string;
 }
 import { ReEmitter } from "../ReEmitter";
 import { RoomSummary } from "./room-summary";

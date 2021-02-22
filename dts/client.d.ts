@@ -69,6 +69,12 @@ export const CRYPTO_ENABLED: boolean;
   * module:crypto~verificationMethods verificationMethods}, or a class that
   * implements the {$link module:crypto/verification/Base verifier interface}.
   * @param {boolean=} opts.forceTURN Optional. Whether relaying calls through a TURN server should be forced.
+  *
+  * * @param {boolean} [opts.iceCandidatePoolSize]
+  * Optional. Up to this many ICE candidates will be gathered when an incoming call arrives.
+  * Gathering does not send data to the caller, but will communicate with the configured TURN
+  * server. Default 0.
+  * @param {boolean=} opts.supportsCallTransfer Optional. True to advertise support for call transfers to other parties on Matrix calls.
   * @param {boolean=} opts.fallbackICEServerAllowed Optional. Whether to allow a fallback ICE server should be used for negotiating a
   * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
   * @param {boolean=} opts.usingExternalCrypto Optional. Whether to allow sending messages to encrypted rooms when encryption
@@ -113,7 +119,14 @@ export const CRYPTO_ENABLED: boolean;
   *       {
   *           keys: {
   *               <key name>: {
-  *                   pubkey: {UInt8Array}
+  *                   "algorithm": "m.secret_storage.v1.aes-hmac-sha2",
+  *                   "passphrase": {
+  *                       "algorithm": "m.pbkdf2",
+  *                       "iterations": 500000,
+  *                       "salt": "..."
+  *                   },
+  *                   "iv": "...",
+  *                   "mac": "..."
   *               }, ...
   *           }
   *       }
@@ -123,6 +136,7 @@ export const CRYPTO_ENABLED: boolean;
   * desired to avoid user prompts.
   * Args:
   *   {string} keyId the ID of the new key
+  *   {object} keyInfo Infomation about the key as above for `getSecretStorageKey`
   *   {Uint8Array} key the new private key
   * @param {function=} opts.cryptoCallbacks.onSecretRequested Optional. Function called when a request for a secret is received from another
   * device.
@@ -231,6 +245,14 @@ export const CRYPTO_ENABLED: boolean;
  * @param {boolean} [opts.forceTURN]
  * Optional. Whether relaying calls through a TURN server should be forced.
  *
+ * * @param {boolean} [opts.iceCandidatePoolSize]
+ * Optional. Up to this many ICE candidates will be gathered when an incoming call arrives.
+ * Gathering does not send data to the caller, but will communicate with the configured TURN
+ * server. Default 0.
+ *
+ * @param {boolean} [opts.supportsCallTransfer]
+ * Optional. True to advertise support for call transfers to other parties on Matrix calls.
+ *
  * @param {boolean} [opts.fallbackICEServerAllowed]
  * Optional. Whether to allow a fallback ICE server should be used for negotiating a
  * WebRTC connection if the homeserver doesn't provide any servers. Defaults to false.
@@ -287,7 +309,14 @@ export const CRYPTO_ENABLED: boolean;
  *       {
  *           keys: {
  *               <key name>: {
- *                   pubkey: {UInt8Array}
+ *                   "algorithm": "m.secret_storage.v1.aes-hmac-sha2",
+ *                   "passphrase": {
+ *                       "algorithm": "m.pbkdf2",
+ *                       "iterations": 500000,
+ *                       "salt": "..."
+ *                   },
+ *                   "iv": "...",
+ *                   "mac": "..."
  *               }, ...
  *           }
  *       }
@@ -299,6 +328,7 @@ export const CRYPTO_ENABLED: boolean;
  * desired to avoid user prompts.
  * Args:
  *   {string} keyId the ID of the new key
+ *   {object} keyInfo Infomation about the key as above for `getSecretStorageKey`
  *   {Uint8Array} key the new private key
  *
  * @param {function} [opts.cryptoCallbacks.onSecretRequested]
@@ -329,8 +359,8 @@ export class MatrixClient extends EventEmitter {
     pickleKey: any;
     scheduler: any;
     clientRunning: boolean;
-    callList: {};
     _supportsVoip: boolean;
+    _callEventHandler: CallEventHandler | null;
     _syncingRetry: any;
     _syncApi: SyncApi | null;
     _peekSync: SyncApi | null;
@@ -346,6 +376,8 @@ export class MatrixClient extends EventEmitter {
     _verificationMethods: any;
     _cryptoCallbacks: any;
     _forceTURN: any;
+    _iceCandidatePoolSize: any;
+    _supportsCallTransfer: any;
     _fallbackICEServerAllowed: any;
     _roomList: RoomList;
     _pushProcessor: PushProcessor;
@@ -356,6 +388,36 @@ export class MatrixClient extends EventEmitter {
     } | null;
     _clientWellKnown: object | undefined;
     _clientWellKnownPromise: Promise<object> | undefined;
+    /**
+      * Try to rehydrate a device if available.  The client must have been
+      * initialized with a `cryptoCallback.getDehydrationKey` option, and this
+      * function must be called before initCrypto and startClient are called.
+      * @return {Promise} Resolves to undefined if a device could not be dehydrated, or
+      *     to the new device ID if the dehydration was successful.
+      * @return {MatrixError} Rejects: with an error response.
+      */
+    rehydrateDevice(): Promise<any>;
+    /**
+      * Set the dehydration key.  This will also periodically dehydrate devices to
+      * the server.
+      * @param {Uint8Array} key the dehydration key
+      * @param {object=} keyInfo Information about the key.  Primarily for
+      *     information about how to generate the key from a passphrase.
+      * @param {string=} deviceDisplayName The device display name for the
+      *     dehydrated device.
+      * @return {Promise} A promise that resolves when the dehydrated device is stored.
+      */
+    setDehydrationKey(key: Uint8Array, keyInfo?: object | undefined, deviceDisplayName?: string | undefined): Promise<any>;
+    /**
+      * Creates a new dehydrated device (without queuing periodic dehydration)
+      * @param {Uint8Array} key the dehydration key
+      * @param {object=} keyInfo Information about the key.  Primarily for
+      *     information about how to generate the key from a passphrase.
+      * @param {string=} deviceDisplayName The device display name for the
+      *     dehydrated device.
+      * @return {Promise.<String>} the device id of the newly created dehydrated device
+      */
+    createDehydratedDevice(key: Uint8Array, keyInfo?: object | undefined, deviceDisplayName?: string | undefined): Promise<string>;
     exportDevice(): Promise<{
         userId: any;
         deviceId: any;
@@ -398,6 +460,11 @@ export class MatrixClient extends EventEmitter {
       * @param {boolean} forceTURN True to force use of TURN servers
       */
     setForceTURN(forceTURN: boolean): void;
+    /**
+      * Set whether to advertise transfer support to other parties on Matrix calls.
+      * @param {boolean} supportsCallTransfer True to advertise the 'm.call.transferee' capability
+      */
+    setSupportsCallTransfer(supportsCallTransfer: boolean): void;
     /**
       * Get the current sync state.
       * @return {?string} the sync state, which may be null.
@@ -782,18 +849,18 @@ export class MatrixClient extends EventEmitter {
       * The cross-signing API is currently UNSTABLE and may change without notice.
       * @param {string} password Passphrase
       * @param {object} backupInfo Backup metadata from `checkKeyBackup`
-      * @return {Promise.<Buffer>} key backup key
+      * @return {Promise.<Uint8Array>} key backup key
       */
-    keyBackupKeyFromPassword(password: string, backupInfo: object): Promise<Buffer>;
+    keyBackupKeyFromPassword(password: string, backupInfo: object): Promise<Uint8Array>;
     /**
       * Get the raw key for a key backup from the recovery key
       * Used when migrating key backups into SSSS
       *
       * The cross-signing API is currently UNSTABLE and may change without notice.
       * @param {string} recoveryKey The recovery key
-      * @return {Buffer} key backup key
+      * @return {Uint8Array} key backup key
       */
-    keyBackupKeyFromRecoveryKey(recoveryKey: string): Buffer;
+    keyBackupKeyFromRecoveryKey(recoveryKey: string): Uint8Array;
     /**
       * Restore from an existing key backup via a passphrase.
       * @param {string} password Passphrase
@@ -1364,7 +1431,7 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} name
       * @param {callback} callback Optional.
-      * @return {Promise} Resolves: TODO
+      * @return {Promise} Resolves: {} an empty object.
       * @return {MatrixError} Rejects: with an error response.
       */
     setDisplayName(name: string, callback: callback): Promise<any>;
@@ -1372,7 +1439,7 @@ export class MatrixClient extends EventEmitter {
       *
       * @param {string} url
       * @param {callback} callback Optional.
-      * @return {Promise} Resolves: TODO
+      * @return {Promise} Resolves: {} an empty object.
       * @return {MatrixError} Rejects: with an error response.
       */
     setAvatarUrl(url: string, callback: callback): Promise<any>;
@@ -1412,6 +1479,14 @@ export class MatrixClient extends EventEmitter {
         presence: string;
         status_msg: string;
     }, callback: callback): Promise<any>;
+    /**
+      *
+      * @param {string} userId The user to get presence for
+      * @param {callback} callback Optional.
+      * @return {Promise} Resolves: The presence state for this user.
+      * @return {MatrixError} Rejects: with an error response.
+      */
+    getPresence(userId: string, callback: callback): Promise<any>;
     /**
       * Retrieve older messages from the given room and put them in the timeline.
       *
@@ -1806,6 +1881,13 @@ export class MatrixClient extends EventEmitter {
       */
     _storeClientOptions(): Promise<any>;
     /**
+      * Gets a set of room IDs in common with another user
+      * @param {string} userId The userId to check.
+      * @return {Promise.<Array.<string>>} Resolves to a set of rooms
+      * @return {MatrixError} Rejects: with an error response.
+      */
+    _unstable_getSharedRooms(userId: string): Promise<Array<string>>;
+    /**
      * High level helper method to stop the client from polling and allow a
      * clean shutdown.
      */
@@ -1928,6 +2010,7 @@ export namespace MatrixClient {
  */
 export type callback = (err: object, data: object) => any;
 import { ReEmitter } from "./ReEmitter";
+import { CallEventHandler } from "./webrtc/callEventHandler";
 import { SyncApi } from "./sync";
 import { EventTimelineSet } from "./models/event-timeline-set";
 import { Crypto } from "./crypto";

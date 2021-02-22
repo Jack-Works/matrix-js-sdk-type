@@ -23,9 +23,11 @@ export class SecretStorage extends EventEmitter {
       *     depend on the algorithm given.
       * @param {string=} keyId the ID of the key.  If not given, a random
       *     ID will be generated.
-      * @return {string} the ID of the key
+      * @return {object} An object with:
+      *     keyId: {string} the ID of the key
+      *     keyInfo: {object} details about the key (iv, mac, passphrase)
       */
-    addKey(algorithm: string, opts: object, keyId?: string | undefined): string;
+    addKey(algorithm: string, opts: object, keyId?: string | undefined): object;
     /**
       * Get the key information for a given ID.
       * @param {string=} keyId The ID of the key to check

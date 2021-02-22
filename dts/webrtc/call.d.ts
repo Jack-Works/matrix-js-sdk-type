@@ -1,35 +1,8 @@
-/**
-  * Set an audio output device to use for MatrixCalls
-  * @function
-  * @param {string=} deviceId the identifier for the device
-  * undefined treated as unset
-  */
-export function setAudioOutput(deviceId?: string | undefined): void;
-/**
-  * Set an audio input device to use for MatrixCalls
-  * @function
-  * @param {string=} deviceId the identifier for the device
-  * undefined treated as unset
-  */
-export function setAudioInput(deviceId?: string | undefined): void;
-/**
-  * Set a video input device to use for MatrixCalls
-  * @function
-  * @param {string=} deviceId the identifier for the device
-  * undefined treated as unset
-  */
-export function setVideoInput(deviceId?: string | undefined): void;
-/**
-  * Create a new Matrix call for the browser.
-  * @param {MatrixClient} client The client instance to use.
-  * @param {string} roomId The room the call is in.
-  * @param {object?} options DEPRECATED optional options map.
-  * @param {boolean} options.forceTURN DEPRECATED whether relay through TURN should be
-  * forced. This option is deprecated - use opts.forceTURN when creating the matrix client
-  * since it's only possible to set this option on outbound calls.
-  * @return {MatrixCall} the call or null if the browser doesn't support calling.
-  */
-export function createNewMatrixCall(client: MatrixClient, roomId: string, options: object | null): MatrixCall;
+/// <reference types="node" />
+import { EventEmitter } from 'events';
+import { MatrixEvent } from '../models/event';
+import { RoomMember } from '../models/room-member';
+
 /**
   * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
   * <p>
@@ -43,6 +16,114 @@ export function createNewMatrixCall(client: MatrixClient, roomId: string, option
   *   console.error(err.code, err);
   * });
   */
+interface CallOpts {
+    roomId?: string;
+    client?: any;
+    forceTURN?: boolean;
+    turnServers?: Array<TurnServer>;
+}
+interface TurnServer {
+    urls: Array<string>;
+    username?: string;
+    password?: string;
+    ttl?: number;
+}
+export declare enum CallState {
+    Fledgling = "fledgling",
+    InviteSent = "invite_sent",
+    WaitLocalMedia = "wait_local_media",
+    CreateOffer = "create_offer",
+    CreateAnswer = "create_answer",
+    Connecting = "connecting",
+    Connected = "connected",
+    Ringing = "ringing",
+    Ended = "ended"
+}
+export declare enum CallType {
+    Voice = "voice",
+    Video = "video"
+}
+export declare enum CallDirection {
+    Inbound = "inbound",
+    Outbound = "outbound"
+}
+export declare enum CallParty {
+    Local = "local",
+    Remote = "remote"
+}
+export declare enum CallEvent {
+    Hangup = "hangup",
+    State = "state",
+    Error = "error",
+    Replaced = "replaced",
+    LocalHoldUnhold = "local_hold_unhold",
+    RemoteHoldUnhold = "remote_hold_unhold",
+    HoldUnhold = "hold_unhold"
+}
+export declare enum CallErrorCode {
+    /** The user chose to end the call */
+    UserHangup = "user_hangup",
+    /** An error code when the local client failed to create an offer. */
+    LocalOfferFailed = "local_offer_failed",
+    /**
+     * An error code when there is no local mic/camera to use. This may be because
+     * the hardware isn't plugged in, or the user has explicitly denied access.
+     */
+    NoUserMedia = "no_user_media",
+    /**
+     * Error code used when a call event failed to send
+     * because unknown devices were present in the room
+     */
+    UnknownDevices = "unknown_devices",
+    /**
+     * Error code usewd when we fail to send the invite
+     * for some reason other than there being unknown devices
+     */
+    SendInvite = "send_invite",
+    /**
+     * An answer could not be created
+     */
+    CreateAnswer = "create_answer",
+    /**
+     * Error code usewd when we fail to send the answer
+     * for some reason other than there being unknown devices
+     */
+    SendAnswer = "send_answer",
+    /**
+     * The session description from the other side could not be set
+     */
+    SetRemoteDescription = "set_remote_description",
+    /**
+     * The session description from this side could not be set
+     */
+    SetLocalDescription = "set_local_description",
+    /**
+     * A different device answered the call
+     */
+    AnsweredElsewhere = "answered_elsewhere",
+    /**
+     * No media connection could be established to the other party
+     */
+    IceFailed = "ice_failed",
+    /**
+     * The invite timed out whilst waiting for an answer
+     */
+    InviteTimeout = "invite_timeout",
+    /**
+     * The call was replaced by another call
+     */
+    Replaced = "replaced",
+    /**
+     * Signalling for the call could not be sent (other than the initial invite)
+     */
+    SignallingFailed = "signalling_timeout"
+}
+/** Retrieves sources from desktopCapturer */
+export declare function getDesktopCapturerSources(): Promise<Array<DesktopCapturerSource>>;
+export declare class CallError extends Error {
+    code: string;
+    constructor(code: CallErrorCode, msg: string, err: Error);
+}
 /**
   * Construct a new Matrix Call.
   * @constructor
@@ -54,55 +135,51 @@ export function createNewMatrixCall(client: MatrixClient, roomId: string, option
   * @param {Array.<object>} opts.turnServers Optional. A list of TURN servers.
   * @param {MatrixClient} opts.client The Matrix Client instance to send events to.
   */
-/**
- * Fires whenever an error occurs when call.js encounters an issue with setting up the call.
- * <p>
- * The error given will have a code equal to either `MatrixCall.ERR_LOCAL_OFFER_FAILED` or
- * `MatrixCall.ERR_NO_USER_MEDIA`. `ERR_LOCAL_OFFER_FAILED` is emitted when the local client
- * fails to create an offer. `ERR_NO_USER_MEDIA` is emitted when the user has denied access
- * to their audio/video hardware.
- *
- * @event module:webrtc/call~MatrixCall#"error"
- * @param {Error} err The error raised by MatrixCall.
- * @example
- * matrixCall.on("error", function(err){
- *   console.error(err.code, err);
- * });
- */
-/**
- * Construct a new Matrix Call.
- * @constructor
- * @param {Object} opts Config options.
- * @param {string} opts.roomId The room ID for this call.
- * @param {Object} opts.webRtc The WebRTC globals from the browser.
- * @param {boolean} opts.forceTURN whether relay through TURN should be forced.
- * @param {Object} opts.URL The URL global.
- * @param {Array<Object>} opts.turnServers Optional. A list of TURN servers.
- * @param {MatrixClient} opts.client The Matrix Client instance to send events to.
- */
-export class MatrixCall {
-    constructor(opts: any);
-    roomId: any;
-    client: any;
-    webRtc: any;
-    forceTURN: any;
-    URL: any;
-    turnServers: any;
+export declare class MatrixCall extends EventEmitter {
+    roomId: string;
+    type: CallType;
     callId: string;
-    state: string;
-    didConnect: boolean;
-    candidateSendQueue: any[];
-    candidateSendTries: number;
-    mediaPromises: any;
-    screenSharingStream: any;
-    _answerContent: any;
-    _sentEndOfCandidates: boolean;
+    state: CallState;
+    hangupParty: CallParty;
+    hangupReason: string;
+    direction: CallDirection;
+    ourPartyId: string;
+    private client;
+    private forceTURN;
+    private turnServers;
+    private candidateSendQueue;
+    private candidateSendTries;
+    private sentEndOfCandidates;
+    private peerConn;
+    private localVideoElement;
+    private remoteVideoElement;
+    private remoteAudioElement;
+    private screenSharingStream;
+    private remoteStream;
+    private localAVStream;
+    private inviteOrAnswerSent;
+    private waitForLocalAVStream;
+    private msg;
+    private config;
+    private successor;
+    private opponentMember;
+    private opponentVersion;
+    private opponentPartyId;
+    private opponentCaps;
+    private inviteTimeout;
+    private remoteOnHold;
+    private unholdingRemote;
+    private micMuted;
+    private vidMuted;
+    private callStatsAtEnd;
+    private makingOffer;
+    private ignoreOffer;
+    constructor(opts: CallOpts);
     /**
       * Place a voice call to this room.
       * @throws If you have not specified a listener for 'error' events.
       */
     placeVoiceCall(): void;
-    type: string | undefined;
     /**
       * Place a video call to this room.
       * @param {Element} remoteVideoElement a <code>&lt;video&gt;</code> DOM element
@@ -111,9 +188,7 @@ export class MatrixCall {
       * to render the local camera preview.
       * @throws If you have not specified a listener for 'error' events.
       */
-    placeVideoCall(remoteVideoElement: Element, localVideoElement: Element): void;
-    localVideoElement: Element | undefined;
-    remoteVideoElement: Element | undefined;
+    placeVideoCall(remoteVideoElement: HTMLVideoElement, localVideoElement: HTMLVideoElement): void;
     /**
       * Place a screen-sharing call to this room. This includes audio.
       * <b>This method is EXPERIMENTAL and subject to change without warning. It
@@ -124,103 +199,82 @@ export class MatrixCall {
       * to render the local camera preview.
       * @throws If you have not specified a listener for 'error' events.
       */
-    placeScreenSharingCall(remoteVideoElement: Element, localVideoElement: Element): Promise<void>;
-    /**
-      * Play the given HTMLMediaElement, serialising the operation into a chain
-      * of promises to avoid racing access to the element
-      * @param {Element} element HTMLMediaElement element to play
-      * @param {string} queueId Arbitrary ID to track the chain of promises to be used
-      */
-    playElement(element: Element, queueId: string): void;
-    /**
-      * Pause the given HTMLMediaElement, serialising the operation into a chain
-      * of promises to avoid racing access to the element
-      * @param {Element} element HTMLMediaElement element to pause
-      * @param {string} queueId Arbitrary ID to track the chain of promises to be used
-      */
-    pauseElement(element: Element, queueId: string): void;
-    /**
-      * Assign the given HTMLMediaElement by setting the .src attribute on it,
-      * serialising the operation into a chain of promises to avoid racing access
-      * to the element
-      * @param {Element} element HTMLMediaElement element to pause
-      * @param {MediaStream} srcObject the srcObject attribute value to assign to the element
-      * @param {string} queueId Arbitrary ID to track the chain of promises to be used
-      */
-    assignElement(element: Element, srcObject: MediaStream, queueId: string): void;
+    placeScreenSharingCall(remoteVideoElement: HTMLVideoElement, localVideoElement: HTMLVideoElement, selectDesktopCapturerSource: () => Promise<DesktopCapturerSource>): Promise<void>;
+    getOpponentMember(): RoomMember;
+    opponentCanBeTransferred(): boolean;
     /**
       * Retrieve the local <code>&lt;video&gt;</code> DOM element.
       * @return {Element} The dom element
       */
-    getLocalVideoElement(): Element;
+    getLocalVideoElement(): HTMLVideoElement;
     /**
       * Retrieve the remote <code>&lt;video&gt;</code> DOM element
       * used for playing back video capable streams.
       * @return {Element} The dom element
       */
-    getRemoteVideoElement(): Element;
+    getRemoteVideoElement(): HTMLVideoElement;
     /**
       * Retrieve the remote <code>&lt;audio&gt;</code> DOM element
       * used for playing back audio only streams.
       * @return {Element} The dom element
       */
-    getRemoteAudioElement(): Element;
+    getRemoteAudioElement(): HTMLAudioElement;
     /**
       * Set the local <code>&lt;video&gt;</code> DOM element. If this call is active,
       * video will be rendered to it immediately.
       * @param {Element} element The <code>&lt;video&gt;</code> DOM element.
       */
-    setLocalVideoElement(element: Element): void;
+    setLocalVideoElement(element: HTMLVideoElement): Promise<void>;
     /**
       * Set the remote <code>&lt;video&gt;</code> DOM element. If this call is active,
       * the first received video-capable stream will be rendered to it immediately.
       * @param {Element} element The <code>&lt;video&gt;</code> DOM element.
       */
-    setRemoteVideoElement(element: Element): void;
+    setRemoteVideoElement(element: HTMLVideoElement): void;
     /**
       * Set the remote <code>&lt;audio&gt;</code> DOM element. If this call is active,
       * the first received audio-only stream will be rendered to it immediately.
       * The audio will *not* be rendered from the remoteVideoElement.
       * @param {Element} element The <code>&lt;video&gt;</code> DOM element.
       */
-    setRemoteAudioElement(element: Element): void;
-    remoteAudioElement: Element | undefined;
+    setRemoteAudioElement(element: HTMLAudioElement): Promise<void>;
+    getCurrentCallStats(): Promise<any[]>;
+    private collectCallStats;
     /**
       * Configure this call from an invite event. Used by MatrixClient.
-      * @protected
       * @param {MatrixEvent} event The m.call.invite event
       */
-    protected _initWithInvite(event: MatrixEvent): void;
-    msg: any;
-    peerConn: any;
-    direction: string | undefined;
+    initWithInvite(event: MatrixEvent): Promise<void>;
     /**
-      * Configure this call from a hangup event. Used by MatrixClient.
-      * @protected
+      * Configure this call from a hangup or reject event. Used by MatrixClient.
       * @param {MatrixEvent} event The m.call.hangup event
       */
-    protected _initWithHangup(event: MatrixEvent): void;
+    initWithHangup(event: MatrixEvent): void;
     /**
      * Answer a call.
      */
-    answer(): void;
+    answer(): Promise<void>;
     /**
       * Replace this call with a new call, e.g. for glare resolution. Used by
       * MatrixClient.
-      * @protected
       * @param {MatrixCall} newCall The new call.
       */
-    protected _replacedBy(newCall: MatrixCall): void;
-    successor: MatrixCall | undefined;
+    replacedBy(newCall: MatrixCall): void;
     /**
       * Hangup a call.
       * @param {string} reason The reason why the call is being hung up.
       * @param {boolean} suppressEvent True to suppress emitting an event.
       */
-    hangup(reason: string, suppressEvent: boolean): void;
+    hangup(reason: CallErrorCode, suppressEvent: boolean): void;
     /**
-      * Set whether the local video preview should be muted or not.
-      * @param {boolean} muted True to mute the local video.
+     * Reject a call
+     * This used to be done by calling hangup, but is a separate method and protocol
+     * event as of MSC2746.
+     */
+    reject(): void;
+    /**
+      * Set whether our outbound video should be muted or not.
+      * @param {boolean} muted True to mute the outbound video.
       */
     setLocalVideoMuted(muted: boolean): void;
     /**
@@ -249,125 +303,109 @@ export class MatrixCall {
       */
     isMicrophoneMuted(): boolean;
     /**
+      *
+      * @returns true if we have put the party on the other side of the call on hold
+      * (that is, we are signalling to them that we are not listening)
+      */
+    isRemoteOnHold(): boolean;
+    setRemoteOnHold(onHold: boolean): void;
+    /**
+      * Indicates whether we are 'on hold' to the remote party (ie. if true,
+      * they cannot hear us). Note that this will return true when we put the
+      * remote on hold too due to the way hold is implemented (since we don't
+      * wish to play hold music when we put a call on hold, we use 'inactive'
+      * rather than 'sendonly')
+      * @returns true if the other party has put us on hold
+      */
+    isLocalOnHold(): boolean;
+    /**
+      * Sends a DTMF digit to the other party
+      * @param digit The digit (nb. string - '#' and '*' are dtmf too)
+      */
+    sendDtmfDigit(digit: string): void;
+    private updateMuteStatus;
+    /**
       * Internal
-      * @private
       * @param {object} stream
       */
-    private _maybeGotUserMediaForInvite;
-    localAVStream: object | undefined;
-    _sendAnswer(stream: any): void;
+    private gotUserMediaForInvite;
+    private sendAnswer;
+    private gotUserMediaForAnswer;
     /**
       * Internal
-      * @private
-      * @param {object} stream
-      */
-    private _maybeGotUserMediaForAnswer;
-    /**
-      * Internal
-      * @private
       * @param {object} event
       */
-    private _gotLocalIceCandidate;
-    _onIceGatheringStateChange(event: any): void;
+    private gotLocalIceCandidate;
+    private onIceGatheringStateChange;
+    onRemoteIceCandidatesReceived(ev: MatrixEvent): void;
     /**
       * Used by MatrixClient.
-      * @protected
-      * @param {object} cand
-      */
-    protected _gotRemoteIceCandidate(cand: object): void;
-    /**
-      * Used by MatrixClient.
-      * @protected
       * @param {object} msg
       */
-    protected _receivedAnswer(msg: object): void;
+    onAnswerReceived(event: MatrixEvent): Promise<void>;
+    onSelectAnswerReceived(event: MatrixEvent): Promise<void>;
+    onNegotiateReceived(event: MatrixEvent): Promise<void>;
+    private callHasEnded;
+    private gotLocalOffer;
+    private getLocalOfferFailed;
+    private getUserMediaFailed;
+    onIceConnectionStateChanged: () => void;
+    private onSignallingStateChanged;
+    private onTrack;
+    onNegotiationNeeded: () => Promise<void>;
+    playRemoteAudio(): Promise<void>;
+    private playRemoteVideo;
+    onHangupReceived: (msg: any) => void;
+    onRejectReceived: (msg: any) => void;
+    onAnsweredElsewhere: (msg: any) => void;
+    setState(state: CallState): void;
     /**
       * Internal
-      * @private
-      * @param {object} description
+      * @param {string} eventType
+      * @param {object} content
+      * @return {Promise}
       */
-    private _gotLocalOffer;
-    /**
-      * Internal
-      * @private
-      * @param {object} error
-      */
-    private _getLocalOfferFailed;
-    /**
-      * Internal
-      * @private
-      * @param {object} error
-      */
-    private _getUserMediaFailed;
-    /**
-      * Internal
-      * @private
-      */
-    private _onIceConnectionStateChanged;
-    /**
-      * Internal
-      * @private
-      */
-    private _onSignallingStateChanged;
-    /**
-      * Internal
-      * @private
-      */
-    private _onSetRemoteDescriptionSuccess;
-    /**
-      * Internal
-      * @private
-      * @param {object} e
-      */
-    private _onSetRemoteDescriptionError;
-    /**
-      * Internal
-      * @private
-      * @param {object} event
-      */
-    private _onAddStream;
-    remoteAVStream: any;
-    remoteAStream: any;
-    /**
-      * Internal
-      * @private
-      * @param {object} event
-      */
-    private _onRemoteStreamStarted;
-    /**
-      * Internal
-      * @private
-      * @param {object} event
-      */
-    private _onRemoteStreamEnded;
-    hangupParty: string | undefined;
-    /**
-      * Internal
-      * @private
-      * @param {object} event
-      */
-    private _onRemoteStreamTrackStarted;
-    /**
-      * Used by MatrixClient.
-      * @protected
-      * @param {object} msg
-      */
-    protected _onHangupReceived(msg: object): void;
-    /**
-      * Used by MatrixClient.
-      * @protected
-      * @param {object} msg
-      */
-    protected _onAnsweredElsewhere(msg: object): void;
+    private sendVoipEvent;
+    queueCandidate(content: RTCIceCandidate): void;
+    transfer(targetUserId: string, targetRoomId?: string): Promise<any>;
+    private terminate;
+    private stopAllMedia;
+    private checkForErrorListener;
+    private sendCandidateQueue;
+    private placeCallWithConstraints;
+    private createPeerConnection;
+    private partyIdMatches;
 }
-export namespace MatrixCall {
-    const CALL_TIMEOUT_MS: number;
-    const FALLBACK_ICE_SERVER: string;
-    const ERR_LOCAL_OFFER_FAILED: string;
-    const ERR_NO_USER_MEDIA: string;
-    const ERR_UNKNOWN_DEVICES: string;
-    const ERR_SEND_INVITE: string;
-    const ERR_SEND_ANSWER: string;
-}
-import { MatrixClient } from "../client";
-import { MatrixEvent } from "../models/event";
+/**
+  * Set an audio output device to use for MatrixCalls
+  * @function
+  * @param {string=} deviceId the identifier for the device
+  * undefined treated as unset
+  */
+export declare function setAudioOutput(deviceId: string): void;
+/**
+  * Set an audio input device to use for MatrixCalls
+  * @function
+  * @param {string=} deviceId the identifier for the device
+  * undefined treated as unset
+  */
+export declare function setAudioInput(deviceId: string): void;
+/**
+  * Set a video input device to use for MatrixCalls
+  * @function
+  * @param {string=} deviceId the identifier for the device
+  * undefined treated as unset
+  */
+export declare function setVideoInput(deviceId: string): void;
+/**
+  * Create a new Matrix call for the browser.
+  * @param {MatrixClient} client The client instance to use.
+  * @param {string} roomId The room the call is in.
+  * @param {object?} options DEPRECATED optional options map.
+  * @param {boolean} options.forceTURN DEPRECATED whether relay through TURN should be
+  * forced. This option is deprecated - use opts.forceTURN when creating the matrix client
+  * since it's only possible to set this option on outbound calls.
+  * @return {MatrixCall} the call or null if the browser doesn't support calling.
+  */
+export declare function createNewMatrixCall(client: any, roomId: string, options?: CallOpts): MatrixCall | null;
+export {};

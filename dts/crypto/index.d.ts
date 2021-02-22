@@ -111,6 +111,7 @@ export class Crypto {
     _sendKeyRequestsImmediately: boolean;
     _crossSigningInfo: CrossSigningInfo;
     _secretStorage: SecretStorage;
+    _dehydrationManager: DehydrationManager;
     /**
       * Initialise the crypto module so that it is ready for use
       *
@@ -233,7 +234,7 @@ export class Crypto {
       *     containing the key, or rejects if the key cannot be obtained.
       * Returns:
       *     {Promise} A promise which resolves to key creation data for
-      *     SecretStorage#addKey: an object with `passphrase` and/or `pubkey` fields.
+      *     SecretStorage#addKey: an object with `passphrase` etc fields.
       */
     bootstrapSecretStorage({ createSecretStorageKey, keyBackupInfo, setupNewKeyBackup, setupNewSecretStorage, getKeyBackupPassphrase, }?: {
         createSecretStorageKey?: Function | undefined;
@@ -242,7 +243,7 @@ export class Crypto {
         setupNewSecretStorage?: boolean | undefined;
         getKeyBackupPassphrase?: any | undefined;
     }): Promise<void>;
-    addSecretStorageKey(algorithm: any, opts: any, keyID: any): string;
+    addSecretStorageKey(algorithm: any, opts: any, keyID: any): object;
     hasSecretStorageKey(keyID: any): boolean;
     getSecretStorageKey(keyID: any): any[] | null;
     storeSecret(name: any, secret: any, keys: any): Promise<void>;
@@ -453,6 +454,9 @@ export class Crypto {
       */
     updateOneTimeKeyCount(currentCount: number): void;
     _oneTimeKeyCount: number | undefined;
+    setNeedsNewFallback(needsNewFallback: any): void;
+    _needsNewFallback: boolean | undefined;
+    getNeedsNewFallback(): boolean | undefined;
     /**
       * Download the keys for a list of users and stores the keys in the session
       * store.
@@ -857,6 +861,7 @@ import { ToDeviceRequests } from "./verification/request/ToDeviceChannel";
 import { InRoomRequests } from "./verification/request/InRoomChannel";
 import { CrossSigningInfo } from "./CrossSigning";
 import { SecretStorage } from "./SecretStorage";
+import { DehydrationManager } from "./dehydration";
 import { DeviceInfo } from "./deviceinfo";
 import { UserTrustLevel } from "./CrossSigning";
 import { DeviceTrustLevel } from "./CrossSigning";

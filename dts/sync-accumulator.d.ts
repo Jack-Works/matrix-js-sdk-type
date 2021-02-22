@@ -34,16 +34,17 @@ export class SyncAccumulator {
         join: {};
         leave: {};
     };
-    accumulate(syncResponse: any): void;
+    accumulate(syncResponse: any, fromDatabase: any): void;
     _accumulateAccountData(syncResponse: any): void;
     /**
   * Accumulate incremental /sync room data.
   * @param {object} syncResponse the complete /sync JSON
+  * @param {boolean} fromDatabase True if the sync response is one saved to the database
   */
-    _accumulateRooms(syncResponse: object): void;
-    _accumulateRoom(roomId: any, category: any, data: any): void;
+    _accumulateRooms(syncResponse: object, fromDatabase: boolean): void;
+    _accumulateRoom(roomId: any, category: any, data: any, fromDatabase: any): void;
     _accumulateInviteState(roomId: any, data: any): void;
-    _accumulateJoinState(roomId: any, data: any): void;
+    _accumulateJoinState(roomId: any, data: any, fromDatabase: any): void;
     /**
   * Accumulate incremental /sync group data.
   * @param {object} syncResponse the complete /sync JSON
@@ -55,6 +56,7 @@ export class SyncAccumulator {
   * represents all room data that should be stored. This should be paired
   * with the sync token which represents the most recent /sync response
   * provided to accumulate().
+  * @param {boolean} forDatabase True to generate a sync to be saved to storage
   * @return {object} An object with a "nextBatch", "roomsData" and "accountData"
   * keys.
   * The "nextBatch" key is a string which represents at what point in the
@@ -64,6 +66,6 @@ export class SyncAccumulator {
   * /sync response from the 'rooms' key onwards. The "accountData" key is
   * a list of raw events which represent global account data.
   */
-    getJSON(): object;
+    getJSON(forDatabase: boolean): object;
     getNextBatchToken(): any;
 }

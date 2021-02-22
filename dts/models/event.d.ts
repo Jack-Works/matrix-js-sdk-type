@@ -74,4 +74,5 @@ export class MatrixEvent {
     _retryDecryption: boolean;
     verificationRequest: any;
     _txnId: any;
+    _localTimestamp: number;
 }

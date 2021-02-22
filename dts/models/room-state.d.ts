@@ -308,6 +308,11 @@ export class RoomState {
       *                        notification of this type.
       */
     mayTriggerNotifOfType(notifLevelKey: string, userId: string): boolean;
+    /**
+      * Returns the join rule based on the m.room.join_rule state event, defaulting to `invite`.
+      * @returns {string} the join_rule applied to this room
+      */
+    getJoinRule(): string;
 }
 import { RoomMember } from "./room-member";
 import { MatrixEvent } from "./event";
