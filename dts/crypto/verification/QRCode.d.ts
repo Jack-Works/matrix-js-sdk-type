@@ -10,7 +10,7 @@ export class ReciprocateQRCode {
     static get NAME(): "m.reciprocate.v1";
     _doVerification(): Promise<void>;
     reciprocateQREvent: {
-        confirm: (value?: any) => void;
+        confirm: (value: any) => void;
         cancel: () => void;
     } | undefined;
 }

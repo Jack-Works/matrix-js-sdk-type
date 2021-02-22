@@ -140,7 +140,7 @@ export class InteractiveAuth {
     _requestCallback: any;
     _busyChangedCallback: any;
     _stateUpdatedCallback: any;
-    _resolveFunc: ((value?: any) => void) | null;
+    _resolveFunc: ((value: any) => void) | null;
     _rejectFunc: ((reason?: any) => void) | null;
     _inputs: any;
     _requestEmailTokenCallback: any;

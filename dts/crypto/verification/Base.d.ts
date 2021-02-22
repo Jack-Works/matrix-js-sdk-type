@@ -39,7 +39,7 @@ export class VerificationBase extends EventEmitter {
     _send(type: any, uncompletedContent: any): any;
     _waitForEvent(type: any): Promise<any>;
     _expectedEvent: any;
-    _resolveEvent: ((value?: any) => void) | undefined;
+    _resolveEvent: ((value: any) => void) | undefined;
     _rejectEvent: ((reason?: any) => void) | undefined;
     canSwitchStartEvent(): boolean;
     switchStartEvent(event: any): void;

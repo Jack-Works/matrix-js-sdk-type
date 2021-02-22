@@ -8,7 +8,7 @@ export class SAS {
     get events(): string[];
     _doVerification(): Promise<void>;
     startEvent: any;
-    canSwitchStartEvent(event: any): boolean | undefined;
+    canSwitchStartEvent(event: any): any;
     _sendStart(): Promise<any>;
     _doSendVerification(): Promise<void>;
     _waitingForAccept: boolean | undefined;

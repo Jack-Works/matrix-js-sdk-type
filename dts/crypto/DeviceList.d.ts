@@ -14,7 +14,7 @@ export class DeviceList extends EventEmitter {
     _keyDownloadsInProgressByUser: {};
     _dirty: boolean;
     _savePromise: any;
-    _resolveSavePromise: ((value?: any) => void) | null;
+    _resolveSavePromise: ((value: any) => void) | null;
     _savePromiseTime: any;
     _saveTimer: any;
     _hasFetched: boolean | null;
