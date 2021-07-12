@@ -7,8 +7,10 @@ export declare class CallEventHandler {
     callEventBuffer: MatrixEvent[];
     candidateEventsByCall: Map<string, Array<MatrixEvent>>;
     constructor(client: MatrixClient);
+    start(): void;
     stop(): void;
     private evaluateEventBuffer;
     private onEvent;
+    private eventIsACall;
     private handleCallEvent;
 }

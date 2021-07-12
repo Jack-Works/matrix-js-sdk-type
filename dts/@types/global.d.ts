@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 // this is needed to tell TS about global.Olm
- // eslint-disable-line @typescript-eslint/no-unused-vars
+import "@matrix-org/olm";
 
 export {};
 
@@ -34,6 +34,10 @@ declare global {
         getDesktopCapturerSources(options: GetSourcesOptions): Promise<Array<DesktopCapturerSource>>;
     }
 
+    interface Crypto {
+        webkitSubtle?: Window["crypto"]["subtle"];
+    }
+
     interface MediaDevices {
         // This is experimental and types don't know about it yet
         // https://github.com/microsoft/TypeScript/issues/33232
@@ -41,7 +45,7 @@ declare global {
         getUserMedia(constraints: MediaStreamConstraints | DesktopCapturerConstraints): Promise<MediaStream>;
     }
 
-    export interface DesktopCapturerConstraints {
+    interface DesktopCapturerConstraints {
         audio: boolean | {
             mandatory: {
                 chromeMediaSource: string;
@@ -56,7 +60,7 @@ declare global {
         };
     }
 
-    export interface DesktopCapturerSource {
+    interface DesktopCapturerSource {
         id: string;
         name: string;
         thumbnailURL: string;
@@ -83,5 +87,18 @@ declare global {
         // We check for the webkit-prefixed getUserMedia to detect if we're
         // on webkit: we should check if we still need to do this
         webkitGetUserMedia: DummyInterfaceWeShouldntBeUsingThis;
+    }
+
+    export interface ISettledFulfilled<T> {
+        status: "fulfilled";
+        value: T;
+    }
+    export interface ISettledRejected {
+        status: "rejected";
+        reason: any;
+    }
+
+    interface PromiseConstructor {
+        allSettled<T>(promises: Promise<T>[]): Promise<Array<ISettledFulfilled<T> | ISettledRejected>>;
     }
 }

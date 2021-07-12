@@ -12,7 +12,7 @@ export class SAS {
     _sendStart(): Promise<any>;
     _doSendVerification(): Promise<void>;
     _waitingForAccept: boolean | undefined;
-    ourSASPubKey: any;
+    ourSASPubKey: string | undefined;
     theirSASPubKey: any;
     sasEvent: {
         sas: {};

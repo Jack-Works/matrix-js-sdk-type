@@ -13,8 +13,9 @@ export class VerificationBase extends EventEmitter {
       *
       * <p>Subclasses must have a NAME class property.</p>
       * @class
-      * @param {Channel} channel the verification channel to send verification messages over.
-      * @param {MatrixBaseApis} baseApis base matrix api interface
+      * @param {object} channel the verification channel to send verification messages over.
+      * TODO: Channel types
+      * @param {MatrixClient} baseApis base matrix api interface
       * @param {string} userId the user ID that is being verified
       * @param {string} deviceId the device ID that is being verified
       * @param {object=} startEvent the m.key.verification.start event that
@@ -22,9 +23,9 @@ export class VerificationBase extends EventEmitter {
       * @param {object=} request the key verification request object related to
       * this verification, if any
       */
-    constructor(channel: any, baseApis: MatrixBaseApis, userId: string, deviceId: string, startEvent?: object | undefined, request?: object | undefined);
-    _channel: any;
-    _baseApis: MatrixBaseApis;
+    constructor(channel: object, baseApis: any, userId: string, deviceId: string, startEvent?: object | undefined, request?: object | undefined);
+    _channel: object;
+    _baseApis: any;
     userId: string;
     deviceId: string;
     startEvent: object | undefined;
@@ -45,7 +46,7 @@ export class VerificationBase extends EventEmitter {
     switchStartEvent(event: any): void;
     handleEvent(e: any): void;
     _reject: ((...args: any[]) => void) | undefined;
-    done(): Promise<any> | undefined;
+    done(): Promise<unknown> | undefined;
     cancel(e: any): void;
     /**
   * Begin the key verification
@@ -58,4 +59,3 @@ export class VerificationBase extends EventEmitter {
     _verifyKeys(userId: any, keys: any, verifier: any): Promise<void>;
 }
 import { EventEmitter } from "events";
-import { MatrixBaseApis } from "../../base-apis";

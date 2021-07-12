@@ -2,7 +2,7 @@
   *
   * @implements {CryptoStore}
   */
-export class LocalStorageCryptoStore extends MemoryCryptoStore {
+export class LocalStorageCryptoStore extends MemoryCryptoStore  {
     static exists(webStore: any): boolean;
     constructor(webStore: any);
     store: any;

@@ -79,7 +79,7 @@ export class LocalIndexedDBStoreBackend {
       * is no saved sync data.
       */
     getSavedSync(copy?: boolean | undefined): Promise<any>;
-    getNextBatchToken(): Promise<any>;
+    getNextBatchToken(): Promise<string>;
     setSyncData(syncData: any): Promise<void>;
     syncToDatabase(userTuples: any): Promise<[any, any, any]>;
     /**

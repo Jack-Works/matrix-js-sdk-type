@@ -55,9 +55,9 @@ export class RemoteIndexedDBStoreBackend {
       * is no saved sync data.
       */
     getSavedSync(): Promise<any>;
-    getNextBatchToken(): Promise<unknown>;
-    setSyncData(syncData: any): Promise<unknown>;
-    syncToDatabase(users: any): Promise<unknown>;
+    getNextBatchToken(): Promise<any>;
+    setSyncData(syncData: any): Promise<any>;
+    syncToDatabase(users: any): Promise<any>;
     /**
       * Returns the out-of-band membership events for this room that
       * were previously loaded.
@@ -75,15 +75,15 @@ export class RemoteIndexedDBStoreBackend {
       * @returns {Promise} when all members have been stored
       */
     setOutOfBandMembers(roomId: string, membershipEvents: Array<any>): Promise<any>;
-    clearOutOfBandMembers(roomId: any): Promise<unknown>;
-    getClientOptions(): Promise<unknown>;
-    storeClientOptions(options: any): Promise<unknown>;
+    clearOutOfBandMembers(roomId: any): Promise<any>;
+    getClientOptions(): Promise<any>;
+    storeClientOptions(options: any): Promise<any>;
     /**
       * Load all user presence events from the database. This is not cached.
       * @return {Promise.<Array.<object>>} A list of presence events in their raw form.
       */
     getUserPresenceEvents(): Promise<Array<object>>;
     _ensureStarted(): Promise<void>;
-    _doCmd(cmd: any, args: any): Promise<unknown>;
+    _doCmd(cmd: any, args: any): Promise<any>;
     _onWorkerMessage(ev: any): void;
 }

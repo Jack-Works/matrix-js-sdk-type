@@ -32,7 +32,7 @@ export class PushProcessor {
       * @param {MatrixEvent} ev
       * @return {PushAction}
       */
-    actionsForEvent: (ev: MatrixEvent) => PushAction;
+    actionsForEvent: (ev: any) => PushAction;
     /**
       * Get one of the users push rules by its ID
       * @param {string} ruleId The ID of the rule to search for
@@ -53,4 +53,3 @@ export type PushAction = {
         sound: boolean;
     };
 };
-import { MatrixEvent } from "./models/event";

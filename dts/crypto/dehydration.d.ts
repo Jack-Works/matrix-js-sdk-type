@@ -1,3 +1,20 @@
+import { ISecretStorageKeyInfo } from "./api";
+declare type Signatures = Record<string, Record<string, string>>;
+export interface IDehydratedDevice {
+    device_id: string;
+    device_data: ISecretStorageKeyInfo & {
+        algorithm: string;
+        account: string;
+    };
+}
+export interface IDehydratedDeviceKeyInfo {
+    passphrase?: string;
+}
+export interface OneTimeKey {
+    key: string;
+    fallback?: boolean;
+    signatures?: Signatures;
+}
 export declare const DEHYDRATION_ALGORITHM = "org.matrix.msc2697.v1.olm.libolm_pickle";
 export declare class DehydrationManager {
     private crypto;
@@ -17,5 +34,6 @@ export declare class DehydrationManager {
     }, deviceDisplayName?: string): Promise<boolean>;
     /** returns the device id of the newly created dehydrated device */
     dehydrateDevice(): Promise<string>;
-    private stop;
+    stop(): void;
 }
+export {};

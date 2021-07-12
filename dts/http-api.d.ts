@@ -133,7 +133,7 @@ export class MatrixHttpApi {
     }): Promise<any>;
     cancelUpload(promise: any): boolean;
     getCurrentUploads(): any[];
-    idServerRequest(callback: any, method: any, path: any, params: any, prefix: any, accessToken: any): Promise<unknown>;
+    idServerRequest(callback: any, method: any, path: any, params: any, prefix: any, accessToken: any): Promise<any>;
     /**
       * Perform an authorised request to the homeserver.
       * @param {Function} callback Optional. The callback to invoke on
@@ -270,4 +270,5 @@ export class ConnectionError extends Error {
     get cause(): any;
 }
 export class AbortError extends Error {
+    constructor();
 }

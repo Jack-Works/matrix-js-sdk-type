@@ -25,7 +25,7 @@ export class VerificationRequest extends EventEmitter {
       * @param {MatrixClient} client the client to get the current user and device id from
       * @returns {boolean} whether the event is valid and should be passed to handleEvent
       */
-    static validateEvent(type: string, event: MatrixEvent, client: MatrixClient): boolean;
+    static validateEvent(type: string, event: any, client: any): boolean;
     constructor(channel: any, verificationMethods: any, client: any);
     channel: any;
     _verificationMethods: any;
@@ -64,7 +64,7 @@ export class VerificationRequest extends EventEmitter {
       * The key verification request event.
       * @returns {MatrixEvent} The request event, or falsey if not found.
       */
-    get requestEvent(): MatrixEvent;
+    get requestEvent(): any;
     /** current phase of the request. Some properties might only be defined in a current phase. */
     get phase(): any;
     /** The verifier to do the actual verification, once the method has been established. Only defined when the `phase` is PHASE_STARTED. */
@@ -174,7 +174,7 @@ export class VerificationRequest extends EventEmitter {
       *   For InRoomChannel this means any device for the syncing user. For ToDeviceChannel, just the syncing device.
       * @returns {Promise} a promise that resolves when any requests as an anwser to the passed-in event are sent.
       */
-    handleEvent(type: string, event: MatrixEvent, isLiveEvent: boolean, isRemoteEcho: boolean, isSentByUs: boolean): Promise<any>;
+    handleEvent(type: string, event: any, isLiveEvent: boolean, isRemoteEcho: boolean, isSentByUs: boolean): Promise<any>;
     _setupTimeout(phase: any): void;
     _cancelOnTimeout: () => void;
     _cancelOnError(type: any, event: any): Promise<boolean>;
@@ -189,5 +189,3 @@ export class VerificationRequest extends EventEmitter {
 }
 import { EventEmitter } from "events";
 import { QRCodeData } from "../QRCode";
-import { MatrixEvent } from "../../../models/event";
-import { MatrixClient } from "../../../client";

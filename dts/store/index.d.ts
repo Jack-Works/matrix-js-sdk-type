@@ -1,21 +1,22 @@
-/**
- * This is an internal module.
- * @module store/stub
- */
 import { EventType } from "../@types/event";
 import { Group } from "../models/group";
 import { Room } from "../models/room";
 import { User } from "../models/user";
 import { MatrixEvent } from "../models/event";
 import { Filter } from "../filter";
-import { ISavedSync, IStore } from "./index";
 import { RoomSummary } from "../models/room-summary";
+import { IMinimalEvent, IGroups, IRooms } from "../sync-accumulator";
+export interface ISavedSync {
+    nextBatch: string;
+    roomsData: IRooms;
+    groupsData: IGroups;
+    accountData: IMinimalEvent[];
+}
 /**
  * Construct a stub store. This does no-ops on most store methods.
  * @constructor
  */
-export declare class StubStore implements IStore {
-    private fromToken;
+export interface IStore {
     /** @return {Promise<bool>} whether or not the database was newly created in this session. */
     isNewlyCreated(): Promise<boolean>;
     /**
@@ -27,12 +28,12 @@ export declare class StubStore implements IStore {
      * Set the sync token.
      * @param {string} token
      */
-    setSyncToken(token: string): void;
+    setSyncToken(token: string): any;
     /**
      * No-op.
      * @param {Group} group
      */
-    storeGroup(group: Group): void;
+    storeGroup(group: Group): any;
     /**
      * No-op.
      * @param {string} groupId
@@ -48,7 +49,7 @@ export declare class StubStore implements IStore {
      * No-op.
      * @param {Room} room
      */
-    storeRoom(room: Room): void;
+    storeRoom(room: Room): any;
     /**
      * No-op.
      * @param {string} roomId
@@ -64,7 +65,7 @@ export declare class StubStore implements IStore {
      * Permanently delete a room.
      * @param {string} roomId
      */
-    removeRoom(roomId: string): void;
+    removeRoom(roomId: string): any;
     /**
      * No-op.
      * @return {Array} An empty array.
@@ -74,7 +75,7 @@ export declare class StubStore implements IStore {
      * No-op.
      * @param {User} user
      */
-    storeUser(user: User): void;
+    storeUser(user: User): any;
     /**
      * No-op.
      * @param {string} userId
@@ -100,12 +101,12 @@ export declare class StubStore implements IStore {
      * @param {string} token The token associated with these events.
      * @param {boolean} toStart True if these are paginated results.
      */
-    storeEvents(room: Room, events: MatrixEvent[], token: string, toStart: boolean): void;
+    storeEvents(room: Room, events: MatrixEvent[], token: string, toStart: boolean): any;
     /**
      * Store a filter.
      * @param {Filter} filter
      */
-    storeFilter(filter: Filter): void;
+    storeFilter(filter: Filter): any;
     /**
      * Retrieve a filter.
      * @param {string} userId
@@ -124,12 +125,12 @@ export declare class StubStore implements IStore {
      * @param {string} filterName
      * @param {string} filterId
      */
-    setFilterIdByName(filterName: string, filterId: string): void;
+    setFilterIdByName(filterName: string, filterId: string): any;
     /**
      * Store user-scoped account data events
      * @param {Array<MatrixEvent>} events The events to store.
      */
-    storeAccountDataEvents(events: MatrixEvent[]): void;
+    storeAccountDataEvents(events: MatrixEvent[]): any;
     /**
      * Get account data event by event type
      * @param {string} eventType The event type being queried
@@ -151,7 +152,7 @@ export declare class StubStore implements IStore {
     /**
      * Save does nothing as there is no backing data store.
      */
-    save(): void;
+    save(force: boolean): void;
     /**
      * Startup does nothing.
      * @return {Promise} An immediately resolved promise.
@@ -174,9 +175,9 @@ export declare class StubStore implements IStore {
      * @return {Promise} An immediately resolved promise.
      */
     deleteAllData(): Promise<void>;
-    getOutOfBandMembers(): Promise<MatrixEvent[]>;
+    getOutOfBandMembers(roomId: string): Promise<MatrixEvent[] | null>;
     setOutOfBandMembers(roomId: string, membershipEvents: MatrixEvent[]): Promise<void>;
-    clearOutOfBandMembers(): Promise<void>;
+    clearOutOfBandMembers(roomId: string): Promise<void>;
     getClientOptions(): Promise<object>;
     storeClientOptions(options: object): Promise<void>;
 }

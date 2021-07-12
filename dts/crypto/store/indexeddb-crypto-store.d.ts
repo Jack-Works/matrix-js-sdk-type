@@ -7,7 +7,7 @@
   * but with fallback to MemoryCryptoStore.
   * @implements {CryptoStore}
   */
-export class IndexedDBCryptoStore {
+export class IndexedDBCryptoStore  {
     static exists(indexedDB: any, dbName: any): boolean;
     /**
       * Create a new IndexedDBCryptoStore
@@ -41,7 +41,7 @@ export class IndexedDBCryptoStore {
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}: either the
   *    same instance as passed in, or the existing one.
   */
-    getOrAddOutgoingRoomKeyRequest(request: OutgoingRoomKeyRequest): Promise<any>;
+    getOrAddOutgoingRoomKeyRequest(request: any): Promise<any>;
     /**
   * Look for an existing room key request
   * @param {RoomKeyRequestBody} requestBody existing request to look for
@@ -49,7 +49,7 @@ export class IndexedDBCryptoStore {
   *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
   *    not found
   */
-    getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): Promise<any>;
+    getOutgoingRoomKeyRequest(requestBody: any): Promise<any>;
     /**
   * Look for room key requests by state
   * @param {Array.<Number>} wantedStates list of acceptable states
@@ -277,6 +277,21 @@ export class IndexedDBCryptoStore {
   */
     markSessionsNeedingBackup(sessions: Array<object>, txn: any): Promise<any>;
     /**
+  * Add a shared-history group session for a room.
+  * @param {string} roomId The room that the key belongs to
+  * @param {string} senderKey The sender's curve 25519 key
+  * @param {string} sessionId The ID of the session
+  * @param {*} txn An active transaction. See doTxn(). (optional)
+  */
+    addSharedHistoryInboundGroupSession(roomId: string, senderKey: string, sessionId: string, txn: any): void;
+    /**
+  * Get the shared-history group session for a room.
+  * @param {string} roomId The room that the key belongs to
+  * @param {*} txn An active transaction. See doTxn(). (optional)
+  * @returns {Promise} Resolves to an array of [senderKey, sessionId]
+  */
+    getSharedHistoryInboundGroupSessions(roomId: string, txn: any): Promise<any>;
+    /**
   * Perform a transaction on the crypto store. Any store methods
   * that require a transaction (txn) object to be passed in may
   * only be called within a callback of either this function or
@@ -289,6 +304,7 @@ export class IndexedDBCryptoStore {
   * @param {function (*)} func Function called with the
   *     transaction object: an opaque object that should be passed
   *     to store functions.
+  * @param {Logger=} log A possibly customised log
   * @return {Promise} Promise that resolves with the result of the `func`
   *     when the transaction is complete. If the backend is
   *     async (ie. the indexeddb backend) any of the callback
@@ -296,16 +312,15 @@ export class IndexedDBCryptoStore {
   *     reject with that exception. On synchronous backends, the
   *     exception will propagate to the caller of the getFoo method.
   */
-    doTxn(mode: string, stores: Array<string>, func: (arg0: any) => any): Promise<any>;
+    doTxn(mode: string, stores: Array<string>, func: (arg0: any) => any, log?: any | undefined): Promise<any>;
 }
 export namespace IndexedDBCryptoStore {
     const STORE_ACCOUNT: string;
     const STORE_SESSIONS: string;
     const STORE_INBOUND_GROUP_SESSIONS: string;
     const STORE_INBOUND_GROUP_SESSIONS_WITHHELD: string;
+    const STORE_SHARED_HISTORY_INBOUND_GROUP_SESSIONS: string;
     const STORE_DEVICE_DATA: string;
     const STORE_ROOMS: string;
     const STORE_BACKUP: string;
 }
-import { OutgoingRoomKeyRequest } from "./base";
-import { RoomKeyRequestBody } from "..";

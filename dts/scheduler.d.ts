@@ -34,7 +34,7 @@ export class MatrixScheduler {
       * @return {Number}
       * @see module:scheduler~retryAlgorithm
       */
-    static RETRY_BACKOFF_RATELIMIT(event: MatrixEvent, attempts: number, err: MatrixError): number;
+    static RETRY_BACKOFF_RATELIMIT(event: any, attempts: number, err: MatrixError): number;
     /**
       * Queues <code>m.room.message</code> events and lets other events continue
       * concurrently.
@@ -42,7 +42,7 @@ export class MatrixScheduler {
       * @return {string}
       * @see module:scheduler~queueAlgorithm
       */
-    static QUEUE_MESSAGES(event: MatrixEvent): string;
+    static QUEUE_MESSAGES(event: any): string;
     constructor(retryAlgorithm: any, queueAlgorithm: any);
     retryAlgorithm: any;
     queueAlgorithm: any;
@@ -58,14 +58,14 @@ export class MatrixScheduler {
       * this array <i>will</i> modify the underlying event in the queue.
       * @see MatrixScheduler.removeEventFromQueue To remove an event from the queue.
       */
-    getQueueForEvent(event: MatrixEvent): Array<MatrixEvent> | null;
+    getQueueForEvent(event: any): Array<any> | null;
     /**
       * Remove this event from the queue. The event is equal to another event if they
       * have the same ID returned from event.getId().
       * @param {MatrixEvent} event The event to remove.
       * @return {boolean} True if this event was removed.
       */
-    removeEventFromQueue(event: MatrixEvent): boolean;
+    removeEventFromQueue(event: any): boolean;
     /**
       * Set the process function. Required for events in the queue to be processed.
       * If set after events have been added to the queue, this will immediately start
@@ -80,14 +80,14 @@ export class MatrixScheduler {
       * @return {?Promise} A promise if the event was queued, which will be
       * resolved or rejected in due time, else null.
       */
-    queueEvent(event: MatrixEvent): Promise<any> | null;
+    queueEvent(event: any): Promise<any> | null;
 }
 /**
  * The retry algorithm to apply when retrying events. To stop retrying, return
  * <code>-1</code>. If this event was part of a queue, it will be removed from
  * the queue.
  */
-export type retryAlgorithm = (event: MatrixEvent, attempts: number, err: MatrixError) => number;
+export type retryAlgorithm = (event: any, attempts: number, err: MatrixError) => number;
 /**
  * The queuing algorithm to apply to events. This function must be idempotent as
  * it may be called multiple times with the same event. All queues created are
@@ -96,10 +96,9 @@ export type retryAlgorithm = (event: MatrixEvent, attempts: number, err: MatrixE
  * part of a queue will be removed from the queue and the next event in the
  * queue will be sent.
  */
-export type queueAlgorithm = (event: MatrixEvent) => string;
+export type queueAlgorithm = (event: any) => string;
 /**
  * The function to invoke to process (send) events in the queue.
  */
-export type processFn = (event: MatrixEvent) => Promise<any>;
-import { MatrixEvent } from "./models/event";
-import { MatrixError } from "./http-api";
+export type processFn = (event: any) => Promise<any>;
+import { MatrixError } from "./http-api.js";

@@ -1,13 +1,19 @@
-/**
-  *
-  * @alias module:crypto/RoomList
-  */
-export class RoomList {
-    constructor(cryptoStore: any);
-    _cryptoStore: any;
-    _roomEncryption: {};
-    init(): Promise<void>;
-    getRoomEncryption(roomId: any): any;
-    isRoomEncrypted(roomId: any): boolean;
-    setRoomEncryption(roomId: any, roomInfo: any): Promise<void>;
+import { CryptoStore } from "../client";
+interface IRoomEncryption {
+    algorithm: string;
+    rotation_period_ms: number;
+    rotation_period_msgs: number;
 }
+/**
+ * @alias module:crypto/RoomList
+ */
+export declare class RoomList {
+    private readonly cryptoStore;
+    private roomEncryption;
+    constructor(cryptoStore: CryptoStore);
+    init(): Promise<void>;
+    getRoomEncryption(roomId: string): IRoomEncryption;
+    isRoomEncrypted(roomId: string): boolean;
+    setRoomEncryption(roomId: string, roomInfo: IRoomEncryption): Promise<void>;
+}
+export {};

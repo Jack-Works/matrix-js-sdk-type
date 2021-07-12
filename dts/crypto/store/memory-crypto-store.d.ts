@@ -6,7 +6,7 @@
   *
   * @implements {CryptoStore}
   */
-export class MemoryCryptoStore {
+export class MemoryCryptoStore  {
     _outgoingRoomKeyRequests: any[];
     _account: any;
     _crossSigningKeys: any;
@@ -20,6 +20,7 @@ export class MemoryCryptoStore {
     _deviceData: any;
     _rooms: {};
     _sessionsNeedingBackup: {};
+    _sharedHistoryInboundGroupSessions: {};
     /**
       * Ensure the database exists and is up-to-date.
       *
@@ -40,7 +41,7 @@ export class MemoryCryptoStore {
       *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}: either the
       *    same instance as passed in, or the existing one.
       */
-    getOrAddOutgoingRoomKeyRequest(request: OutgoingRoomKeyRequest): Promise<any>;
+    getOrAddOutgoingRoomKeyRequest(request: any): Promise<any>;
     /**
       * Look for an existing room key request
       * @param {RoomKeyRequestBody} requestBody existing request to look for
@@ -48,14 +49,14 @@ export class MemoryCryptoStore {
       *    {@link module:crypto/store/base~OutgoingRoomKeyRequest}, or null if
       *    not found
       */
-    getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): Promise<any>;
+    getOutgoingRoomKeyRequest(requestBody: any): Promise<any>;
     /**
       * Looks for existing room key request, and returns the result synchronously.
       * @internal
       * @param {RoomKeyRequestBody} requestBody existing request to look for
       * @return {OutgoingRoomKeyRequest?} the matching request, or null if not found
       */
-    _getOutgoingRoomKeyRequest(requestBody: RoomKeyRequestBody): OutgoingRoomKeyRequest | null;
+    _getOutgoingRoomKeyRequest(requestBody: any): any | null;
     /**
       * Look for room key requests by state
       * @param {Array.<Number>} wantedStates list of acceptable states
@@ -121,7 +122,7 @@ export class MemoryCryptoStore {
     countSessionsNeedingBackup(): Promise<number>;
     unmarkSessionsNeedingBackup(sessions: any): Promise<void>;
     markSessionsNeedingBackup(sessions: any): Promise<void>;
+    addSharedHistoryInboundGroupSession(roomId: any, senderKey: any, sessionId: any): void;
+    getSharedHistoryInboundGroupSessions(roomId: any): Promise<any>;
     doTxn(mode: any, stores: any, func: any): Promise<any>;
 }
-import { OutgoingRoomKeyRequest } from "./base";
-import { RoomKeyRequestBody } from "..";

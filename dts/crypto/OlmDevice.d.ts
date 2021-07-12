@@ -58,7 +58,7 @@ export class OlmDevice {
     _pickleKey: string;
     deviceCurve25519Key: any;
     deviceEd25519Key: any;
-    _maxOneTimeKeys: any;
+    _maxOneTimeKeys: number | null;
     _outboundGroupSessionStore: {};
     _inboundGroupSessionMessageIndexes: {};
     _sessionsInProgress: {};
@@ -212,9 +212,10 @@ export class OlmDevice {
       * @param {boolean} nowait Don't wait for an in-progress session to complete.
       *     This should only be set to true of the calling function is the function
       *     that marked the session as being in-progress.
+      * @param {Logger=} log A possibly customised log
       * @return {Promise.<?string>} session id, or null if no established session
       */
-    getSessionIdForDevice(theirDeviceIdentityKey: string, nowait: boolean): Promise<string | null>;
+    getSessionIdForDevice(theirDeviceIdentityKey: string, nowait: boolean, log?: any | undefined): Promise<string | null>;
     /**
       * Get information on the active Olm sessions for a device.
       * <p>
@@ -226,9 +227,10 @@ export class OlmDevice {
       * @param {boolean} nowait Don't wait for an in-progress session to complete.
       *     This should only be set to true of the calling function is the function
       *     that marked the session as being in-progress.
+      * @param {Logger=} log A possibly customised log
       * @return {Array.<{sessionId: string, hasReceivedMessage: Boolean}>}
       */
-    getSessionInfoForDevice(deviceIdentityKey: string, nowait: boolean): Array<{
+    getSessionInfoForDevice(deviceIdentityKey: string, nowait: boolean, log?: any | undefined): Array<{
         sessionId: string;
         hasReceivedMessage: boolean;
     }>;
@@ -318,7 +320,7 @@ export class OlmDevice {
   * @param {function (Olm.InboundGroupSession)} func Invoked with the unpickled session
   * @return {*} result of func
   */
-    _unpickleInboundGroupSession(sessionData: object, func: (arg0: any) => any): any;
+    _unpickleInboundGroupSession(sessionData: object, func: (arg0: Olm.InboundGroupSession) => any): any;
     /**
       * extract an InboundGroupSession from the crypto store and call the given function
       * @param {string} roomId The room ID to extract the session for, or null to fetch
@@ -398,7 +400,8 @@ export class OlmDevice {
       * @param {string} sessionData The session object from the store
       * @return {MegolmSessionData} exported session data
       */
-    exportInboundGroupSession(senderKey: string, sessionId: string, sessionData: string): any;
+    exportInboundGroupSession(senderKey: string, sessionId: string, sessionData: string): MegolmSessionData;
+    getSharedHistoryInboundGroupSessions(roomId: any): Promise<undefined>;
     /**
       * Verify an ed25519 signature.
       * @param {string} key ed25519 key
@@ -416,6 +419,20 @@ export const WITHHELD_MESSAGES: {
     "m.unauthorised": string;
     "m.no_olm": string;
 };
+export interface MegolmSessionData {
+    /** Sender's Curve25519 device key */
+    sender_key: string;
+    /** Devices which forwarded this session to us (normally empty). */
+    forwarding_curve25519_key_chain: string[];
+    /** Other keys the sender claims. */
+    sender_claimed_keys: Record<string, string>;
+    /** Room this session is used in */
+    room_id: string;
+    /** Unique id for the session */
+    session_id: string;
+    /** Base64'ed key data */
+    session_key: string;
+}
 /**
  * :crypto/OlmDevice __auto_generated__
  */

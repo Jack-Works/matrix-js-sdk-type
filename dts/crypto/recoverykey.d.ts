@@ -1,2 +1,2 @@
-export function encodeRecoveryKey(key: any): any;
-export function decodeRecoveryKey(recoverykey: any): Uint8Array;
+export declare function encodeRecoveryKey(key: ArrayLike<number>): string;
+export declare function decodeRecoveryKey(recoveryKey: string): Uint8Array;
