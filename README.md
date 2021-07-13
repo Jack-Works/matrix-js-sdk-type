@@ -12,10 +12,10 @@ Please don't modify any file by hand in the `dts` folder.
 
 How to use:
 
+Install this package from git:
+
 ```ts
-// @ts-ignore
-import _matrix from "matrix-js-sdk";
-const matrix: typeof import("matrix-js-sdk-type/dts/matrix.d") = _matrix;
+import {  } from "matrix-js-sdk";
 ```
 
 now the matrix is typed.

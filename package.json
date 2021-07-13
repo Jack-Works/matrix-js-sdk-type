@@ -1,5 +1,5 @@
 {
-    "name": "matrix-js-sdk-type",
+    "name": "@types/matrix-js-sdk",
     "version": "1.0.0",
     "author": "Jack Works <jackworks@protonmail.com>",
     "license": "MIT",
