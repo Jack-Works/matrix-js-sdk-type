@@ -8,7 +8,7 @@ this package is generated from the `matrix-js-sdk` code base by [generate-matrix
 
 Current commit hash of matrix-js-sdk: [5ce787c6](https://github.com/matrix-org/matrix-js-sdk/commit/5ce787c6) (v12.0.1+)
 
-Please don't modify any file by hand in the `dts` folder.
+Please don't modify any file by hand in the `src` folder.
 
 How to use:
 
