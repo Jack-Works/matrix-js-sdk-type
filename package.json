@@ -1,14 +1,18 @@
 {
     "name": "@types/matrix-js-sdk",
-    "version": "1.0.0",
+    "version": "12.0.1",
     "author": "Jack Works <jackworks@protonmail.com>",
     "license": "MIT",
-    "private": true,
     "typings": "./dts/matrix.d",
     "dependencies": {
         "@types/node": "^12.12.14",
         "@types/request": "^2.48.4",
-        "loglevel": "^1.6.6",
+        "loglevel": "^1.6.6"
+    },
+    "devDependencies": {
         "@matrix-org/olm": "https://gitlab.matrix.org/api/v4/projects/27/packages/npm/@matrix-org/olm/-/@matrix-org/olm-3.2.3.tgz"
+    },
+    "peerDependencies": {
+        "matrix-js-sdk": "^12.0.1"
     }
 }
